@@ -21,3 +21,50 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# yarn
+yarn.lock
+
+# eclipse specific git ignore
+**/*.pydevproject
+**/.project
+**/.metadata
+**/bin/**
+**/tmp/**
+**/tmp/**/*
+**/*.tmp
+**/*.bak
+**/*.swp
+**/*~.nib
+**/local.properties
+**/.classpath
+**/.settings/
+**/.loadpath
+**/.factorypath
+
+# External tool builders
+**/.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+**/*.launch
+
+# STS (Spring Tool Suite)
+**/.springBeans
+
+#Clover
+**/.clover/
+
+# IntelliJ
+**/.idea
+**/*.iml
+
+# yarn specific
+**/src/main/frontend/dist/**
+
+# Maven revision
+**/.flattened-pom.xml
+
+# Alvaro
+*node_modules*
+**/.attach_pid*
+**/target/
