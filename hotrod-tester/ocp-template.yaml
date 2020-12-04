@@ -129,8 +129,6 @@ objects:
       git:
         uri: ${GIT_REPOSITORY}
       type: Git
-      sourceSecret:
-        name: "repo-at-gitlab"
     strategy:
       sourceStrategy:
         from:
@@ -156,4 +154,5 @@ parameters:
   required: true
 - name: GIT_CONTEXT_DIR
   description: "The path where the application code is under the git repository."
-  required: true
+  value: "hotrod-tester"
+  required: false

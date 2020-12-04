@@ -58,7 +58,7 @@ export context_dir=<context_dir>
 export server_name=<server_application_name>
 
 ## Create application from template
-oc process -f ocp-template.yml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p GIT_CONTEXT_DIR=$context_dir | oc apply -n $namespace -f -
+oc process -f ocp-template.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo | oc apply -n $namespace -f -
 
 ## Expose route
 oc expose svc $app_name -n $namespace
