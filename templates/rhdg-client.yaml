@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: ${APPLICATION_NAME}
+  name: rhdg8-client
   annotations:
-    description: Template for the application
-    tags: app,java,springboot
+    description: Template to deploy a Java client application to connecto to a RHDG cluster on OCP.
+    tags: infinispan,datagrid,java,springboot
     iconClass: icon-rh-openjdk
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/support-url: https://access.redhat.com
 labels:
-  template: ${APPLICATION_NAME}
-  app: ${APPLICATION_NAME}
+  template: rhdg8-client
 objects:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
@@ -33,10 +32,6 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
-    # - name: 8443-tcp
-    #   port: 8443
-    #   protocol: TCP
-    #   targetPort: 8443
     selector:
       deploymentconfig: ${APPLICATION_NAME}
 - apiVersion: apps.openshift.io/v1
@@ -61,16 +56,6 @@ objects:
         timeoutSeconds: 600
         updatePeriodSeconds: 1
       type: Rolling
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${APPLICATION_NAME}
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
     template:
       metadata:
         name: ${APPLICATION_NAME}
@@ -85,10 +70,6 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          - containerPort: 8443
-            protocol: TCP
-          # - containerPort: 8778
-          #   protocol: TCP
           resources: {}
           volumeMounts:
           - name: springboot-config
@@ -104,7 +85,16 @@ objects:
         - name: logback-config
           configMap:
             name: ${APPLICATION_NAME}-logback-config
-    test: false
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APPLICATION_NAME}
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
 - apiVersion: v1
   kind: BuildConfig
   metadata:

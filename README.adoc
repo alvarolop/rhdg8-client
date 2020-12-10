@@ -21,7 +21,7 @@ ifndef::env-github[]
 endif::[]
 // End: Enable admonition icons
 
-This repository demonstrates some of the basic examples of client applications of the latest release of Red Hat Data Grid 8
+This repository demonstrates some of the basic examples of client applications of the latest release of Red Hat Data Grid 8.
 
 // Create the Table of contents here
 toc::[]
@@ -39,6 +39,24 @@ Access Data Grid remotely through the Hot Rod Java client API.
 
 == Spring Boot starter
 
+To run this example on your server, just execute the following command:
+[source, bash]
+----
+mvn clean spring-boot:run
+----
 
+
+To deploy this example on OCP:
+[source, bash]
+----
+## Configuration
+export app_name=rhdg8-spring-boot
+export namespace=rhdg8
+export git_repo=https://github.com/alvarolop/rhdg8-client.git
+export context_dir=spring-boot-cache
+
+## Create application from template 
+oc process -f templates/rhdg-client.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p GIT_CONTEXT_DIR=$context_dir | oc apply -n $namespace -f -
+----
 
 
