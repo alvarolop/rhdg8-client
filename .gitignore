@@ -68,3 +68,4 @@ yarn.lock
 *node_modules*
 **/.attach_pid*
 **/target/
+**/.gradle

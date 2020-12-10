@@ -27,7 +27,7 @@ public class SessionController {
     @Autowired
     RemoteCacheManager remoteCacheManager;
 
-    Logger logger = LoggerFactory.getLogger(CacheController.class);
+    Logger logger = LoggerFactory.getLogger(SessionController.class);
     
     @GetMapping("/current")
 	String getSessionId(HttpSession session) {
