@@ -1,4 +1,4 @@
-package me.ignaciosanchez.hotrodtester.controller;
+package com.alopezme.hotrodtester.controller;
 
 import java.util.Iterator;
 import java.util.Map;

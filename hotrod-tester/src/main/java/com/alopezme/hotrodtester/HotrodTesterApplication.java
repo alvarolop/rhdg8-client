@@ -1,4 +1,4 @@
-package me.ignaciosanchez.hotrodtester;
+package com.alopezme.hotrodtester;
 
 import org.infinispan.spring.remote.session.configuration.EnableInfinispanRemoteHttpSession;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package me.ignaciosanchez.hotrodtester;
+package com.alopezme.hotrodtester;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

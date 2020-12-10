@@ -1,4 +1,4 @@
-package me.ignaciosanchez.hotrodtester.controller;
+package com.alopezme.hotrodtester.controller;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;

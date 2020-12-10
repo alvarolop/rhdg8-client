@@ -1,4 +1,4 @@
-package me.ignaciosanchez.jmx;
+package com.alopezme.jmx;
 
 import javax.annotation.PostConstruct;
 
