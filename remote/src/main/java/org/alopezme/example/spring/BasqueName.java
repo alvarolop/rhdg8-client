@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.spring.remote;
+package org.alopezme.example.spring;
 
 import java.io.Serializable;
 import java.util.Objects;

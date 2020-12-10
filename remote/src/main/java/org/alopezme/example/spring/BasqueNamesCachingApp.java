@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.spring.remote;
+package org.alopezme.example.spring;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableCaching
-@EnableScheduling
+//@EnableScheduling
 public class BasqueNamesCachingApp {
 
    public static void main(String... args) {

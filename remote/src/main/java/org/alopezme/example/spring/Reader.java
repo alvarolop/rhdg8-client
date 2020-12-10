@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.spring.remote;
+package org.alopezme.example.spring;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Random;
@@ -36,27 +36,27 @@ public class Reader {
       }
    }
 
-   @Scheduled(fixedDelay = 10000)
-   public void retrieveSize() {
-      logger.info(">>>> Cache size " + cache.size());
-      logger.info(">>>> Database size " + repository.size());
-   }
-
-   @Scheduled(fixedDelay = 1000)
-   public void createOne() {
-      int id = this.random.nextInt(Data.NAMES.size());
-      this.repository.create(id, Data.NAMES.get(id));
-   }
-
-   @Scheduled(fixedDelay = 3000)
-   public void removeOne() {
-      int id = this.random.nextInt(Data.NAMES.size());
-      this.repository.removeById(id);
-   }
-
-   @Scheduled(fixedDelay = 1000)
-   public void retrieveBasqueName() {
-      int id = this.random.nextInt(Data.NAMES.size());
-      logger.info("FIND RESULT " + this.repository.findById(id));
-   }
+//   @Scheduled(fixedDelay = 10000)
+//   public void retrieveSize() {
+//      logger.info(">>>> Cache size " + cache.size());
+//      logger.info(">>>> Database size " + repository.size());
+//   }
+//
+//   @Scheduled(fixedDelay = 1000)
+//   public void createOne() {
+//      int id = this.random.nextInt(Data.NAMES.size());
+//      this.repository.create(id, Data.NAMES.get(id));
+//   }
+//
+//   @Scheduled(fixedDelay = 3000)
+//   public void removeOne() {
+//      int id = this.random.nextInt(Data.NAMES.size());
+//      this.repository.removeById(id);
+//   }
+//
+//   @Scheduled(fixedDelay = 1000)
+//   public void retrieveBasqueName() {
+//      int id = this.random.nextInt(Data.NAMES.size());
+//      logger.info("FIND RESULT " + this.repository.findById(id));
+//   }
 }
