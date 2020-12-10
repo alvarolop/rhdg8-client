@@ -57,6 +57,54 @@ export context_dir=spring-boot-cache
 
 ## Create application from template 
 oc process -f templates/rhdg-client.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p GIT_CONTEXT_DIR=$context_dir | oc apply -n $namespace -f -
+
+## Expose route
+oc expose svc $app_name -n $namespace
+
+## Set app configuration
+oc create configmap ${app_name}-file-config --from-file=./${context_dir}/src/main/resources/application.properties -n $namespace
+oc create configmap ${app_name}-logback-config --from-file=./${context_dir}/src/main/resources/logback-spring.xml -n $namespace
+oc set env dc $app_name DATAGRID_HOST=rhdg DATAGRID_PORT=11222 -n $namespace
+
 ----
 
 
+
+== REST client
+
+In some situations, you might want to test your RHDG cluster using REST prior to use your HotRod client. In this case, you may want to use the following `curl` requests.
+
+
+=== Configuration
+[source, bash]
+----
+CLUSTER_NAMESPACE="rhdg8"
+CLUSTER_NAME="rhdg"
+RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
+CACHE_NAME="distributed-rest-01"
+----
+
+=== Cache creation
+Create your cache using the following variables and the curl command:
+[source, bash]
+----
+
+curl -X POST -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/distributed-01.json"
+----
+
+Check if the cache was created successfully using the following command:
+[source,bash]
+----
+curl -X GET -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches
+----
+
+=== Cache usage
+Perform gets and puts to check that the cache is working properly:
+[source,bash]
+----
+curl -X POST -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
+curl -X GET -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
+----
+
+
+For more information about the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index#rest_v2_create_cache[documentation].
