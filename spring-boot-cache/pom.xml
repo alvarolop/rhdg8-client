@@ -68,6 +68,7 @@
                     <excludes>
                         <!-- This is where the exclusion occurs -->
                         <exclude>**/logback-spring.xml</exclude>
+                        <exclude>**/application.properties</exclude>
                     </excludes>
                 </configuration>
             </plugin>
