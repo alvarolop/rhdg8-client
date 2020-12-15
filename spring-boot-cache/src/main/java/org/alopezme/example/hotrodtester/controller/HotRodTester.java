@@ -1,10 +1,12 @@
-package org.alopezme.example.spring;
+package org.alopezme.example.hotrodtester.controller;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -18,20 +20,19 @@ import java.util.concurrent.TimeoutException;
 public class HotRodTester {
 
     @Autowired
-    RemoteCacheManager rcm;
+    SpringRemoteCacheManager springRemoteCacheManager;
+
+    @Autowired
+    RemoteCacheManager remoteCacheManager;
 
     Logger logger = LoggerFactory.getLogger(HotRodTester.class);
-
-
-
-
 
 
     @GetMapping("/reset")
     public String reset() {
 
-        rcm.stop();
-        rcm.start();
+        springRemoteCacheManager.stop();
+        springRemoteCacheManager.start();
 
         return "SpringCache Manager restarted" + System.lineSeparator();
     }
@@ -40,7 +41,7 @@ public class HotRodTester {
     @GetMapping("/cache")
     public String caches() {
 
-        return rcm.getCacheNames().toString() + System.lineSeparator();
+        return springRemoteCacheManager.getCacheNames().toString() + System.lineSeparator();
     }
 
 
@@ -48,26 +49,7 @@ public class HotRodTester {
     public String stats(
             @PathVariable(value = "cache") String cacheName) {
 
-        return rcm.getCache(cacheName).serverStatistics().getStatsMap().toString() + System.lineSeparator();
-    }
-
-    @GetMapping("/cache/{cache}/create")
-    public String create(
-            @PathVariable(value = "cache") String cacheName) {
-/*
-        Configuration config = new ConfigurationBuilder()
-                .clustering().cacheMode(CacheMode.DIST_ASYNC)
-                .memory()
-                    .size(20000)
-                .expiration()
-                    .wakeUpInterval(5000L)
-                    .maxIdle(120000L)
-                .build();
-
-        //rcm.administration().getOrCreateCache(cacheName, config);
-        rcm.administration().getOrCreateCache(cacheName, new XMLStringConfiguration(config.toXMLString()));
-*/
-        return "ok" + System.lineSeparator();
+        return remoteCacheManager.getCache(cacheName).serverStatistics().getStatsMap().toString() + System.lineSeparator();
     }
 
     @GetMapping("/cache/{cache}/put")
@@ -80,7 +62,7 @@ public class HotRodTester {
             @RequestParam(value = "minkey", defaultValue = "0") int minKey,
             @RequestParam(value = "keyrange", required = false) Integer entryKeyRange) {
 
-        RemoteCache<String, byte[]> cache = rcm.getCache(cacheName);
+        RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
 
         int keyrange = numEntries;
         if (entryKeyRange != null)
@@ -122,7 +104,7 @@ public class HotRodTester {
             @RequestParam(value = "entrycontent", defaultValue = "Test") String entryContent,
             @RequestParam(value = "keyrange", required = false) Integer entryKeyRange) {
 
-        RemoteCache<String, String> cache = rcm.getCache(cacheName);
+        RemoteCache<String, String> cache = remoteCacheManager.getCache(cacheName);
 
         int keyrange = numEntries;
         if (entryKeyRange != null)
@@ -154,7 +136,7 @@ public class HotRodTester {
             @RequestParam(value = "asyncTime", defaultValue = "500") int asyncTime,
             @RequestParam(value = "minkey", defaultValue = "0") int minKey) {
 
-        RemoteCache<String, byte[]> cache = rcm.getCache(cacheName);
+        RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
 
         for (int i = minKey; i < (minKey + numEntries); i++) {
             if (isAsync) {
@@ -180,7 +162,7 @@ public class HotRodTester {
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "key") int key) {
 
-        RemoteCache<String, byte[]> cache = rcm.getCache(cacheName);
+        RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
 
         return Arrays.toString(cache.get(Integer.toString(key))) + System.lineSeparator();
     }
@@ -190,7 +172,7 @@ public class HotRodTester {
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "key") int key) {
 
-        RemoteCache<String, String> cache = rcm.getCache(cacheName);
+        RemoteCache<String, String> cache = remoteCacheManager.getCache(cacheName);
 
         return cache.get(Integer.toString(key)) + System.lineSeparator();
     }
@@ -200,7 +182,7 @@ public class HotRodTester {
     public String getKeys(
             @PathVariable(value = "cache") String cacheName) {
 
-        return rcm.getCache(cacheName).keySet().toString() + System.lineSeparator();
+        return remoteCacheManager.getCache(cacheName).keySet().toString() + System.lineSeparator();
     }
 
     @GetMapping("/cache/{cache}/remove")
@@ -209,7 +191,7 @@ public class HotRodTester {
             @RequestParam(value = "entries") int numEntries,
             @RequestParam(value = "minkey", required = false) Integer entryMinkey) {
 
-        RemoteCache<String, byte[]> cache = rcm.getCache(cacheName);
+        RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
 
         int min = 0;
         if (entryMinkey != null)
