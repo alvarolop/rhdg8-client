@@ -78,6 +78,9 @@ objects:
           - name: logback-config
             mountPath: "${MOUNT_PATH}/logback-spring.xml"
             subPath: logback-spring.xml
+          - name: ssl-certificate
+            mountPath: "${MOUNT_PATH}/tls.crt"
+            subPath: tls.crt
         volumes:
         - name: springboot-config
           configMap:
@@ -85,6 +88,12 @@ objects:
         - name: logback-config
           configMap:
             name: ${APPLICATION_NAME}-logback-config
+        - name: ssl-certificate
+          secret:
+            secretName: "${RHDG_CLUSTER_NAME}-cert-secret"
+            items:
+              - key: tls.crt
+                path: tls.crt
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -141,4 +150,8 @@ parameters:
 - name: GIT_CONTEXT_DIR
   description: "The path where the application code is under the git repository."
   value: "hotrod-tester"
+  required: false
+- name: RHDG_CLUSTER_NAME
+  description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
+  value: "rhdg"
   required: false
