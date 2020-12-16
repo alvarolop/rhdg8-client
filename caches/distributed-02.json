@@ -1,11 +1,11 @@
 {
     "distributed-cache": {
         "state-transfer": {
-            "enabled": true,
-            "await-initial-transfer": true
+            "enabled": false,
+            "await-initial-transfer": false
         },
         "mode": "SYNC",
-        "owners": 2,
+        "owners": 1,
         "partition-handling": {
             "when-split": "ALLOW_READ_WRITES",
             "merge-policy": "REMOVE_ALL"
