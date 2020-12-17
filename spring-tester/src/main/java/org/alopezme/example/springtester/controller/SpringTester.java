@@ -1,4 +1,4 @@
-package org.alopezme.example.hotrodtester.controller;
+package org.alopezme.example.springtester.controller;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -6,7 +6,6 @@ import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping("api")
-public class HotRodTester {
+public class SpringTester {
 
     @Autowired
     SpringRemoteCacheManager springRemoteCacheManager;
@@ -25,14 +24,18 @@ public class HotRodTester {
     @Autowired
     RemoteCacheManager remoteCacheManager;
 
-    Logger logger = LoggerFactory.getLogger(HotRodTester.class);
+    Logger logger = LoggerFactory.getLogger(SpringTester.class);
 
 
     @GetMapping("/reset")
-    public String reset() {
+    public String reset() throws InterruptedException, ExecutionException, TimeoutException {
 
         springRemoteCacheManager.stop();
         springRemoteCacheManager.start();
+
+        ((RemoteCache)springRemoteCacheManager.getCache("default").getNativeCache()).getAsync("0").get(30,TimeUnit.MILLISECONDS);
+
+
 
         return "SpringCache Manager restarted" + System.lineSeparator();
     }

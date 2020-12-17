@@ -1,4 +1,4 @@
-package org.alopezme.example.hotrodtester.controller;
+package org.alopezme.example.springtester.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
