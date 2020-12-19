@@ -139,17 +139,13 @@ For more information check the https://access.redhat.com/documentation/en-us/red
 
 == Accessing your caches
 
-
-//TODO: PLEASE COMPLETE
-Access Data Grid remotely through the Hot Rod Java client API.
-
-Hot Rod Java clients give you high-performance remote access to Data Grid clusters.
-
-Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
-
+As we explained before, there are three main ways of accessing DG caches: DG CLI, the REST API and the HotRod Java client. In this section we will explain how to access caches with all of them.
 
 === REST client
 
+Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
+
+// TODO: COMPLETE
 In some situations, you might want to test your RHDG cluster using REST prior to use your HotRod client. In this case, you may want to use the following `curl` requests.
 
 
@@ -176,15 +172,25 @@ For more information about the REST endpoint, check the https://access.redhat.co
 
 
 
+=== DG CLI
+
+
+// TODO: COMPLETE
+
 
 
 === Infinispan client
 
-Hot Rod Java clients give you high-performance remote access to Data Grid clusters.
+Access Data Grid remotely through the Hot Rod Java client API. Hot Rod Java clients give you high-performance remote access to Data Grid clusters.
+
+// TODO: COMPLETE
 
 
 
 === Spring Boot starter
+
+// TODO: COMPLETE
+
 
 To run this example on your server, just execute the following command:
 [source, bash]
