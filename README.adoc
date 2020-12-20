@@ -33,9 +33,9 @@ toc::[]
 
 Red Hat Data Grid is an in-memory, distributed, NoSQL datastore solution. Your applications can access, process, and analyze data at in-memory speed to deliver a superior user experience. In a typical Data Grid configuration, you will have your DG client and server detached.
 
-Although, there are many different clients that allow you to connect to RHDG, in this repository we will use the DG CLI, the REST API and the HotRod Java client. These are the links to the documentation of these options:
+Although, there are many different clients that allow you to connect to RHDG, in this repository we will use the REST API and the HotRod Java client. These are the links to the documentation of these options:
 
-* https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_command_line_interface/index[Command Line Interface].
+// * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_command_line_interface/index[Command Line Interface].
 * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/hot_rod_java_client_guide/index[Hot Rod Java client].
 * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index[REST API].
 
@@ -64,7 +64,7 @@ java -jar target/spring-tester-1.0.0.jar --spring.config.location=src/main/resou
 
 == Configuring caches
 
-Add cache definitions that configure how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML or JSON format through Data Grid Console, Data Grid CLI, Hot Rod clients, or Data Grid Operator. This repo will explore the two most common ways: Using the REST API and the `Cache` CRD.
+Add cache definitions that configure how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML or JSON format through Data Grid Console, Data Grid CLI, Hot Rod clients, or Data Grid Operator. This repo will explore three ways: Using the REST API, the CLI and the `Cache` CRD.
 
 
 === Cache definition
@@ -78,7 +78,7 @@ include::caches/distributed-01.json[]
 
 === Using REST API
 
-Define the following environment variables to simplify the commands:
+Define the following environment variables to simplify the following commands:
 [source, bash]
 ----
 CLUSTER_NAMESPACE="rhdg8"
@@ -118,6 +118,7 @@ For more information about the REST endpoint, check the https://access.redhat.co
 
 
 
+
 === Using Cache operator's CRD
 
 
@@ -143,39 +144,35 @@ As we explained before, there are three main ways of accessing DG caches: DG CLI
 
 === REST client
 
-Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
-
-// TODO: COMPLETE
-In some situations, you might want to test your RHDG cluster using REST prior to use your HotRod client. In this case, you may want to use the following `curl` requests.
+In some situations, you might want to test your RHDG cluster using REST prior to use your HotRod client. Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
 
 
-==== Configuration
+Define the following environment variables to simplify the following commands:
 [source, bash]
 ----
 CLUSTER_NAMESPACE="rhdg8"
 CLUSTER_NAME="rhdg"
 RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
-CACHE_NAME="distributed-rest-01"
+CACHE_NAME="distributed-01"
 ----
 
 
-==== Cache usage
-Perform gets and puts to check that the cache is working properly:
+Perform CRUD commands to interact with `String` entries in the cache:
 [source,bash]
 ----
-curl -X POST -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
-curl -X GET -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
+# Create
+curl -X POST -k -u developer:developer -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
+# Retrieve
+curl -X GET -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
+# Update 
+curl -X PUT -k -u developer:developer -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hola mundo"
+# Delete
+curl -X DELETE -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
 ----
 
 
 For more information about the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index#rest_v2_create_cache[documentation].
 
-
-
-=== DG CLI
-
-
-// TODO: COMPLETE
 
 
 
