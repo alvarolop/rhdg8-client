@@ -27,8 +27,8 @@ public class QueriesCacheManager {
     private String cacheName;
 
     private RemoteCacheManager remoteCacheManager;
-    private RemoteCache<String, Book> remoteBookCache;
-    private RemoteCache<String, String> remoteStringCache;
+    private RemoteCache<Integer, Book> remoteBookCache;
+    private RemoteCache<Integer, String> remoteStringCache;
     Logger logger = LoggerFactory.getLogger(QueriesCacheManager.class);
 
     public QueriesCacheManager(){
@@ -65,10 +65,13 @@ public class QueriesCacheManager {
         return this.remoteCacheManager;
     }
 
-    public RemoteCache<String, Book> getBookCache() {
+    public RemoteCache<Integer, Book> getBookCache() {
         return this.remoteBookCache;
     }
 
-    public RemoteCache<String, String> getStringCache() { return this.remoteStringCache; }
+    public RemoteCache<Integer, String> getStringCache() { return this.remoteStringCache; }
 
+    public String getCacheName() {
+        return cacheName;
+    }
 }
