@@ -223,7 +223,15 @@ oc set env dc $app_name DATAGRID_HOST=rhdg DATAGRID_PORT=11222 -n $namespace
 
 
 
+== Managing Indexes 
 
+//TODO
+
+[source, bash]
+----
+curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=clear
+curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=mass-index&mode=sync
+----
 
 
 

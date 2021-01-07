@@ -7,22 +7,33 @@ import org.infinispan.protostream.annotations.ProtoField;
 @ProtoDoc("@Indexed")
 public class Book {
 
+//    @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoField(number = 1, defaultValue = "0")
+    public int id;
     @ProtoDoc("@Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO)")
-    @ProtoField(number = 1)
+    @ProtoField(number = 2)
     public String title;
     @ProtoDoc("@Field(index=Index.YES, store = Store.YES, analyze = Analyze.YES)")
-    @ProtoField(number = 2)
+    @ProtoField(number = 3)
     public String author;
     @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
-    @ProtoField(number = 3, defaultValue = "0")
+    @ProtoField(number = 4, defaultValue = "0")
     public int publicationYear;
 
-
     @ProtoFactory
-    public Book(String title, String author, int publicationYear) {
+    public Book(int id, String title, String author, int publicationYear) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -49,9 +60,11 @@ public class Book {
         this.publicationYear = publicationYear;
     }
 
-    public String toJsonString() {
+    @Override
+    public String toString() {
         StringBuilder b = new StringBuilder("{");
         b.append("\"_type\":\"" + "org.alopezme.example.springtester.model.Book" + "\",");
+        b.append("\"id\":\"").append(Integer.toString(id)).append("\",");
         b.append("\"title\":\"").append(title).append("\",");
         b.append("\"author\":\"").append(author).append("\",");
         b.append("\"publicationYear\":\"").append(Integer.toString(publicationYear)).append("\"");
@@ -59,8 +72,7 @@ public class Book {
         return b.toString();
     }
 
-    @Override
-    public String toString() {
-        return "Book " + title + " written by " + author + " and published in " + Integer.toString(publicationYear);
+    public String toTextString() {
+        return "Book " + id + ": " + title + " written by " + author + " and published in " + Integer.toString(publicationYear);
     }
 }
