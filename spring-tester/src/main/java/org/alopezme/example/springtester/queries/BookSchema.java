@@ -11,5 +11,5 @@ import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
         schemaFileName = "book.proto",
         schemaFilePath = "proto/",
         schemaPackageName = "org.alopezme.springtester")
-public interface RemoteQueryInitializer extends SerializationContextInitializer {
+public interface BookSchema extends SerializationContextInitializer {
 }

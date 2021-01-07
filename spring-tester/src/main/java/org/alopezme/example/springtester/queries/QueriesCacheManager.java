@@ -1,6 +1,6 @@
 package org.alopezme.example.springtester.queries;
 
-import org.alopezme.example.springtester.initializer.RemoteQueryInitializerImpl;
+import org.alopezme.example.springtester.initializer.BookSchemaImpl;
 import org.alopezme.example.springtester.model.Book;
 import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
@@ -48,7 +48,7 @@ public class QueriesCacheManager {
                         .username("developer")
                         .password("developer")
                 .marshaller(new ProtoStreamMarshaller())
-                .addContextInitializers(new RemoteQueryInitializerImpl());
+                .addContextInitializers(new BookSchemaImpl());
 
         DataFormat jsonString = DataFormat.builder()
                 .valueType(MediaType.APPLICATION_JSON)
