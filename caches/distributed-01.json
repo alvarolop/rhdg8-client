@@ -14,15 +14,10 @@
             "interval": 60000
         },
         "indexing": {
-            "enabled": true,
-            "indexed-entities": [
-                "org.alopezme.springtester.Book"
-            ]
+            "enabled": false,
+            "indexed-entities": []
         },
         "memory": {
-            "max-size": "1000MB",
-            "max-count": -1,
-            "when-full": "REMOVE",
             "storage": "HEAP"
         },
         "mode": "SYNC",
