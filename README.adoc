@@ -57,7 +57,11 @@ Developing new functionality directly on OCP can be quite cumbersome do to the l
 mvn clean package 
 java -jar target/spring-tester-1.0.0.jar --spring.config.location=src/main/resources/application-local.properties
 ----
-
+or, in one line:
+[source, bash]
+----
+mvn clean spring-boot:run -Dspring-boot.run.arguments=--spring.config.location=src/main/resources/application-local.properties
+----
 
 
 
@@ -172,7 +176,6 @@ curl -X DELETE -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME
 
 
 For more information about the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index#rest_v2_create_cache[documentation].
-
 
 
 
@@ -299,3 +302,46 @@ After that, you would need to mount the `.jks` into the container and configure 
 
 There is another option that I will document, but it is explained https://developers.redhat.com/blog/2017/11/22/dynamically-creating-java-keystores-openshift/[here]. This is an elegant solution for applications that use SSL but do not accept certificates in `.pem` format. The downside is that you are forced to use some kind of persistence.
 
+
+
+
+
+
+
+== Annex: Comparing cache definitions
+
+In the past, the definition of a cache used to create it was different to the definition retrieved from RHDG. Therefore, it was not straightforward to check if cache definitions had changed. The following procedure will help you to check if there are still changes or not using the REST API.
+
+
+First, define the following environment variables to simplify the following commands:
+[source, bash]
+----
+CLUSTER_NAMESPACE="rhdg8"
+CLUSTER_NAME="rhdg"
+RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
+CACHE_NAME="test-01"
+----
+
+Second, create your cache:
+[source, bash]
+----
+curl -X POST -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/test/$CACHE_NAME.json"
+----
+
+Third retrieve the configuration:
+[source, bash]
+----
+curl -X GET -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME?action=config | jq > caches/test/$CACHE_NAME-output.json
+----
+
+Compare them using jq:
+[source, bash]
+----
+jq --argfile a caches/test/$CACHE_NAME.json --argfile b caches/test/$CACHE_NAME-output.json -n '($a | (.. | arrays) |= sort) as $a | ($b | (.. | arrays) |= sort) as $b | $a == $b'
+----
+
+Delete the cache definition:
+[source, bash]
+----
+curl -X DELETE -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME
+----

@@ -140,12 +140,34 @@ curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/get
 
 Follow these steps:
 
+[source, bash]
+----
+export CLIENT_URL=http://localhost:8081
+export CACHE_NAME=bigcache
+curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/put" -d size=41943040 -d entries=1
+
+curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/get-single" -d key=0
+
+# Get 50 times
+for i in {1..50}; do echo "Time $i"; curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/get-single" -d key=0 -d noshow=true; done
+
+# Put 50 times
+for i in {1..50}; do echo "Time $i"; curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/put" -d size=41943040 -d entries=1; done
+
+----
+
+
 
 [source, bash]
 ----
 # Fill the cache with 30k entries
-curl -G "http://${app_name}-${namespace}.${cluster_url}/api/cache/default/put-simple" -d entries=30000 -d minkey=0 -d entrycontent=Test
+curl -G "${CLIENT_URL}/api/cache/default/put-simple" -d entries=30 -d minkey=0 -d entrycontent=Test
 
+curl -G "${CLIENT_URL}/api/cache/distributed-rest-01/put-simple" -d entries=30 -d minkey=0 -d entrycontent=Test
+
+curl -G "${CLIENT_URL}/api/cache/distributed-rest-01/get-single-string" -d key=30
+
+curl -G "${CLIENT_URL}/api/cache/distributed-rest-01/get-single-string" -d key="3"
 
 # Retrieve some of the values
 for ((i=1;i<=100;i++)); do echo "===> ENTRY $((i))"; curl -G "http://${app_name}-${namespace}.${cluster_url}/api/cache/default/get-single-string" -d key=$((i)); done
