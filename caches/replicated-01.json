@@ -1,20 +1,15 @@
 {
     "replicated-cache": {
-        "state-transfer": {
-            "enabled": true,
-            "await-initial-transfer": true
-        },
-        "mode": "SYNC",
-        "owners": 1,
-        "partition-handling": {
-            "when-split": "ALLOW_READ_WRITES",
-            "merge-policy": "REMOVE_ALL"
-        },
-        "transaction": {
-            "mode": "NONE"
-        },
         "encoding": {
             "media-type": "application/x-protostream"
+        },
+        "expiration": {
+            "max-idle": -1,
+            "lifespan": -1,
+            "interval": 60000
+        },
+        "indexing": {
+            "enabled": false
         },
         "memory": {
             "max-size": "100MB",
@@ -22,12 +17,20 @@
             "when-full": "REMOVE",
             "storage": "HEAP"
         },
-        "expiration": {
-            "max-idle": -1,
-            "lifespan": -1,
-            "interval": 60000
+        "mode": "SYNC",
+        "owners": 2,
+        "partition-handling": {
+            "when-split": "ALLOW_READ_WRITES",
+            "merge-policy": "REMOVE_ALL"
         },
-        "statistics": true
+        "state-transfer": {
+            "enabled": true,
+            "await-initial-transfer": true
+        },
+        "statistics": true,
+        "transaction": {
+            "mode": "NONE"
+        }
     }
 }
   
