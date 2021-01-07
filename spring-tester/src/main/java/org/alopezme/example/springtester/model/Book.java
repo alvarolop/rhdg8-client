@@ -1,86 +1,66 @@
 package org.alopezme.example.springtester.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import org.infinispan.protostream.annotations.ProtoDoc;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
 @ProtoDoc("@Indexed")
-public class Team {
+public class Book {
 
-    @ProtoDoc("@Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO)")
-    @ProtoField(number = 1, required = true)
-    public String teamName;
-    @ProtoDoc("@Field(index=Index.YES, store = Store.YES, analyze = Analyze.YES)")
-    @ProtoField(number = 2, required = true)
-    public String description;
     @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
-    @ProtoField(number = 3, collectionImplementation = ArrayList.class)
-    public List<String> players;
+    @ProtoField(number = 1)
+    public String title;
+    @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoField(number = 2)
+    public String author;
+    @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoField(number = 3, defaultValue = "0")
+    public int publicationYear;
 
-    public Team() {
-    }
 
     @ProtoFactory
-    public Team(String teamName, String description, String[] players) {
-        this.teamName = teamName;
-        this.description = description;
-        this.players = Arrays.asList(players);
+    public Book(String title, String author, int publicationYear) {
+        this.title = title;
+        this.author = author;
+        this.publicationYear = publicationYear;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public List<String> getPlayers() {
-        return players;
+    public int getPublicationYear() {
+        return publicationYear;
     }
 
-    public void setPlayers(List<String> players) {
-        this.players = players;
+    public void setPublicationYear(int publicationYear) {
+        this.publicationYear = publicationYear;
     }
 
     public String toJsonString() {
         StringBuilder b = new StringBuilder("{");
-        b.append("\"_type\":\"" + "com.example.clientdatagrid.Team" + "\",");
-        b.append("\"teamName\":\"").append(teamName).append("\",");
-        b.append("\"description\":\"").append(description).append("\",");
-        b.append("\"players\":[");
-        Iterator<String> iterator = players.iterator();
-        while(iterator.hasNext()){
-            b.append("\"").append(iterator.next()).append("\"");
-            if (iterator.hasNext())
-                b.append(",");
-            else
-                b.append("]");
-        }
-        b.append("}"); // Close team
+        b.append("\"_type\":\"" + "org.alopezme.example.springtester.model.Book" + "\",");
+        b.append("\"title\":\"").append(title).append("\",");
+        b.append("\"author\":\"").append(author).append("\",");
+        b.append("\"publicationYear\":\"").append(Integer.toString(publicationYear)).append("\"");
+        b.append("}"); // Close Book
         return b.toString();
-
     }
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder("Team " + teamName + " (" + description + ") with");
-        for (String player : players) {
-            b.append(" ").append(player);
-        }
-        return b.toString();
+        return "Book " + title + " written by " + author + " and published in " + Integer.toString(publicationYear);
     }
 }

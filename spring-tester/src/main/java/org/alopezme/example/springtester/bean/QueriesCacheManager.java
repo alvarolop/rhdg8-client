@@ -1,31 +1,74 @@
 package org.alopezme.example.springtester.bean;
 
+import org.alopezme.example.springtester.initializer.RemoteQueryInitializerImpl;
+import org.alopezme.example.springtester.model.Book;
+import org.infinispan.client.hotrod.DataFormat;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.commons.dataconversion.MediaType;
+import org.infinispan.commons.marshall.ProtoStreamMarshaller;
+import org.infinispan.commons.marshall.UTF8StringMarshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @Component
 public class QueriesCacheManager {
 
-    private int port;
+    @Value("${alvaro.queries.host}")
     private String host;
+    @Value("${alvaro.queries.port}")
+    private int port;
+    @Value("${alvaro.queries.cache-name}")
+    private String cacheName;
+
+    private RemoteCacheManager remoteCacheManager;
+    private RemoteCache<String, Book> remoteBookCache;
+    private RemoteCache<String, String> remoteStringCache;
+    Logger logger = LoggerFactory.getLogger(QueriesCacheManager.class);
 
     public QueriesCacheManager(){
-        this.port = 11222;
-        this.host = "localhost";
     }
 
-    public int getPort() {
-        return port;
+    @PostConstruct
+    public void init() {
+        ConfigurationBuilder configuration = new ConfigurationBuilder()
+                .statistics()
+                    .enable()
+                .addServer()
+                    .host(host)
+                    .port(port)
+                .security()
+                    .authentication()
+                        .saslMechanism("DIGEST-MD5")
+                        .username("developer")
+                        .password("developer")
+                .marshaller(new ProtoStreamMarshaller())
+                .addContextInitializers(new RemoteQueryInitializerImpl());
+
+        DataFormat jsonString = DataFormat.builder()
+                .valueType(MediaType.APPLICATION_JSON)
+                .valueMarshaller(new UTF8StringMarshaller())
+                .build();
+
+        this.remoteCacheManager = new RemoteCacheManager(configuration.build());
+        this.remoteBookCache = remoteCacheManager.getCache(cacheName);
+        this.remoteStringCache = remoteCacheManager.getCache(cacheName).withDataFormat(jsonString);
+
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public RemoteCacheManager getManager() {
+        return this.remoteCacheManager;
     }
 
-    public String getHost() {
-        return host;
+    public RemoteCache<String, Book> getBookCache() {
+        return this.remoteBookCache;
     }
 
-    public void setHost(String host) {
-        this.host = host;
-    }
+    public RemoteCache<String, String> getStringCache() { return this.remoteStringCache; }
+
 }
