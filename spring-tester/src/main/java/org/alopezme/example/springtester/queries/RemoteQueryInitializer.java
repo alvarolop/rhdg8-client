@@ -1,4 +1,4 @@
-package org.alopezme.example.springtester.initializer;
+package org.alopezme.example.springtester.queries;
 
 import org.alopezme.example.springtester.model.Book;
 import org.infinispan.protostream.SerializationContextInitializer;

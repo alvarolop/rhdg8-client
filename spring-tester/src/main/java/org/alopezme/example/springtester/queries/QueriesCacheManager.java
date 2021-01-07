@@ -1,4 +1,4 @@
-package org.alopezme.example.springtester.bean;
+package org.alopezme.example.springtester.queries;
 
 import org.alopezme.example.springtester.initializer.RemoteQueryInitializerImpl;
 import org.alopezme.example.springtester.model.Book;
