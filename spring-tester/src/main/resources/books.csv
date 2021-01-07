@@ -27,7 +27,7 @@
 27,Great Expectations,Charles Dickens,1861
 28,One Thousand and One Nights,India/Iran/Iraq/Egypt,1706
 29,The Grapes of Wrath ,John Steinbeck,1939
-30,"Absalom, Absalom!",William Faulkner,1936
+30,Absalom Absalom!,William Faulkner,1936
 31,Invisible Man ,Ralph Ellison,1952
 32,To Kill a Mockingbird ,Harper Lee,1960
 33,The Trial,Franz Kafka,1925
@@ -119,7 +119,7 @@
 119,Little Women,Louisa May Alcott,1868
 120,Fairy Tales and Stories,Hans Christian Anderson,1843
 121,The Complete Stories of Flannery O'Connor,Flannery O'Connor,1971
-122,"Rabbit, Run ",John Updike,1960
+122,Rabbit Run,John Updike,1960
 123,Lord Jim,Joseph Conrad,1900
 124,A Confederacy of Dunces,John Kennedy Toole,1980
 125,Atonement,Ian McEwan,2002
@@ -127,7 +127,7 @@
 127,White Teeth ,Zadie Smith,2000
 128,The Tale of Genji,Murasaki Shikibu,1000
 129,The Golden Notebook,Doris Lessing,1962
-130,Fear and Loathing in Las Vegas: A Savage Journey to the Heart of the American Dream,Hunter S. Thompson,
+130,Fear and Loathing in Las Vegas: A Savage Journey to the Heart of the American Dream,Hunter S. Thompson,0
 131,Treasure Island,Robert Louis Stevenson,1881
 132,All the King's Men,Robert Penn Warren,1946
 133,The Man Without Qualities,Robert Musil,1930
@@ -155,7 +155,7 @@
 154,Metamorphoses,Ovid,8
 155,Collected Poems of W. B. Yeats,W. B. Yeats,1933
 156,The Brief Wondrous Life of Oscar Wao,Junot Diaz,2007
-157,"The Lion, The Witch and the Wardrobe ",C. S. Lewis,1950
+157,The Lion The Witch and the Wardrobe,C. S. Lewis,1950
 158,Oedipus at Colonus,Sophocles,-401
 159,The Moviegoer,Walker Percy,1961
 160,Medea,Euripides,-431
@@ -180,7 +180,7 @@
 179,2666,Roberto Bolaño,2004
 180,Eugenie Grandet,Honoré de Balzac,1833
 181,A Room With a View,E. M. Forster,1908
-182,"The Sea, The Sea",Iris Murdoch,1978
+182,The Sea The Sea,Iris Murdoch,1978
 183,Bonfire of the Vanities,Tom Wolfe,1987
 184,The House of the Spirits,Isabel Allende,1982
 185,Twenty Thousand Leagues Under the Sea,Jules Verne,1870
@@ -225,7 +225,7 @@
 223,The Book of Disquiet,Fernando Pessoa,1982
 224,The Road,Cormac McCarthy,2006
 225,If on a Winter's Night a Traveller ,Italo Calvino,1979
-226,The Long Goodbye: A Novel,Raymond Chandler,
+226,The Long Goodbye: A Novel,Raymond Chandler,0
 227,De Rerum Natura,Lucretius,-55
 228,An American Tragedy,Theodore Dreiser,1925
 229,The Amazing Adventures of Kavalier and Clay,Michael Chabon,2000
@@ -269,7 +269,7 @@
 267,Season of Migration to the North,Al-Tayyib Salih,1966
 268,The Sense of an Ending,Julian Barnes,2011
 269,The Line of Beauty,Alan Hollinghurst,2004
-270,"I, Claudius ",Robert Graves,1934
+270,I Claudius,Robert Graves,1934
 271,The Suppliants,Aeschylus,-470
 272,The Persians,Aeschylus,-472
 273,Seven Against Thebes,Aeschylus,-467
@@ -279,7 +279,7 @@
 277,The Adventures of Augie March,Saul Bellow,1953
 278,Cloud Atlas,David Mitchell,2004
 279,The Man Who Loved Children ,Christina Stead,1940
-280,"Cry, the Beloved Country",Alan Paton,1948
+280,Cry the Beloved Country,Alan Paton,1948
 281,Pippi Longstocking,Astrid Lindgren,1945
 282,Wolf Hall,Hilary Mantel,2009
 283,Selected Stories of Alice Munro,Alice Munro,1996
@@ -302,7 +302,7 @@
 300,Zorba the Greek,Nikos Kazantzakis,1946
 301,The Confusions of Young Törless,Robert Musil,1906
 302,Main Street,Sinclair Lewis,1920
-303,"So Long, See You Tomorrow",William Maxwell,1981
+303,So Long See You Tomorrow,William Maxwell,1981
 304,War of the Worlds,H. G. Wells,1898
 305,The Good Earth,Pearl S. Buck,1931
 306,The Once and Future King,T. H. White,1958
@@ -325,7 +325,7 @@
 323,The Horse and His Boy: The Chronicles of Narnia,C. S. Lewis,1954
 324,Prince Caspian: The Return to Narnia,C. S. Lewis,1951
 325,The Silver Chair: The Chronicles of Narnia,C. S. Lewis,1953
-326,The Magician's Nephew,"C. S. Lewis, Clive Staples Lewis",1955
+326,The Magician's Nephew,C. S. Lewis,1955
 327,The Last Battle: The Chronicles of Narnia,C. S. Lewis,1956
 328,The Voyage of the Dawn Treader: The Chronicles of Narnia,C. S. Lewis,1952
 329,Lysistrata,Aristophanes,-411
@@ -404,7 +404,7 @@
 402,Pilgrim's Progress ,John Bunyan,1678
 403,Collected Poems of T.S. Eliot,T. S. Eliot,1936
 404,Life of Pi,Yann Martel,2001
-405,Watchmen ,"Alan Moore, Dave Gibbons",1986
+405,Watchmen ,Alan Moore Dave Gibbons,1986
 406,Le Morte d'Arthur,Thomas Malory,1485
 407,Anniversaries,Uwe Johnson,1970
 408,Love Medicine,Louise Erdrich,1984
@@ -416,7 +416,7 @@
 414,The Radetzky March,Joseph Roth,1932
 415,Germinal,Émile Zola,1885
 416,Uncle Tom's Cabin,Harriet Beecher Stowe,1852
-417,"Winesburg, Ohio",Sherwood Anderson,1919
+417,Winesburg Ohio,Sherwood Anderson,1919
 418,The Sorrows of Young Werther,Johann Wolfgang von Goethe,1774
 419,The Last Chronicle of Barset,Anthony Trollope,1867
 420,Corelli's Mandolin,Louis de Bernières,1993
@@ -433,10 +433,10 @@
 431,The Stories of Raymond Carver,Raymond Carver,1988
 432,Cat's Cradle,Kurt Vonnegut,1963
 433,The Bean Trees,Barbara Kingsolver,1988
-434,"Carry On, Jeeves",P. G. Wodehouse,1925
+434,Carry On Jeeves,P. G. Wodehouse,1925
 435,Satanic Verses,Salman Rushdie,1988
 436,The Cherry Orchard,Anton Chekhov,1904
-437,The Phantom Tollbooth,Norton Juster,
+437,The Phantom Tollbooth,Norton Juster,0
 438,The Razor's Edge,W. Somerset Maugham,1944
 439,And Then There Were None,Agatha Christie,1939
 440,The Naked Dead,Norman Mailer,1948
@@ -453,7 +453,7 @@
 451,The Savage Detectives,Roberto Bolaño,1998
 452,The Temple of the Golden Pavilion,Yukio Mishima,1956
 453,The Secret Agent,Joseph Conrad,1907
-454,"Life, a User's Manual",Georges Perec,1978
+454,Life a User's Manual,Georges Perec,1978
 455,The Alexandria Quartet ,Lawrence Durrell,1957
 456,A Fine Balance,Rohinton Mistry,1995
 457,A Good Man Is Hard to Find,Flannery O'Connor,1955
@@ -461,7 +461,7 @@
 459,The Nibelungenlied,Anonymous,1200
 460,Mourning Becomes Electra,Eugene O'Neill,1931
 461,The French Lieutenant's Woman ,John Fowles,1969
-462,"Jimmy Corrigan, the Smartest Kid on Earth",Chris Ware,2001
+462,Jimmy Corrigan the Smartest Kid on Earth,Chris Ware,2001
 463,Scoop,Evelyn Waugh,1938
 464,In Our Time,Ernest Hemingway,1925
 465,The Lusiad,Luís Vaz Camões,1572
@@ -549,7 +549,7 @@
 547,Story of the Eye,Georges Bataille,1928
 548,World's End,T. C. Boyle,1987
 549,The Turn of the Screw,Henry James,1898
-550,The Diary of a Nobody,"George Grossmith, Weedon Grossmith",1892
+550,The Diary of a Nobody,George Grossmith Weedon Grossmith,1892
 551,The Thirty-Nine Steps,John Buchan,1915
 552,The Power and the Glory,Graham Greene,1940
 553,A Separate Peace,John Knowles,1959
@@ -574,7 +574,7 @@
 572,Them,Joyce Carol Oates,1969
 573,The Man with the Golden Arm,Nelson Algren,1949
 574,Murphy,Samuel Beckett,1938
-575,"Tinker, Tailor, Soldier, Spy",John le Carré,1974
+575,Tinker Tailor Soldier Spy,John le Carré,1974
 576,Blood and Guts in High School,Kathy Acker,1984
 577,Los Siete Locos,Roberto Arlt,1929
 578,The Poetry of Luis Cernuda,Luis Cernuda,1963
@@ -589,7 +589,7 @@
 587,An Artist of the Floating World ,Kazuo Ishiguro,1986
 588,The Spy Who Came in From the Cold ,John le Carré,1963
 589,The Murder of Roger Ackroyd,Agatha Christie,1926
-590,"If I Forget Thee, Jerusalem",William Faulkner,1939
+590,If I Forget Thee Jerusalem,William Faulkner,1939
 591,The Recognitions ,William Gaddis,1955
 592,Pricksongs and Descants,Robert Coover,1969
 593,The Book of Laughter and Forgetting ,Milan Kundera,1979
@@ -604,12 +604,12 @@
 602,Tartuffe,Molière,1664
 603,Fortunata and Jacinta,Benito Pérez Galdós,1887
 604,Sanctuary,William Faulkner,1931
-605,"Charlie And The Chocolate Factory,",Roald Dahl,1964
+605,Charlie And The Chocolate Factory,Roald Dahl,1964
 606,Jakob Von Gunten,Robert Walser,1909
 607,Long Day's Journey Into Night,Eugene O'Neill,1956
 608,Ada or Ardor,Vladimir Nabokov,1969
 609,The Golden Bowl,Henry James,1904
-610,Lyrical Ballads,"William Wordsworth, Samuel Taylor Coleridge",1798
+610,Lyrical Ballads,William Wordsworth Samuel Taylor Coleridge,1798
 611,Everything Is Illuminated,Jonathan Safran Foer,2002
 612,The Year of the Death of Ricardo Reis,José Saramago,1984
 613,The Burning Plain and Other Stories,Juan Rulfo,1953
@@ -679,13 +679,13 @@
 677,JR,William Gaddis,1975
 678,There But For The,Ali Smith,2011
 679,Simon and the Oaks,Marianne Fredriksson,1985
-680,The Christmas Oratorio,Göran Tunström,
+680,The Christmas Oratorio,Göran Tunström,0
 681,The Unknown Soldier,Väinö Linna,1954
 682,The Red Room,August Strindberg,1879
-683,House with the Blind Glass Windows,Herbjørg Wassmo,
+683,House with the Blind Glass Windows,Herbjørg Wassmo,0
 684,The Alberta Trilogy,Cora Sandel,1926
 685,Barabbas,Par Lagerkvist,1950
-686,The Lost Steps,Alejo Carpentier,
+686,The Lost Steps,Alejo Carpentier,0
 687,Hemsöborna,August Strindberg,1887
 688,Zuleika Dobson,Max Beerbohm,1911
 689,The Sellout,Paul Beatty,2015
@@ -705,7 +705,7 @@
 703,Growth of the Soil,Knut Hamsun,1920
 704,The Reader,Bernhard Schlink,1995
 705,The Life and Opinions of the Tomcat Murr,E. T. A. Hoffmann,1819
-706,"If Not Now, When?",Primo Levi,1982
+706,If Not Now When?,Primo Levi,1982
 707,Simplicius Simplicissimus,Hans Jakob Christoffel von Grimmelshausen,1668
 708,The Country Girls,Edna O'Brien,1960
 709,Aus dem Leben eines Taugenichts,Joseph von Eichendorff,1826
@@ -732,7 +732,7 @@
 730,1Q84,Haruki Murakami,2009
 731,The Goldfinch,Donna Tartt,2013
 732,Time and Again,Jack Finney,1970
-733,"I, Robot",Isaac Asimov,1950
+733,I Robot,Isaac Asimov,1950
 734,Robert Browning's Poetry,Robert Browning,1889
 735,Diary of a Madman and Other Stories,Xun Lu,1918
 736,The African Child,Camara Laye,1953
@@ -750,7 +750,7 @@
 748,Of Love and Shadows,Isabel Allende,1984
 749,My Name Is Aram,William Saroyan,1940
 750,Fragments,Heraclitus,-475
-751,"Are You There God? It's Me, Margaret",Judy Blume,1970
+751,Are You There God? It's Me Margaret,Judy Blume,1970
 752,The Thinking Reed,Rebecca West,1936
 753,A Brief History of Seven Killings,Marlon James,2014
 754,The Man in the High Castle,Philip K. Dick,1962
@@ -759,7 +759,7 @@
 757,Harry Potter and the Goblet of Fire ,J. K Rowling,2000
 758,Dog Soldiers ,Robert Stone,1974
 759,The Maias: Episodes from Romantic Life,Eça de Queirós,1888
-760,Goodnight Moon,Margaret Wise Brown,
+760,Goodnight Moon,Margaret Wise Brown,0
 761,Krapp's Last Tape,Samuel Beckett,1958
 762,Selected Stories of Lu Hsun,Xun Lu,1936
 763,The Transit of Venus,Shirley Hazzard,1980
@@ -788,7 +788,7 @@
 786,Cranford,Elizabeth Gaskell,1851
 787,The Curious Incident of the Dog in the Night-time,Mark Haddon,2003
 788,The Gathering,Anne Enright,2006
-789,"How Late It Was, How Late",James Kelman,1994
+789,How Late It Was How Late,James Kelman,1994
 790,The Sea,John Banville,2005
 791,The Old Devils,Kingsley Amis,1986
 792,G.,John Berger,1972
@@ -823,7 +823,7 @@
 821,A Severed Head,Iris Murdoch,1961
 822,Living,Henry Green,1929
 823,Blindness,Henry Green,1926
-824,"Bless Me, Ultima",Rudolfo Anaya,1972
+824,Bless Me Ultima,Rudolfo Anaya,1972
 825,The Importance of Being Earnest,Oscar Wilde,1895
 826,The Moor's Last Sigh,Salman Rushdie,1995
 827,Endgame,Samuel Beckett,1957
@@ -852,7 +852,7 @@
 850,Wilhelm Meister's Apprenticeship,Johann Wolfgang von Goethe,1796
 851,A Tale of Love and Darkness,Amos Oz,2002
 852,The Underground Railroad,Colson Whitehead,2016
-853,"Roll of Thunder, Hear My Cry",Mildred D. Taylor,1976
+853,Roll of Thunder Hear My Cry,Mildred D. Taylor,1976
 854,Fifth Business,Robertson Davies,1970
 855,The Making of Americans,Gertrude Stein,1925
 856,Belle du Seigneur,Albert Cohen,1968
@@ -860,7 +860,7 @@
 858,Under Satan's Sun,Georges Bernanos,1926
 859,A Ghost at Noon,Alberto Moravia,1954
 860,Nightwood,Djuna Barnes,1936
-861,The Ragged Trousered Philanthropists,"Robert Tressell, Peter Miles",1914
+861,The Ragged Trousered Philanthropists,Robert Tressell Peter Miles,1914
 862,The Lost Honour of Katharina Blum,Heinrich Böll,1974
 863,The Opposing Shore,Julien Gracq,1951
 864,The Ravishing of Lol Stein,Marguerite Duras,1964
@@ -880,7 +880,7 @@
 878,The Yearling,Marjorie Kinnan Rawlings,1938
 879,The Narrow Road to the Deep North,Matsuo Bashō,1689
 880,The Warden,Anthony Trollope,1855
-881,The Selected Works of Cesare Pavese,Cesare Pavese,
+881,The Selected Works of Cesare Pavese,Cesare Pavese,0
 882,The Crucible,Arthur Miller,1953
 883,Giants in the Earth,Ole Edvart Rolvaag,1927
 884,Riders of the Purple Sage,Zane Grey,1912
@@ -928,7 +928,7 @@
 926,The Horse Whisperer,Nicholas Evans,1995
 927,Phaedrus,Plato,-370
 928,One Hundred and One Poems by Paul Verlaine,Paul Verlaine,1999
-929,"Goodbye, Columbus",Philip Roth,1959
+929,Goodbye Columbus,Philip Roth,1959
 930,A Streetcar Named Desire,Tennessee Williams,1947
 931,The Interior Castle,Teresa of Avila,1577
 932,From Here to Eternity ,James Jones,1951
@@ -937,7 +937,7 @@
 935,The Confessions of Nat Turner,William Styron,1967
 936,Suttree,Cormac McCarthy,1979
 937,Poems of Friedrich Hölderlin,Friedrich Holderlin,1843
-938,"Twelfth Night: Or, What You Will",William Shakespeare,1602
+938,Twelfth Night: Or What You Will,William Shakespeare,1602
 939,The Emigrants,Winfried Georg Sebald,1992
 940,Les Filles du feu,Gerard de Nerval,1854
 941,Going After Cacciato,Tim O'Brien,1979
@@ -957,23 +957,23 @@
 955,The Complete Writings of Alfred de Musset,Alfred de Musset,1857
 956,A High Wind in Jamaica,Richard Hughes,1929
 957,The Van,Roddy Doyle,1991
-958,Song of Songs,Christian Church,
+958,Song of Songs,Christian Church,0
 959,Sóngoro cosongo,Nicolás Guillén,1931
-960,Curial e Güelfa,Anonymous,
+960,Curial e Güelfa,Anonymous,0
 961,The Black Prince,Iris Murdoch,1973
 962,Pigs in Heaven,Barbara Kingsolver,1993
 963,The Collected Poems of William Carlos Williams: 1909-1939,William Carlos Williams,1939
 964,Days Without End,Sebastian Barry,2016
-965,"The Figaro Trilogy: The Barber of Seville, The Marriage of Figaro, The Guilty Mother",Pierre-Augustin Caron de Beaumarchais,1792
+965,The Figaro Trilogy: The Barber of Sevillem The Marriage of Figaro The Guilty Mother,Pierre-Augustin Caron de Beaumarchais,1792
 966,The Girl with the Dragon Tattoo,Stieg Larsson,2005
-967,"Germany, a Winter Tale",Heinrich Heine,1844
+967,Germany a Winter Tale,Heinrich Heine,1844
 968,She Stoops to Conquer,Oliver Goldsmith,1773
 969,Eye Of The Needle,Ken Follett,1978
 970,Stories of Washington Irving,Washington Irving,1859
 971,Les Tragiques,Agrippa d'Aubigné,1616
 972,Les Destinées,Alfred de Vigny,1864
 973,Betrayed by Rita Hayworth,Manuel Puig,1968
-974,The Way of a Pilgrim,Anonymous,
+974,The Way of a Pilgrim,Anonymous,0
 975,Coplas por la muerte de su padre,Jorge Manrique,1476
 976,Calila e Dimna,Anonymous,1251
 977,La siesta de M. Andesmas,Marguerite Duras,1964
@@ -992,7 +992,7 @@
 990,Homegoing,Yaa Gyasi,2016
 991,The Wanderer,Henri Alain-Fournier,1913
 992,Trainspotting,Irvine Welsh,1993
-993,"Hateship, Friendship, Courtship, Loveship, Marriage",Alice Munro,2006
+993,Hateship Friendship Courtship Loveship Marriage,Alice Munro,2006
 994,Marivaux: Three Plays,Pierre Carlet de Chamblain de Marivaux,1763
 995,The Beauty Of The Husband,Anne Carson,2001
 996,La légende des siècles,Victor Hugo,1859
@@ -1000,7 +1000,7 @@
 998,Sandman,Neil Gaiman,1991
 999,Elizabeth Costello,J M Coetzee,2003
 1000,Guzmán de Alfarache,Mateo Alemán,1599
-1001,Poems,Miguel de Unamuno,
+1001,Poems,Miguel de Unamuno,0
 1002,Gospels,Various Authors,66
 1003,The Children of Men,P. D. James,1992
 1004,Kane and Abel,Jeffrey Archer,1979
@@ -1008,7 +1008,7 @@
 1006,Poems of Pablo Neruda,Pablo Neruda,1975
 1007,The Last Books of Hector Viel Temperley,Hector Viel Temperley,1982
 1008,Manhattan Transfer,John Dos Passos,1925
-1009,Little House on the Prairie,Laura Ingalls Wilder,
+1009,Little House on the Prairie,Laura Ingalls Wilder,0
 1010,Calligrammes,Guillaume Apollinaire,1918
 1011,Unless,Carol Shields,2002
 1012,American Tabloid,James Ellroy,1995
@@ -1041,19 +1041,19 @@
 1039,Aunt Julia and the Scriptwriter,Mario Vargas Llosa,1977
 1040,Last Evenings with Teresa,Juan Marse,1965
 1041,Bohemian Lights,Ramón del Valle-Inclán,1924
-1042,"Spain, Take This Chalice from Me",César Vallejo,1937
+1042,Spain Take This Chalice from Me,César Vallejo,1937
 1043,Sonnets,Julián Olivares,1625
 1044,Poems of Góngora,Luis de Góngora,1600
-1045,"Three plays: The hostage, Crusts, The humiliation of the father",Paul Claudel,1955
+1045,Three plays: The hostage Crusts The humiliation of the father,Paul Claudel,1955
 1046,Wry-Blue Loves: Les Amours Jaunes,Tristan Corbière,1873
 1047,Les Contemplations,Victor Hugo,1856
-1048,La Nuit obscure,Jean de la Croix,
-1049,Poetry,Quintus Lutatius Catulus,
+1048,La Nuit obscure,Jean de la Croix,0
+1049,Poetry,Quintus Lutatius Catulus,0
 1050,The Diary of a Country Priest,Georges Bernanos,1936
 1051,The Jungle Book,Rudyard Kipling,1894
 1052,Ellen Foster,Kaye Gibbons,1987
 1053,Villette,Charlotte Bronte,1853
-1054,"Sing, Unburied, Sing",Jesmyn Ward,2017
+1054,Sing Unburied Sing,Jesmyn Ward,2017
 1055,Brick Lane,Monica Ali,2003
 1056,War and Remembrance,Herman Wouk,1978
 1057,The Violent Bear It Away,Flannery O'Connor,1960
@@ -1078,7 +1078,7 @@
 1076,Extinction,Thomas Bernhard,1986
 1077,The Mysteries of Udolpho,Ann Radcliffe,1794
 1078,Southern Seas,Manuel Vázquez Montalbán,1979
-1079,"Couples, Passersby",Botho Strauß,1981
+1079,Couples Passersby,Botho Strauß,1981
 1080,Fall On Your Knees,Ann-Marie MacDonald,1996
 1081,Remembering Babylon,David Malouf,1993
 1082,Heartbreak Tango,Manuel Puig,1969
@@ -1091,7 +1091,7 @@
 1089,The Bridge on the Drina, Ivo Andrić,1945
 1090,Against the Day,Thomas Pynchon,2006
 1091,Ancestral Voices,Etienne van Heerden,1986
-1092,Tirant Lo Blanc,"",1490
+1092,Tirant Lo Blanc,Joanot Martorell,1490
 1093,The Last World,Christoph Ransmayr,1988
 1094,Vathek, William Beckford,1786
 1095,The Professor's House,Willa Cather,1925
@@ -1099,7 +1099,7 @@
 1097,Vertigo,W. G. Sebald,1990
 1098,Santa Evita,Tomás Eloy Martínez,1995
 1099,Lives of Girls and Women,Alice Munro,1971
-1100,"City, Sister, Silver",Jáchym Topol,1994
+1100,City Sister Silver,Jáchym Topol,1994
 1101,Holder of the World: A Novel,Bharati Mukherjee,1993
 1102,Le Diable au corps,Raymond Radiguet,1923
 1103,Fool's Gold,Máro Doýka,1979
@@ -1107,7 +1107,7 @@
 1105,The Crime of Father Amaro,Eça de Queirós,1875
 1106,On the Edge of Reason,Miroslav Krleža,1938
 1107,Faceless Killers, Henning Mankell,1991
-1108,The Life of Lazarillo de Tormes,"",1554
+1108,The Life of Lazarillo de Tormes,anonymous,1554
 1109,Willard and His Bowling Trophies: A Perverse Mystery,Richard Brautigan,1975
 1110,The Quest,Frederik van Eeden,1885
 1111,The Piano Teacher,Elfriede Jelinek,1983
@@ -1120,13 +1120,13 @@
 1118,Justine,Marquis de Sade,1791
 1119,The Successor,Ismail Kadare,2003
 1120,Camilla,Fanny Burney,1796
-1121,Margot and the Angels,Kristien Hemmerechts,
+1121,Margot and the Angels,Kristien Hemmerechts,0
 1122,The Marriage Plot,Jeffrey Eugenides,2011
 1123,The Shadow Lines,Amitav Ghosh,1988
 1124,Fanny Hill, John Cleland,1748
 1125,The Charwoman's Daughter,James Stephens,1912
 1126,The Castle of Crossed Destinies,Italo Calvino,1973
-1127,La Celestina,"",1499
+1127,La Celestina,Fernando de Rojas,1499
 1128,Evelina,Fanny Burney,1778
 1129,Luka,Antun Šoljan,1974
 1130,The Virgin Suicides,Jeffrey Eugenides,1993
@@ -1136,14 +1136,14 @@
 1134,Half of Man is Woman,Zhang Xianliang,1985
 1135,Veronika Decides to Die,Paulo Coelho,1998
 1136,Erewhon,Samuel Butler,1872
-1137,Some Experiences of an Irish R. M.,"Edith Somerville, Violet Florence Martin",1899
+1137,Some Experiences of an Irish R. M.,Edith Somerville Violet Florence Martin,1899
 1138,Journey to the Alcarria, Camilo José Cela,1948
 1139,The Back Room,Carmen Martín Gaite,1978
 1140,The Expedition of Humphry Clinker,Tobias Smollett,1771
 1141,Torrents of Spring,Ivan Turgenev,1872
 1142,All Souls' Day,Cees Nooteboom,1998
-1143,"Julie, or the New Heloise",Jean-Jacques Rousseau,1761
-1144,Fantômas," Marcel Allain, Pierre Souvestre",1911
+1143,Julie or the New Heloise,Jean-Jacques Rousseau,1761
+1144,Fantômas,Marcel Allain Pierre Souvestre,1911
 1145,Heavy Wings,Zhang Jie,1981
 1146,The Heretic,Miguel Delibes,1998
 1147,The Pit and the Pendulum,Edgar Allan Poe,1842
@@ -1154,7 +1154,7 @@
 1152,Halftime,Martin Walser,1960
 1153,Compassion,Benito Pérez Galdós,1897
 1154,Stone Junction: An Alchemical Pot-Boiler, Jim Dodge,1990
-1155,"Spring Flowers, Spring Frost",Ismail Kadare,2000
+1155,Spring Flowers Spring Frost,Ismail Kadare,2000
 1156,A Dry White Season, Andre Brink,1979
 1157,The Virgin in the Garden,A. S. Byatt,1978
 1158,Manon des sources,Marcel Pagnol,1963
@@ -1169,7 +1169,7 @@
 1167,Pepita Jimenez,Juan Valera y Alcalá-Galiano,1874
 1168,Far from the Madding Crowd,Thomas Hardy,1874
 1169,Carry Me Down,M.J. Hyland,2006
-1170,Pamela,Samuel Richardson,
+1170,Pamela,Samuel Richardson,0
 1171,Ashes and Diamonds,Jerzy Andrzejewski,1948
 1172,To the North,Elizabeth Bowen,1932
 1173,The Parable of the Blind,Gert Hofmann,1985
@@ -1186,14 +1186,14 @@
 1184,A Sentimental Journey Through France and Italy,Laurence Sterne,1768
 1185,Homo Faber,Max Frisch,1957
 1186,A Ballad for Georg Henig, Viktor Paskov,1987
-1187,"Love in Excess; or, The Fatal Enquiry",Eliza Haywood,1720
+1187,Love in Excess; or The Fatal Enquiry,Eliza Haywood,1720
 1188,The Return of the Soldier,Rebecca West,1918
 1189,The Monk,Matthew Lewis,1796
 1190,The Melancholy of Resistance,László Krasznahorkai,1989
 1191,Kiss of the Spider Woman,Manuel Puig,1976
-1192,"One, No One and One Hundred Thousand",Luigi Pirandello,1926
+1192,One No One and One Hundred Thousand,Luigi Pirandello,1926
 1193,The Singapore Grip,J. G. Farrell,1978
-1194,"Garden, Ashes",Danilo Kiš,1965
+1194,Garden Ashes,Danilo Kiš,1965
 1195,Untouchable,Mulk Raj Anand,1935
 1196,None but the Brave,Arthur Schnitzler,1901
 1197,The Fan Man,William Kotzwinkle,1974
@@ -1255,7 +1255,7 @@
 1253,So Long a Letter, Mariama Bâ,1979
 1254,Jacob the Liar,Jurek Becker,1969
 1255,The 13 Clocks,James Thurber,1950
-1256,"The Water-Babies, A Fairy Tale for a Land Baby",Charles Kingsley,1863
+1256,The Water-Babies A Fairy Tale for a Land Baby,Charles Kingsley,1863
 1257,Rickshaw Boy,Lao She,1936
 1258,The Roots of Heaven,Romain Gary,1956
 1259,The Hothouse,Wolfgang Koeppen,1953
@@ -1263,15 +1263,15 @@
 1261,Girl With Green Eyes,Edna O'Brien,1962
 1262,The Devil and Miss Prym,Paulo Coelho,2000
 1263,The Blind Owl,Ṣādiq Hidāyat,1937
-1264,"The History of Rasselas, Prince of Abissinia","Samuel Johnson, Abraham Raimbach, Robert Smirke",1759
+1264,The History of Rasselas Prince of Abissinia,Samuel Johnson Abraham Raimbach Robert Smirke,1759
 1265,The Nose,Nikolai Gogol,1836
-1266,"Waiting for the Dark, Waiting for the Light",Ivan Klíma,1993
+1266,Waiting for the Dark Waiting for the Light,Ivan Klíma,1993
 1267,Forest of the Hanged,Liviu Rebreanu,1922
 1268,The Passion According to G.H.,Clarice Lispector,1964
 1269,Our Lady of the Assassins,Fernando Vallejo,1994
 1270,Max Havelaar,Multatuli,1860
 1271,The Diviners, Margaret Laurence,1974
-1272,"Nip the Buds, Shoot the Kids",Kenzaburō Ōe,1958
+1272,Nip the Buds Shoot the Kids,Kenzaburō Ōe,1958
 1273,The Midwich Cuckoos,John Wyndham,1957
 1274,The deadbeats: a novel,Ward Ruyslinck,1957
 1275,Cheese, Willem Elsschot,1933
@@ -1322,7 +1322,7 @@
 1320,Almost Transparent Blue,Ryū Murakami,1976
 1321,La Bête humaine,Émile Zola,1890
 1322,Camera Obscura,Nicolaas Beets,1839
-1323,The Tale of the Bamboo Cutter,"",1592
+1323,The Tale of the Bamboo Cutter,unknown,1592
 1324,Exercises in Style,Raymond Queneau,1963
 1325,Castle Rackrent,Maria Edgeworth,1800
 1326,Gimmick!,Joost Zwagerman,1989
@@ -1354,7 +1354,7 @@
 1352,I'm Not Scared,Niccolò Ammaniti,2001
 1353,Astradeni,Eugenia Fakinou,1991
 1354,Marius the Epicurean, Walter Pater,1885
-1355,"Kieron Smith, Boy",James Kelman,2008
+1355,Kieron Smith Boy,James Kelman,2008
 1356,The Adventures and Misadventures of Maqroll,Alvaro Mutis,1993
 1357,Group Portrait with Lady,Heinrich Böll,1971
 1358,The Grass Is Singing,Doris Lessing,1950
@@ -1385,7 +1385,7 @@
 1383,The Club Dumas,Arturo Pérez-Reverte,1992
 1384,The Travels of Persiles and Sigismunda,Miguel de Cervantes,1617
 1385,Possessing the Secret of Joy,Alice Walker,1992
-1386,"Thomas of Reading, Or, The Sixe Worthie Yeomen of the West",Thomas Deloney,1612
+1386,Thomas of Reading Or The Sixe Worthie Yeomen of the West,Thomas Deloney,1612
 1387,Rob Roy,Walter Scott,1817
 1388,American Rust,Philipp Meyer,2009
 1389,The Book about Blanche and Marie,Per Olov Enquist,2004
@@ -1409,9 +1409,9 @@
 1407,Keep the Aspidistra Flying,George Orwell,1936
 1408,Hawksmoor,Peter Ackroyd,1985
 1409,The Witness, Juan José Saer,1983
-1410,"Thank You, Jeeves",P. G. Wodehouse,1934
+1410,Thank You Jeeves,P. G. Wodehouse,1934
 1411,Disobedience,Alberto Moravia,1948
-1412,"They Shoot Horses, Don't They?",Horace McCoy,1935
+1412,They Shoot Horses Don't They?,Horace McCoy,1935
 1413,I Thought of Daisy,Edmund Wilson,1929
 1414,Requiem for a Dream,Hubert Selby,1978
 1415,Patterns of Childhood, Christa Wolf,1976
@@ -1421,18 +1421,18 @@
 1419,All Souls,Javier Marías,1987
 1420,Moscow-Petushki,Venedikt Yerofeev,1969
 1421,Transit,Anna Seghers,1942
-1422,The History of Love,Nicole Krauss,
+1422,The History of Love,Nicole Krauss,0
 1423,Sexing the Cherry,Jeanette Winterson,1989
-1424,Chaka, Thomas Mofolo,
+1424,Chaka, Thomas Mofolo,0
 1425,The Magician of Lublin,Isaac Bashevis Singer,1960
 1426,The Bells of Basel,Louis Aragon,1934
 1427,The Thin Man,Dashiell Hammett,1932
-1428,Amadis of Gaul,"",1304
+1428,Amadis of Gaul,Garci Rodriguez de Montalvo,1304
 1429,Broad and Alien is the World,Ciro Alegría,1941
 1430,The Fall of the House of Usher,Edgar Allan Poe,1839
 1431,Bel Ami,Guy de Maupassant,1885
 1432,The Return of Philip Latinowicz,Miroslav Krleža,1932
-1433,"This Way for the Gas, Ladies and Gentlemen",Tadeusz Borowski,1948
+1433,This Way for the Gas Ladies and Gentlemen,Tadeusz Borowski,1948
 1434,Solitude,Caterina Albert,1906
 1435,News from Nowhere,William Morris,1890
 1436,The Unfortunate Traveller,Thomas Nashe,1594
@@ -1473,7 +1473,7 @@
 1471,The Pigeon,Patrick Suskind,1987
 1472,Land,Kyŏng-ni Pak,1994
 1473,The House of Ulloa,Emilia Pardo Bazán,1886
-1474,"W, or the Memory of Childhood",Georges Perec,1975
+1474,W or the Memory of Childhood,Georges Perec,1975
 1475,Troubling Love,Elena Ferrante,1995
 1476,To Each His Own,Leonardo Sciascia,1966
 1477,Closely Watched Trains,Bohumil Hrabal,1965
@@ -1511,7 +1511,7 @@
 1509,Cutter and Bone,Newton Thornburg,1976
 1510,Soldiers of Salamis,Javier Cercas,2001
 1511,Death and the Dervish,Meša Selimović,1966
-1512,"Here's to You, Jesusa!",Elena Poniatowska,1969
+1512,Here's to You Jesusa!,Elena Poniatowska,1969
 1513,Who Do You Think You Are?,Alice Munro,1978
 1514,Empire of the Sun,J. G. Ballard,1984
 1515,Broken April,Ismail Kadare,1978
@@ -1521,7 +1521,7 @@
 1519,Waterland,Graham Swift,1983
 1520,Pereira Maintains,Antonio Tabucchi,1994
 1521,Arcadia,Jim Crace,1992
-1522,"Gabriela, Clove and Cinnamon",Jorge Amado,1958
+1522,Gabriela Clove and Cinnamon,Jorge Amado,1958
 1523,Four Quartets,T. S. Eliot,1943
 1524,Family Life,Akhil Sharma,2014
 1525,What Belongs to You,Garth Greenwell,2016
@@ -1547,7 +1547,7 @@
 1545,Bring Up the Bodies: A Novel,Hilary Mantel,2012
 1546,Dombey and Son,Charles Dickens,1848
 1547,The Magic Barrel,Bernard Malamud,1958
-1548,"Captain Hornblower R.N.: Hornblower and the 'Atropos', The Happy Return, A Ship of the Line",C S Forester,1937
+1548,Captain Hornblower R.N.: Hornblower and the 'Atropos' The Happy Return A Ship of the Line,C S Forester,1937
 1549,The Little Stranger,Sarah Waters,2009
 1550,The Lovely Bones,Alice Sebold,2002
 1551,Collected Poems of Ted Hughes,Ted Hughes,2003
@@ -1572,11 +1572,11 @@
 1570,The Eustace Diamonds,Anthony Trollope,1871
 1571,The Innocence of Father Brown,G. K. Chesterton,1911
 1572,The Loneliness of the Long-distance Runner,Alan Sillitoe,1959
-1573,"Sarah, Plain and Tall",Patricia MacLachlan,1985
+1573,Sarah Plain and Tall,Patricia MacLachlan,1985
 1574,The Bone is Pointed: An Inspector Bonaparte Mystery #6 ,Arthur William Upfield,1938
 1575,Burmese Days,George Orwell,1934
 1576,Best of Simple,Langston Hughes,1961
-1577,Herland,Charlotte Perkins Gilman,
+1577,Herland,Charlotte Perkins Gilman,0
 1578,Renascence and Other Poems,Edna St. Vincent Millay,1917
 1579,The Collected Plays of W.B. Yeats,William Butler Yeats,1939
 1580,Death of a Lake,Arthur William Upfield,1954
@@ -1599,8 +1599,8 @@
 1597,Monsignor Quixote,Graham Greene,1982
 1598,Carrie,Stephen King,1974
 1599,The Richard Trilogy,Paul Horgan,1990
-1600,Dark symphony: Negro literature in America,"James A. Emanuel (Comp), Theodore L. Gross (Joint Comp)",
-1601,The Negro Caravan: Writings by American Negroes,"Sterling Allen Brown, Arthur Paul Davis, Ulysses Lee",1941
+1600,Dark symphony: Negro literature in America,James A. Emanuel (Comp) Theodore L. Gross (Joint Comp),0
+1601,The Negro Caravan: Writings by American Negroes,Sterling Allen Brown Arthur Paul Davis Ulysses Lee,1941
 1602,Guerrillas,V. S. Naipaul,1975
 1603,The Would-Be Invalid,Molière,1673
 1604,Dreamtigers,Jorge Luis Borges,1960
@@ -1614,12 +1614,12 @@
 1612,The School for Wives,Molière,1662
 1613,Alcestis,Euripides,-438
 1614,Eight Men: Short Stories,Richard Wright,1961
-1615,"Horseman, Pass By: A Novel",Larry McMurtry,1961
+1615,Horseman Pass By: A Novel,Larry McMurtry,1961
 1616,The Complete Plays of T. S. Eliot,T. S. Eliot,1965
 1617,Strange Fruit,Lillian Smith,1944
 1618,The Short Happy Life of Francis Macomber,Ernest Hemingway,1936
 1619,The Complete Works of Nathanael West,Nathanael West,1940
-1620,Vendor Of Sweeets,"R. K. Narayan, R. K",1967
+1620,Vendor Of Sweeets,R. K. Narayan R. K,1967
 1621,The Portable Faulkner,William Faulkner,1946
 1622,Of Time and the River: A Legend of Man's Hunger in His Youth,Thomas Wolfe,1935
 1623,War Poems of Siegfried Sassoon,Siegfried Sassoon,1919
@@ -1643,16 +1643,16 @@
 1641,A Wild Sheep Chase,Haruki Murakami,1982
 1642,The Memoirs of a Survivor,Doris May Lessing,1974
 1643,Northern Lights,Philip Pullman,1995
-1644,The Werewolf,Aksel Sandemose,
+1644,The Werewolf,Aksel Sandemose,0
 1645,The Serious Game,Hjalmar Soderberg,1912
 1646,The Baron in the Trees,Italo Calvino,1957
-1647,Collected Poems,Nils Ferlin,
-1648,The bells of Bicêtre,Georges Simenon,
+1647,Collected Poems,Nils Ferlin,0
+1648,The bells of Bicêtre,Georges Simenon,0
 1649,The Czar's Madman,Jaan Kross,1978
 1650,The Long Ships,Frans G. Bengtsson,1941
 1651,The Wind on the Moon,Eric Linklater,1944
-1652,"Mio, My Son",Astrid Lindgren,1954
-1653,Dog,Kerstin Ekman,
+1652,Mio My Son,Astrid Lindgren,1954
+1653,Dog,Kerstin Ekman,0
 1654,The Emperor of Portugallia,Selma Lagerlöf,1914
 1655,The Early Stories,John Updike,2004
 1656,The Road to Klockrike,Harry Martinson,1948
@@ -1660,8 +1660,8 @@
 1658,Samuels bok,Sven Delblanc,1981
 1659,Flowering Nettle,Harry Martinson,1935
 1660,After the Flood,P. C. Jersild,1982
-1661,Bathsheba,Torgny Lindgren,
-1662,The Man Without a Way,Erik Lindegren,
+1661,Bathsheba,Torgny Lindgren,0
+1662,The Man Without a Way,Erik Lindegren,0
 1663,The Book-Dealer Who Ceased Bathing,Fritiof Nilsson Piraten,1937
 1664,They Burn the Thistles,Yaşar Kemal,1969
 1665,The Emigrants,Vilhelm Moberg,1949
@@ -1670,9 +1670,9 @@
 1668,Doctor Glas,Hjalmar Soderberg,1905
 1669,Stockholm series,Per Anders Fogelström,1960
 1670,The Days of His Grace,Eyvind Johnson,1960
-1671,Rhythms,Harry Martinson,
+1671,Rhythms,Harry Martinson,0
 1672,Hotel du Lac,Anita Brookner,1984
-1673,Barefoot,Zaharia Stancu,
+1673,Barefoot,Zaharia Stancu,0
 1674,The Dwarf,Par Lagerkvist,1945
 1675,The Women's Room,Marilyn French,1977
 1676,Bridge to Terabithia,Katherine Paterson,1977
@@ -1712,15 +1712,15 @@
 1710,Girl in Hyacinth Blue,Susan Vreeland,1999
 1711,Wise Children,Angela Carter,1991
 1712,Life and Fate,Vasily Grossman,1959
-1713,Antiworlds,Andrey Voznesensky,
-1714,Where the Sidewalk Ends,Shel Silverstein,
-1715,Ice-Candy-Man,Bapsi Sidhwa,
+1713,Antiworlds,Andrey Voznesensky,0
+1714,Where the Sidewalk Ends,Shel Silverstein,0
+1715,Ice-Candy-Man,Bapsi Sidhwa,0
 1716,The Loyal Subject,Heinrich Mann,1918
 1717,August 1914,Aleksandr Isaevich Solzhenit︠s︡yn,1971
-1718,The Garlic Ballads: A Novel,Yan Mo,
+1718,The Garlic Ballads: A Novel,Yan Mo,0
 1719,Goodnight Mister Tom,Michelle Magorian,1981
-1720,The Witches,Roald Dahl,
-1721,"Breath, Eyes, Memory",Edwidge Danticat,
+1720,The Witches,Roald Dahl,0
+1721,Breath Eyes Memory,Edwidge Danticat,0
 1722,American Gods,Neil Gaiman,2001
 1723,Stories,Heinrich von Kleist,1777
 1724,Riders,Jilly Cooper,1985
@@ -1729,7 +1729,7 @@
 1727,The Story of Tracy Beaker,Jacqueline Wilson,1991
 1728,The Boy in the Striped Pyjamas,John Boyne,2006
 1729,Count Julian,Juan Goytisolo,1970
-1730,My City: A Hong Kong Story,Xi Xi,
+1730,My City: A Hong Kong Story,Xi Xi,0
 1731,Habibi,Craig Thompson,2011
 1732,Cloudstreet,Tim Winton,1991
 1733,The Tiger Who Came to Tea ,Judith Kerr,1968
@@ -1740,13 +1740,13 @@
 1738,Siebenkäs,Jean Paul,1796
 1739,The Years with Laura Diaz,Carlos Fuentes,1999
 1740,Identity: A Novel,Milan Kundera,1998
-1741,Track,Ernst Bloch,
+1741,Track,Ernst Bloch,0
 1742,The Seventh Cross,Anna Seghers,1942
 1743,Forever...,Judy Blume,1975
-1744,Diary of a Wimpy Kid,Jeff Kinney,
+1744,Diary of a Wimpy Kid,Jeff Kinney,0
 1745,First Love,Ivan Turgenev,1860
 1746,The Stone Raft,José Saramago,1986
-1747,The Very Hungry Caterpillar,Eric Carle,
+1747,The Very Hungry Caterpillar,Eric Carle,0
 1748,Édes Anna,Dezső Kosztolányi,1991
 1749,American War,Omar El Akkad,2017
 1750,Knots and Crosses: An Inspector Rebus Novel,Ian Rankin,1987
@@ -1758,17 +1758,17 @@
 1756,The Skeleton,Amrita Pritam,1950
 1757,The Dancing Girl of Izu and Other Stories,Yasunari Kawabata,1929
 1758,Le Roman de la Rose,Guillaume (de Lorris),1230
-1759,Sudelbücher,Georg Christoph Lichtenberg,
+1759,Sudelbücher,Georg Christoph Lichtenberg,0
 1760,The Half Brother: A Novel,Lars Saabye Christensen,2011
 1761,Soul Mountain,Xingjian Gao,1990
 1762,Journey by Moonlight,Antal Szerb,1937
 1763,Stormbreaker,Anthony Horowitz,2000
 1764,Swami and Friends,R. K. Narayan,1935
-1765,A Series of Unfortunate Events #1: The Bad Beginning,Lemony Snicket,
+1765,A Series of Unfortunate Events #1: The Bad Beginning,Lemony Snicket,0
 1766,Stories of Adalbert Stifter,Adalbert Stifter,1868
-1767,"The Tootinameh; Or, Tales of a Parrot","India, Iran",1560
+1767,The Tootinameh; Or Tales of a Parrot,India Iran,1560
 1768,The Three-Arched Bridge,Ismail Kadare,1978
-1769,The Golden Compass,Philip Pullman,
+1769,The Golden Compass,Philip Pullman,0
 1770,Lenz,Georg Buchner,1839
 1771,We're Going on a Bear Hunt,Michael Rosen,1989
 1772,The Forty Rules of Love,Elif Shafak,2009
@@ -1777,25 +1777,25 @@
 1775,A Tomb for Boris Davidovich,Danilo Kiš,1976
 1776,The Counterlife,Philip Roth,1986
 1777,The Worst Witch,Jill Murphy,1974
-1778,"Memed, My Hawk",Yashar Kemal,1955
-1779,Soul and Other Stories,Andrey Platonov,
+1778,Memed My Hawk,Yashar Kemal,1955
+1779,Soul and Other Stories,Andrey Platonov,0
 1780,The Collected Stories of Heinrich Boll,Heinrich Böll,1948
-1781,Cutting for Stone,Abraham Verghese,
+1781,Cutting for Stone,Abraham Verghese,0
 1782,The Burn: A Novel in Three Books : (late Sixties--early Seventies),Vassily Aksyonov,1975
 1783,Operation Shylock,Philip Roth,1993
 1784,The Old Curiosity Shop,Charles Dickens,1941
 1785,La Saga/ Fuga de J. B./ The Saga/ Escape of J.B.,Gonzalo Torrente Ballester,1972
 1786,Stories from the Lord Keuner,Dieter Wöhrle,1926
 1787,Much Ado about Nothing,William Shakespeare,1599
-1788,Happy Moscow,Andrey Platonov,
-1789,"Percy Jackson and the Olympians, Book One: Lightning Thief, The",Rick Riordan,
-1790,"And where Were You, Adam?",Heinrich Böll,1951
-1791,The Return and Other Stories,Andrey Platonov,
+1788,Happy Moscow,Andrey Platonov,0
+1789,Percy Jackson and the Olympians Book One: Lightning Thief,Rick Riordan,0
+1790,And where Were You Adam?,Heinrich Böll,1951
+1791,The Return and Other Stories,Andrey Platonov,0
 1792,Mr Standfast,John Buchan,1919
 1793,The Lonely Passion of Judith Hearne,Brian Moore,1955
 1794,Astonishing the Gods,Ben Okri,1995
-1795,Valley of the Dolls,Jacqueline Susann,
-1796,"Psmith, Journalist",P. G. Wodehouse,1909
+1795,Valley of the Dolls,Jacqueline Susann,0
+1796,Psmith Journalist,P. G. Wodehouse,1909
 1797,The Sorrow Of War,Bao Ninh,1990
 1798,Golden Child,Claire Adam,2018
 1799,The Far Pavilions,M. M. Kaye,1978
@@ -1804,17 +1804,17 @@
 1802,Poems of Alfred Lord Tennyson,Alfred Lord Tennyson,1892
 1803,Emily of New Moon,L. M. Montgomery,1923
 1804,Henry V,William Shakespeare,1599
-1805,Kaputt,Curzio Malaparte,
+1805,Kaputt,Curzio Malaparte,0
 1806,The Real Life of Sebastian Knight,Vladimir Nabokov,1941
 1807,The Enchanted Wood,Enid Blyton,1939
 1808,The Collected Songs of Cold Mountain,Han Shan,1985
 1809,Artemis Fowl,Eoin Colfer,2001
 1810,The Gruffalo,Julia Donaldson,1999
-1811,The Dog Star,Agneta Pleijel,
+1811,The Dog Star,Agneta Pleijel,0
 1812,City of Bohane,Kevin Barry,2011
 1813,The Rings of Saturn,W. G. Sebald,1998
-1814,"Abu Telfan, Return from the Mountains of the Moon",Wilhelm Karl Raabe,1867
-1815,The House at Pooh Corner,A. A Milne,
+1814,Abu Telfan Return from the Mountains of the Moon,Wilhelm Karl Raabe,1867
+1815,The House at Pooh Corner,A. A Milne,0
 1816,The Black Book,Orhan Pamuk,1990
 1817,Schatzkästlein des Rheinischen Hausfreundes,Johann Peter Hebel,1811
 1818,Poor Cow,Nell Dunn,1967
@@ -1845,7 +1845,7 @@
 1843,The Phantom of the Opera,Gaston Leroux,1909
 1844,Purple Hibiscus,Chimamanda Ngozi Adichie,2003
 1845,Fried Green Tomatoes,Fannie Flagg,1991
-1846,"Ties That Bind, Ties That Break",Lensey Namioka,1999
+1846,Ties That Bind Ties That Break,Lensey Namioka,1999
 1847,Tisha,Robert Specht,1976
 1848,Christy,Catherine Marshall,1967
 1849,A Book of Luminous Things,Czesław Miłosz,1996
@@ -1877,7 +1877,7 @@
 1875,Notes from No Man's Land: American Essays,Eula Biss,2009
 1876,Sleeping It Off in Rapid City,August Kleinzahler,2008
 1877,The No. 1 Ladies' Detective Agency,Alexander McCall Smith,1998
-1878,Retold African American Folktales,David Haynes,
+1878,Retold African American Folktales,David Haynes,0
 1879,Tobacco Road,Erskine Caldwell,1932
 1880,Boy's Life,Robert R. McCammon,1991
 1881,Chesapeake,James A. Michener,1978
@@ -1888,7 +1888,7 @@
 1886,The Ginger Man,J. P. Donleavy,1955
 1887,City of the Beasts,Isabel Allende,2002
 1888,Crow Lake,Mary Lawson,2002
-1889,"He, She and It",Marge Piercy,1991
+1889,He She and It,Marge Piercy,1991
 1890,Selected Poems II: 1976 - 1986,Margaret Atwood,1986
 1891,The Physician,Noah Gordon,1986
 1892,Darkness Spoken: The Collected Poems,Ingeborg Bachmann,1994
@@ -1896,12 +1896,12 @@
 1894,Candida: a Pleasant Play,George Bernard Shaw,1894
 1895,River of Fire,Qurratulain Hyder,1959
 1896,Palace of the Peacock,Wilson Harris,1960
-1897,Through the Language Glass: Why the World Looks Different in Other Languages,Guy Deutscher,
+1897,Through the Language Glass: Why the World Looks Different in Other Languages,Guy Deutscher,0
 1898,The Farming of Bones,Edwidge Danticat,1998
 1899,Collected Poems,Allen Ginsberg,1984
 1900,The Sea-Wolf,Jack London,1904
-1901,"Selected Poems, 1965-1975",Margaret Atwood,1975
-1902,Bread Givers: A Novel : a Struggle Between a Father of the Old World and a Daughter of the New,Anzia Yezierska,
+1901,Selected Poems 1965-1975,Margaret Atwood,1975
+1902,Bread Givers: A Novel : a Struggle Between a Father of the Old World and a Daughter of the New,Anzia Yezierska,0
 1903,A Dog's Purpose,W. Bruce Cameron,2010
 1904,The Talisman,Sir Walter Scott,1825
 1905,Anil's Ghost,Michael Ondaatje,2000
@@ -1939,7 +1939,7 @@
 1937,Red Dragon,Thomas Harris,1981
 1938,Homesick for Another World,Ottessa Moshfegh,2017
 1939,Flowers in the Attic,V. C. Andrews,1979
-1940,Left Behind,"Tim LaHaye, Jerry B. Jenkins",1995
+1940,Left Behind,Tim LaHaye Jerry B. Jenkins,1995
 1941,Jonathan Livingston Seagull,Richard Bach,1970
 1942,Swallows and Amazons,Arthur Ransome,1930
 1943,Killshot,Elmore Leonard,1989
@@ -1953,7 +1953,7 @@
 1951,The Shack,William P Young,2007
 1952,Looking for Alaska,John Green,2005
 1953,This Present Darkness,Frank Peretti,1986
-1954,"I, Alex Cross",James Patterson,2009
+1954,I Alex Cross,James Patterson,2009
 1955,The Plantagenet Saga,Jean Plaidy,1976
 1956,American Innovations,Rivka Galchen,2014
 1957,The Wheel of Time Series,Robert Jordan,1984
@@ -2033,18 +2033,18 @@
 2031,Dealing With Dragons,Patricia C. Wrede,1990
 2032,Rapture,Carol Ann Duffy,2005
 2033,Hard-Boiled Wonderland and the End of the World,Haruki Murakami,1985
-2034,"Raise High the Roof Beam, Carpenters: And, Seymour, an Introduction",J. D. Salinger,1963
-2035,Shadow & Claw,Gene Wolfe,
+2034,Raise High the Roof Beam Carpenters: And Seymour an Introduction,J. D. Salinger,1963
+2035,Shadow & Claw,Gene Wolfe,0
 2036,The Man Who Was Thursday,G. K. Chesterton,1908
 2037,Black Sheep,Georgette Heyer,1966
 2038,Normal People,Sally Rooney,2018
 2039,Woodcutters,Thomas Bernhard,1985
 2040,The Book of the New Sun,Gene Wolfe,1983
-2041,Good Omens,"Terry Pratchett, Neil Gaiman",1990
+2041,Good Omens,Terry Pratchett Neil Gaiman,1990
 2042,The Theogony,Hesiod,-700
 2043,You Shall Know Our Velocity,Dave Eggers,2002
 2044,Been Down So Long it Looks Like Up to Me,Richard Fariña,1966
-2045,"Little, Big",John Crowley,1981
+2045,Little Big,John Crowley,1981
 2046,Jayber Crow,Wendell Berry,2000
 2047,Devil in a Blue Dress,Walter Mosley,1990
 2048,Drown,Junot Diaz,1996
@@ -2115,7 +2115,7 @@
 2113,The Wonderful Story of Henry Sugar,Roald Dahl,1977
 2114,The Caprices,Sabina Murray,2003
 2115,The Finkler Question: A Novel,Howard Jacobson,2010
-2116,The Way West,"A. B. Guthrie, Jr",1949
+2116,The Way West,A. B. Guthrie Jr,1949
 2117,Victory Over Japan: A Book of Stories,Ellen Gilchrist,1983
 2118,Rites of Passage,William Golding,1980
 2119,Binocular Vision,Edith Pearlman,2011
@@ -2126,7 +2126,7 @@
 2124,Dragon's Teeth,Upton Sinclair,1942
 2125,One of Ours,Willa Cather,1922
 2126,Collected Poems,Jack Gilbert,2012
-2127,"Girl, Woman, Other",Bernardine Evaristo,2019
+2127,Girl Woman Other,Bernardine Evaristo,2019
 2128,The Old Forest,Peter Taylor,1986
 2129,The Lion and the Mouse,Jerry Pinkney,2009
 2130,Spartina,John Casey,1988
@@ -2209,7 +2209,7 @@
 2207,The Rachel Papers,Martin Amis,1973
 2208,The Ballad of the Sad Cafe,Carson McCullers,1951
 2209,Sweet Days of Discipline,Fleur Jaeggy,1989
-2210,"I, Tituba, Black Witch of Salem",Maryse Condé,1986
+2210,I Tituba Black Witch of Salem,Maryse Condé,1986
 2211,The Periodic Table,Primo Levi,1975
 2212,Distant Star,Roberto Bolaño,1996
 2213,The Loser,Thomas Bernhard,1983
@@ -2255,7 +2255,7 @@
 2253,The Winter's Tale,William Shakespeare,1623
 2254,Hangover Square: A Story of Darkest Earl's Court,Patrick Hamilton,1941
 2255,The Hearts and Lives of Men: A Novel,Fay Weldon,1987
-2256,Stories,T. C. Boyle,
+2256,Stories,T. C. Boyle,0
 2257,The Master of Ballantrae: A Winter's Tale,Robert Louis Stevenson,1889
 2258,Cat on a Hot Tin Roof ,Tennessee Williams,1955
 2259,Poem of the Cid,Unknown,1195
@@ -2326,8 +2326,8 @@
 2324,Broken Glass,Alain Mabanckou,2005
 2325,Die neuen Leiden des jungen W.,Ulrich Plenzdorf,1972
 2326,The Clown,Heinrich Böll,1963
-2327,"South of the Border, West of the Sun: A Novel",Haruki Murakami,1992
-2328,The Animals' Conference,Erich Kästner,
+2327,South of the Border West of the Sun: A Novel,Haruki Murakami,1992
+2328,The Animals' Conference,Erich Kästner,0
 2329,The Good Person of Szechwan,Bertolt Brecht,1943
 2330,The Day of the Jackal,Frederick Forsyth,1971
 2331,Alberta empfängt einen Liebhaber,Birgit Vanderbeke,1997
@@ -2342,9 +2342,9 @@
 2340,Where I'm Calling From,Raymond Carver,1988
 2341,Splendors and Miseries of Courtesans,Honore De Balzac,1847
 2342,Shadows on the Hudson: A Novel,Isaac Bashevis Singer,1957
-2343,"Farewell, My Lovely: A Novel",Raymond Chandler,1940
+2343,Farewell My Lovely: A Novel,Raymond Chandler,1940
 2344,Nathan the Wise,Gotthold Ephraim Lessing,1779
-2345,"Don Carlos: Infante of Spain, a Drama in Five Acts",Friedrich Schiller,1787
+2345,Don Carlos: Infante of Spain a Drama in Five Acts,Friedrich Schiller,1787
 2346,The Physicists,Friedrich Dürrenmatt,1962
 2347,Betty Blue: The Story of a Passion,Philippe Djian,1985
 2348,Castle Gripsholm,Kurt Tucholsky,1931
@@ -2418,7 +2418,7 @@
 2416,Waiting to Exhale,Terry McMillan,1995
 2417,The Satin Slipper,Paul Claudel,1929
 2418,Wolf Brother,Michelle Paver,2004
-2419,"Boy, Snow, Bird",Helen Oyeyemi,2014
+2419,Boy Snow Bird,Helen Oyeyemi,2014
 2420,The Resistible Rise of Arturo Ui,Bertolt Brecht,1941
 2421,Friday,Michel Tournier,1967
 2422,The Lesser Bohemians,Eimear McBride,2016
@@ -2451,7 +2451,7 @@
 2449,The Incendiaries,R. O. Kwon,2018
 2450,The Age of Wire and String,Ben Marcus,1995
 2451,The Interrogation,J. M. G. Le Clezio,1963
-2452,"Blind Willow, Sleeping Woman",Haruki Murakami,2006
+2452,Blind Willow Sleeping Woman,Haruki Murakami,2006
 2453,Tlooth,Harry Mathews,1966
 2454,Tropisms,Nathalie Sarraute,1939
 2455,Bowlaway,Elizabeth McCracken,2019
@@ -2471,10 +2471,10 @@
 2469,James and the Giant Peach,Roald Dahl,1961
 2470,Legs,William Kennedy,1975
 2471,Billy Phelan's Greatest Game,William Kennedy,1978
-2472,"Bright Lights, Big City",Jay McInerney,1984
+2472,Bright Lights Big City,Jay McInerney,1984
 2473,The General of the Dead Army,Ismail Kadare,1963
 2474,The Emperor's Children,Claire Messud,2006
-2475,"Go Down, Moses",William Faulkner,1942
+2475,Go Down Moses,William Faulkner,1942
 2476,The Tunnel,William H. Gass,1995
 2477,Born Yesterday,Gordon Burn,2008
 2478,Omensetter's Luck,William H. Gass,1966
@@ -2489,7 +2489,7 @@
 2487,Yellow Back Radio Broke-Down,Ishmael Reed,1969
 2488,An Untamed State,Roxane Gay,2014
 2489,Furor and Mystery,René Char,1948
-2490,"Everything Ravaged, Everything Burned",Wells Tower,2009
+2490,Everything Ravaged Everything Burned,Wells Tower,2009
 2491,The Ruins,Scott Smith,2006
 2492,You Bright and Risen Angels,William T. Vollmann,1987
 2493,No Orchids for Miss Blandish,James Hadley Chase,1939
@@ -2524,7 +2524,7 @@
 2522,In Memoriam to Identity,Kathy Acker,1990
 2523,The Position,Meg Wolitzer,2005
 2524,Hogg,Samuel Delany,1996
-2525,Native American Folktales,Thomas A. Green,
+2525,Native American Folktales,Thomas A. Green,0
 2526,Injury Time,Beryl Bainbridge,1977
 2527,Hard Times,Charles Dickens,1854
 2528,The Hand That First Held Mine,Maggie O'Farrell,2010
@@ -2555,12 +2555,12 @@
 2553,The Complete Short Stories of Jack London,Jack London,1916
 2554,Green Eggs and Ham,Dr. Seuss,1960
 2555,The Epicure's Lament,Kate Christensen,2004
-2556,"Foliage: Or, Poems Original and Translated",Leigh Hunt,1859
+2556,Foliage: Or Poems Original and Translated,Leigh Hunt,1859
 2557,Young Shoulders,John Wain,1982
 2558,The Collected Works,Kahlil Gibran,1931
 2559,Einstein's Dreams,Alan Lightman,1992
 2560,Sexual Perversity in Chicago,David Mamet,1970
-2561,"Struwwelpeter, Or, Merry Rhymes and Funny Pictures...",Heinrich Hoffmann,1845
+2561,Struwwelpeter Or Merry Rhymes and Funny Pictures...,Heinrich Hoffmann,1845
 2562,The Destiny Waltz,Gerda Charles,1971
 2563,A Sorrow Beyond Dreams,Peter Handke,1972
 2564,The Sacred and Profane Love Machine,Iris Murdoch,1974
@@ -2569,8 +2569,8 @@
 2567,Collected Short Stories of Saki,Saki,1916
 2568,Behind of the Scenes at the Museum,Kate Atkinson,1995
 2569,Hopeful Monsters,Nicholas Mosley,1990
-2570,"Henry IV, Part I",William Shakespeare,1597
-2571,"The Hunting of the Snark: An Agony, in Eight Fits",Lewis Carroll,1876
+2570,Henry IV Part I,William Shakespeare,1597
+2571,The Hunting of the Snark: An Agony in Eight Fits,Lewis Carroll,1876
 2572,English Passengers,Matthew Kneale,2000
 2573,The Chymical Wedding,Lindsay Clarke,1989
 2574,Searching for Caleb,Anne Tyler,1975
@@ -2580,7 +2580,7 @@
 2578,A Single Man,Christopher Isherwood,1964
 2579,The Time Traveler's Wife,Audrey Niffenegger,2003
 2580,The Tenderness of Wolves,Stef Penney,2006
-2581,"Brown Girl, Brownstones",Paule Marshall,1959
+2581,Brown Girl Brownstones,Paule Marshall,1959
 2582,Spies,Michael Frayn,2002
 2583,African Stories,Doris Lessing,1964
 2584,Poor Things,Alasdair Gray,1992
@@ -2620,7 +2620,7 @@
 2618,The Children of Dynmouth,William Trevor,1976
 2619,The Shawl,Cynthia Ozick,1989
 2620,Flowering Judas and Other Stories,Katherine Anne Porter,1930
-2621,"Will You Please be Quiet, Please?",Raymond Carver,1976
+2621,Will You Please be Quiet Please?,Raymond Carver,1976
 2622,City of Glass,Paul Auster,1985
 2623,The Dharma Bums,Jack Kerouac,1958
 2624,A Fan's Notes,Frederick Exley,1968
@@ -2638,7 +2638,7 @@
 2636,Le Bateau Ivre,Arthur Rimbaud,1871
 2637,The Collected Poems of Langston Hughes,Langston Hughes,1967
 2638,Leading the Cheers,Justin Cartwright,1998
-2639,"The Diary of Anais Nin, 1931-1934",Anaïs Nin,1934
+2639,The Diary of Anais Nin 1931-1934,Anaïs Nin,1934
 2640,Twelve Bar Blues,Patrick Neate,2001
 2641,Felicia's Journey,William Trevor,1994
 2642,The Box Man,Kobo Abé,1947
@@ -2654,14 +2654,14 @@
 2652,Landing Light,Don Paterson,2003
 2653,The Book of Strange New Things,Michel Faber,2014
 2654,Fools of Fortune,William Trevor,1983
-2655,"I, etcetera",Susan Sontag,1978
+2655,I etcetera,Susan Sontag,1978
 2656,The Bird of Night,Susan Hill,1972
 2657,The Tragical History of Doctor Faustus,Christopher Marlowe,1604
 2658,The Oranging of America,Max Apple,1976
 2659,Collected Poems of Frank O'Hara,Frank O'Hara,1971
 2660,The Complete Poems of Marianne Moore,Marianne Moore,1958
 2661,If: A Father's Advice to His Son,Rudyard Kipling,1910
-2662,"Poems: Selected and New, 1950-1974",Adrienne Rich,1974
+2662,Poems: Selected and New 1950-1974,Adrienne Rich,1974
 2663,The Pure and the Impure,Colette,1967
 2664,Sybil: Or The Two Nations,Benjamin Disraeli,1845
 2665,The Continental Op,Dashiell Hammett,1923
