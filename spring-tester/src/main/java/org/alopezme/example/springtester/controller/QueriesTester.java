@@ -91,7 +91,7 @@ public class QueriesTester {
         Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
         String proto = Files.readString(protoPath);
 
-        logger.info("--> Proto schema: " + proto);
+//        logger.info("--> Proto schema: " + proto);
 
         RemoteCache<String, String> protoCache = remoteCacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
 
@@ -104,7 +104,7 @@ public class QueriesTester {
             throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
         }
 
-        return  protoCache  .entrySet().size() + System.lineSeparator();
+        return "Protobuf cache now containes " + protoCache.entrySet().size() + " entries: " +  protoCache.entrySet().toString() + System.lineSeparator();
     }
 
     @GetMapping("/cache/register/script")
@@ -128,16 +128,17 @@ public class QueriesTester {
 
 //        RemoteCache<String, Book> cache = queriesCacheManager.getBookCache();
 
-//        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/books.csv"))) {
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                String[] values = line.split(",");
-//                Book book = new Book(values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-//                cache.put(values[0].trim(), book);
-//            }
-//        }
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/books.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                Book book = new Book(values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
+                logger.info("Book " + values[0].trim() + book.toString());
+                queriesCacheManager.getBookCache().put(values[0].trim(), book);
+            }
+        }
 
-        queriesCacheManager.getBookCache().put ("100", new Book("Alvaro", "Lopez", 1993));
+//        queriesCacheManager.getBookCache().put ("100", new Book("Alvaro", "Lopez", 1993));
 
 
 
