@@ -33,10 +33,6 @@ public class SpringTester {
         springRemoteCacheManager.stop();
         springRemoteCacheManager.start();
 
-        ((RemoteCache)springRemoteCacheManager.getCache("default").getNativeCache()).getAsync("0").get(30,TimeUnit.MILLISECONDS);
-
-
-
         return "SpringCache Manager restarted" + System.lineSeparator();
     }
 
@@ -163,21 +159,35 @@ public class SpringTester {
     @GetMapping("/cache/{cache}/get-single")
     public String getSingle(
             @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "key") int key) {
+            @RequestParam(value = "key") int key,
+            @RequestParam(value = "noshow", defaultValue = "true") boolean noShow) {
 
         RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
 
-        return Arrays.toString(cache.get(Integer.toString(key))) + System.lineSeparator();
+        String result = Arrays.toString(cache.get(Integer.toString(key))) + System.lineSeparator();
+
+        if (noShow) {
+            return "OK" + System.lineSeparator();
+        } else {
+            return result;
+        }
     }
 
     @GetMapping("/cache/{cache}/get-single-string")
     public String getSingleString(
             @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "key") int key) {
+            @RequestParam(value = "key") int key,
+            @RequestParam(value = "noshow", defaultValue = "true") boolean noShow) {
 
         RemoteCache<String, String> cache = remoteCacheManager.getCache(cacheName);
 
-        return cache.get(Integer.toString(key)) + System.lineSeparator();
+        String result = cache.get(Integer.toString(key)) + System.lineSeparator();
+        
+        if (noShow) {
+            return "OK" + System.lineSeparator();
+        } else {
+            return result;
+        }
     }
 
 
