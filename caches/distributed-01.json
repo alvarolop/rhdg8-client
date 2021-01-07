@@ -14,8 +14,10 @@
             "interval": 60000
         },
         "indexing": {
-            "enabled": false,
-            "indexed-entities": []
+            "enabled": true,
+            "key-transformers": [],
+            "indexed-entities": [],
+            "property": ""
         },
         "memory": {
             "storage": "HEAP"
