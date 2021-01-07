@@ -7,7 +7,7 @@ import org.infinispan.protostream.annotations.ProtoField;
 @ProtoDoc("@Indexed")
 public class Book {
 
-//    @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
+    @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
     @ProtoField(number = 1, defaultValue = "0")
     public int id;
     @ProtoDoc("@Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO)")
