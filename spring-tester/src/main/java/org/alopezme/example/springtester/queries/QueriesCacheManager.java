@@ -1,6 +1,5 @@
 package org.alopezme.example.springtester.queries;
 
-import org.alopezme.example.springtester.initializer.BookSchemaImpl;
 import org.alopezme.example.springtester.model.Book;
 import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
