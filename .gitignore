@@ -69,4 +69,4 @@ yarn.lock
 **/.attach_pid*
 **/target/
 **/.gradle
-./caches/test
+**/caches/test/
