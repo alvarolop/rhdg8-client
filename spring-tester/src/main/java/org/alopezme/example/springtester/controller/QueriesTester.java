@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.file.Files;
@@ -186,6 +185,16 @@ public class QueriesTester {
 
         return "";
     }
+
+    @GetMapping("/cache/book/rebuild-index")
+    public String rebuildIndex(){
+
+        queriesCacheManager.getManager().administration().reindexCache(queriesCacheManager.getBookCache().getName());
+
+        return "Reindexing...this task will be performed async";
+    }
+
+
 
 
 
