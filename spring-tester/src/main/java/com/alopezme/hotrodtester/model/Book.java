@@ -1,4 +1,4 @@
-package org.alopezme.example.springtester.model;
+package com.alopezme.hotrodtester.model;
 
 import org.infinispan.protostream.annotations.ProtoDoc;
 import org.infinispan.protostream.annotations.ProtoFactory;

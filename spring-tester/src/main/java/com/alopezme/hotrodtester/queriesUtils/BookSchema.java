@@ -1,6 +1,6 @@
-package org.alopezme.example.springtester.queries;
+package com.alopezme.hotrodtester.queriesUtils;
 
-import org.alopezme.example.springtester.model.Book;
+import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.protostream.SerializationContextInitializer;
 import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
 

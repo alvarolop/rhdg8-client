@@ -1,6 +1,6 @@
-package org.alopezme.example.springtester.queries;
+package com.alopezme.hotrodtester.queriesUtils;
 
-import org.alopezme.example.springtester.model.Book;
+import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;

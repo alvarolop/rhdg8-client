@@ -1,7 +1,7 @@
-package org.alopezme.example.springtester.controller;
+package com.alopezme.hotrodtester.controller;
 
-import org.alopezme.example.springtester.queries.QueriesCacheManager;
-import org.alopezme.example.springtester.model.Book;
+import com.alopezme.hotrodtester.model.Book;
+import com.alopezme.hotrodtester.queriesUtils.QueriesCacheManager;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;

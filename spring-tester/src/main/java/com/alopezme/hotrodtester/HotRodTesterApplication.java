@@ -1,4 +1,4 @@
-package org.alopezme.example.springtester;
+package com.alopezme.hotrodtester;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-public class SpringTesterApplication {
+public class HotRodTesterApplication {
 
    public static void main(String... args) {
-      SpringApplication.run(SpringTesterApplication.class, args);
+      SpringApplication.run(HotRodTesterApplication.class, args);
    }
 }

@@ -1,4 +1,4 @@
-package org.alopezme.example.springtester.controller;
+package com.alopezme.hotrodtester.controller;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping("api")
-public class SpringTester {
+public class CacheTester {
 
     @Autowired
     SpringRemoteCacheManager springRemoteCacheManager;
@@ -24,7 +24,7 @@ public class SpringTester {
     @Autowired
     RemoteCacheManager remoteCacheManager;
 
-    Logger logger = LoggerFactory.getLogger(SpringTester.class);
+    Logger logger = LoggerFactory.getLogger(CacheTester.class);
 
 
     @GetMapping("/reset")

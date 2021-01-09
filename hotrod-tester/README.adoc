@@ -26,6 +26,72 @@ toc::[]
 
 This project is based on the work of @drhelius at https://github.com/drhelius/hotrod-tester
 
+
+To run this example on your server, just execute the following command:
+[source, bash]
+----
+mvn clean spring-boot:run
+----
+
+
+To deploy this example on OCP:
+[source, bash]
+----
+## Configuration
+export app_name=rhdg8-spring-tester
+export namespace=rhdg8
+export git_repo=https://github.com/alvarolop/rhdg8-client.git
+export context_dir=spring-tester
+
+## Create application from template 
+oc process -f templates/rhdg-client-ssl.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p GIT_CONTEXT_DIR=$context_dir | oc apply -n $namespace -f -
+
+## Expose route
+oc expose svc $app_name -n $namespace
+
+## Set app configuration
+oc create configmap ${app_name}-file-config --from-file=./${context_dir}/src/main/resources/application.properties -n $namespace
+oc create configmap ${app_name}-logback-config --from-file=./${context_dir}/src/main/resources/logback-spring.xml -n $namespace
+oc set env dc $app_name DATAGRID_HOST=rhdg DATAGRID_PORT=11222 -n $namespace
+
+----
+
+
+
+
+== Annex A: Running the client locally
+
+// TODO: Check 
+
+Developing new functionality directly on OCP can be quite cumbersome do to the long time it takes to build a new version of the image after pushing changes. Therefore, the best way to test your application is running your application locally:
+
+* *SERVER*: You can find https://github.com/alvarolop/rhdg8-server#deploying-rhdg-on-rhel[here] a guide to run your RHDG cluster locally.
+* *CLIENT*: The applications provided are ready for the DG clusters created using the operator (With SSL configured by default). To run it locally, specify a custom `application.properties` path:
+
+[source, bash]
+----
+mvn clean package 
+java -jar target/spring-tester-1.0.0.jar --spring.config.location=src/main/resources/application-local.properties
+----
+or, in one line:
+[source, bash]
+----
+mvn clean spring-boot:run -Dspring-boot.run.arguments=--spring.config.location=src/main/resources/application-local.properties
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 == Create the OCP application
 
 
