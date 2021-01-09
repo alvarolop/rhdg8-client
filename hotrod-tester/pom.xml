@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.ignaciosanchez</groupId>
-    <artifactId>hotrod-tester</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>hotrod-tester</name>
-    <description>Test project for Hot Rod</description>
+    <groupId>org.alopezme.example.simple</groupId>
+    <artifactId>spring-tester</artifactId>
+    <name>Infinispan Spring Tester</name>
+    <version>1.0.0</version>
 
     <properties>
-        <springframework.spring-boot.version>2.3.5.RELEASE</springframework.spring-boot.version>
-        <springframework.spring-session.version>2.3.0.RELEASE</springframework.spring-session.version>
-        <infinispan.spring-boot.starter.version>2.3.3.Final-redhat-00001</infinispan.spring-boot.starter.version>
+        <version.spring.boot>2.3.5.RELEASE</version.spring.boot>
+        <version.spring.session>2.3.0.RELEASE</version.spring.session>
+        <version.spring.boot.infinispan>2.3.3.Final-redhat-00001</version.spring.boot.infinispan>
         <version.infinispan>11.0.3.Final-redhat-00001</version.infinispan>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencyManagement>
@@ -35,14 +31,9 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${springframework.spring-boot.version}</version>
+                <version>${version.spring.boot}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.infinispan</groupId>
-                <artifactId>infinispan-spring-boot-starter-remote</artifactId>
-                <version>${infinispan.spring-boot.starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -51,11 +42,12 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-spring-boot-starter-remote</artifactId>
+            <version>${version.spring.boot.infinispan}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
@@ -64,35 +56,57 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Only for MapSession class -->
+        <!-- <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${version.micrometer.registry.prometheus}</version>
+        </dependency> -->
+
         <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-core</artifactId>
-            <version>${springframework.spring-session.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.infinispan.protostream</groupId>
+            <artifactId>protostream-processor</artifactId>
+            <!--
+              This dependency should be declared in the "provided" scope or made "optional"
+              because it is a compile-only dependency and is not required at runtime.
+              Transitive propagation of this dependency should be also be avoided.
+            -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-remote-query-client</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.session</groupId>-->
+<!--            <artifactId>spring-session-core</artifactId>-->
+<!--            <version>${version.spring.session}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${springframework.spring-boot.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <excludes>
+                        <!-- This is where the exclusion occurs -->
+                        <exclude>**/logback-spring.xml</exclude>
+                        <exclude>**/application.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${version.spring.boot}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -103,13 +117,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>redhat-ga</id>
-            <name>Red Hat GA Repository</name>
-            <url>https://maven.repository.redhat.com/ga/</url>
-        </repository>
-    </repositories>
 
 </project>
