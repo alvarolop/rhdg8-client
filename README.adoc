@@ -21,68 +21,59 @@ ifndef::env-github[]
 endif::[]
 // End: Enable admonition icons
 
-This repository demonstrates some of the basic examples of client applications of the latest release of Red Hat Data Grid 8.
+This repository demonstrates how to connect to and use the latest release of Red Hat Data Grid 8.
 
 // Create the Table of contents here
 toc::[]
 
 
 
-
 == Introduction
 
-Red Hat Data Grid is an in-memory, distributed, NoSQL datastore solution. Your applications can access, process, and analyze data at in-memory speed to deliver a superior user experience. In a typical Data Grid configuration, you will have your DG client and server detached.
+Red Hat Data Grid is an in-memory, distributed, NoSQL datastore solution. Your applications can access, process, and analyze data at in-memory speed to deliver a superior user experience. In a typical Data Grid configuration, you will have your DG client and server instances detached from each other.
 
-Although, there are many different clients that allow you to connect to RHDG, in this repository we will use the REST API and the HotRod Java client. These are the links to the documentation of these options:
 
-// * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_command_line_interface/index[Command Line Interface].
-* https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/hot_rod_java_client_guide/index[Hot Rod Java client].
+This repository will focus on two main steps: 
+
+* Creating caches on the server using several methods.
+* Connecting to the Data Grid to perform basic functionality.
+
+
+Although, there are many different clients that allow you to connect to RHDG, in this repository we will explore the usage of the REST API and the HotRod Java client. These are the links to the documentation of these options:
+
 * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index[REST API].
+* https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/hot_rod_java_client_guide/index[Hot Rod Java client].
+
+
+
+
+
+WARNING: The following sections assume that you have a Red Hat Data Grid 8.1 server cluster running either on OCP or locally. For more information about configuring your cluster, check the following https://github.com/alvarolop/rhdg8-server[link].
 
 
 
 
 
 
+== Cache configuration
 
-== Running the client locally
-
-Developing new functionality directly on OCP can be quite cumbersome do to the long time it takes to build a new version of the image after pushing changes. Therefore, the best way to test your application is running your application locally:
-
-* *SERVER*: You can find https://github.com/alvarolop/rhdg8-server#deploying-rhdg-on-rhel[here] a guide to run your RHDG cluster locally.
-* *CLIENT*: The applications provided are ready for the DG clusters created using the operator (With SSL configured by default). To run it locally, specify a custom `application.properties` path:
-
-[source, bash]
-----
-mvn clean package 
-java -jar target/spring-tester-1.0.0.jar --spring.config.location=src/main/resources/application-local.properties
-----
-or, in one line:
-[source, bash]
-----
-mvn clean spring-boot:run -Dspring-boot.run.arguments=--spring.config.location=src/main/resources/application-local.properties
-----
-
-
-
-
-== Configuring caches
-
-Add cache definitions that configure how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML or JSON format through Data Grid Console, Data Grid CLI, Hot Rod clients, or Data Grid Operator. This repo will explore three ways: Using the REST API, the CLI and the `Cache` CRD.
+Add cache definitions to specify how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML or JSON format through Data Grid Console, Data Grid CLI, Hot Rod clients, or Data Grid Operator. This section will explore three ways: Using the REST API, the CLI, and the `Cache` CRD.
 
 
 === Cache definition
 
-First define a cache using the JSON format. The following configuration is an example of a cache configuration. Bear in mind that the cache configuration should not have the cache name, as the name will be inherited from the REST URL or the CRD configuration: 
+First, define a cache using XML or JSON format. Bear in mind that name of the cache will be inherited from the REST URL or the CRD configuration, not from the cache configuration. The following JSON is an example of a cache configuration:
 
 [source, json]
 ----
 include::caches/distributed-01.json[]
 ----
 
-=== Using REST API
 
-Define the following environment variables to simplify the following commands:
+
+=== Cache configuration using the REST API
+
+If your DG is running on OCP, define these environment variables to simplify the following commands:
 [source, bash]
 ----
 CLUSTER_NAMESPACE="rhdg8"
@@ -91,49 +82,50 @@ RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o temp
 CACHE_NAME="distributed-01"
 ----
 
-*Create your cache* using the following variables and the curl command:
+On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
 [source, bash]
 ----
+RHDG_URL="https://localhost:11222"
+CACHE_NAME="distributed-01"
+----
 
+
+*Create your cache*:
+[source, bash]
+----
 curl -X POST -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/$CACHE_NAME.json"
 ----
 
 
-
-*Delete your cache* with the following command:
+*Delete your cache*:
 
 [source, bash]
 ----
-curl -X DELETE -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME
+curl -X DELETE -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
 ----
 
 
-
-*Check your cache* configuration and status using the following command:
+*Check your cache* configuration and status:
 [source,bash]
 ----
-curl -X GET -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches
+curl -X GET -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
 ----
 
 
-
-
-For more information about the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index#rest_v2_create_cache[documentation].
+For more information about using the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index#rest_v2_create_cache[documentation].
 
 
 
 
-=== Using Cache operator's CRD
+=== Cache configuration using the Cache operator's CRD
 
 
 WARNING: This feature is Tech Preview as of December, 2020. Use it for development purposes only.
 
 
-The RHDG operator defines a new CRD (Custom Resource Definition) called `Cache`. This resource lets you describe a cache configuration and define the cluster where you want it available. 
+The RHDG operator defines a new CRD (`Custom Resource Definition`) called `Cache`. This resource lets you describe a cache configuration and define the cluster where you want it running. 
 
-For more information check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html/running_data_grid_on_openshift/caches#creating_caches_operator-caches[official documentation]. 
-
-
+For more information about this CRD, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html/running_data_grid_on_openshift/caches#creating_caches_operator-caches[official documentation]. 
 
 
 
@@ -142,16 +134,17 @@ For more information check the https://access.redhat.com/documentation/en-us/red
 
 
 
-== Accessing your caches
 
-As we explained before, there are three main ways of accessing DG caches: DG CLI, the REST API and the HotRod Java client. In this section we will explain how to access caches with all of them.
+== Data Grid clients
+
+As we explained before, there are many ways of accessing DG caches. In this section we will explore the REST API and the many ways of configuring your Java application.
 
 === REST client
 
 In some situations, you might want to test your RHDG cluster using REST prior to use your HotRod client. Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
 
 
-Define the following environment variables to simplify the following commands:
+If your DG is running on OCP, define these environment variables to simplify the following commands:
 [source, bash]
 ----
 CLUSTER_NAMESPACE="rhdg8"
@@ -160,8 +153,15 @@ RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o temp
 CACHE_NAME="distributed-01"
 ----
 
+On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
+[source, bash]
+----
+RHDG_URL="https://localhost:11222"
+CACHE_NAME="distributed-01"
+----
 
-Perform CRUD commands to interact with `String` entries in the cache:
+
+Perform CRUD commands to interact with entries in the cache:
 [source,bash]
 ----
 # Create
@@ -179,53 +179,29 @@ For more information about the REST endpoint, check the https://access.redhat.co
 
 
 
-=== Infinispan client
-
-Access Data Grid remotely through the Hot Rod Java client API. Hot Rod Java clients give you high-performance remote access to Data Grid clusters.
-
-// TODO: COMPLETE
 
 
 
-=== Spring Boot starter
+=== Hot Rod Java clients
 
-// TODO: COMPLETE
+Basically, there are two approaches in Java to interact with Data Grid. You may use the Infinispan libraries directly or the Spring starter. Both approaches let you make the most out of your application:
 
-
-To run this example on your server, just execute the following command:
-[source, bash]
-----
-mvn clean spring-boot:run
-----
+* *Infinispan client*:  Access Data Grid remotely through the Hot Rod Java client API. Hot Rod Java clients give you high-performance remote access to Data Grid clusters.
 
 
-To deploy this example on OCP:
-[source, bash]
-----
-## Configuration
-export app_name=rhdg8-spring-tester
-export namespace=rhdg8
-export git_repo=https://github.com/alvarolop/rhdg8-client.git
-export context_dir=spring-tester
+* *Spring Boot starter*: Quickly get your Spring Boot project up and running with a set of managed transitive dependencies that include everything your Spring Boot project needs to seamlessly interact with Data Grid.
 
-## Create application from template 
-oc process -f templates/rhdg-client-ssl.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p GIT_CONTEXT_DIR=$context_dir | oc apply -n $namespace -f -
 
-## Expose route
-oc expose svc $app_name -n $namespace
-
-## Set app configuration
-oc create configmap ${app_name}-file-config --from-file=./${context_dir}/src/main/resources/application.properties -n $namespace
-oc create configmap ${app_name}-logback-config --from-file=./${context_dir}/src/main/resources/logback-spring.xml -n $namespace
-oc set env dc $app_name DATAGRID_HOST=rhdg DATAGRID_PORT=11222 -n $namespace
-
-----
+For more information about the Infinispan client, check the following https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_developer_guide/index[link]. On the contrary, if you want to begin with the Spring starter, check this other https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_spring_boot_starter[link].
 
 
 
-== Managing Indexes 
 
-//TODO
+
+
+== Managing indexed caches
+
+Indexed caches keep an index of the desired objects. Some operations update this index asynchronously. Therefore, there may be inconsistencies between the index and the real values stored in the cache. Use the following commands to clear and re-index your cache:
 
 [source, bash]
 ----
@@ -238,22 +214,18 @@ curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-0
 
 
 
-
-
-
-== Annex: Managing SSL configuration
+== Annex A: Managing SSL configuration
 
 There are three options to manage SSL configuration for the Java HotRod client.
 
 === Option 1: Default configuration using operator
 
-First option is to use the default configuration. This is the recommended configuration.
+First option is to use the default configuration. This is the recommended option.
 
 * The RHDG operator provides certificates by default in a secret with name `${RHDG_CLUSTER_NAME}-cert-secret`.
-* The Infinispan Spring Starter accepts a certificate in `.pem` format and builds an in-memory KeyStore with all the certificates found under a path provided.
-* The `infinispan-client-hotrod` library provides similar functionality.
+* Both the Spring Starter and the `infinispan-client-hotrod` accept a certificate in `.pem` format and build an in-memory KeyStore with all the certificates found under the path provided.
 
-Add the following lines to your `application.properties` to configure Infinispan Spring Starter:
+Add the following lines to your `application.properties` to configure the Infinispan Spring Starter:
 [source, bash]
 ----
 infinispan.remote.use-ssl=true
@@ -261,7 +233,7 @@ infinispan.remote.trust-store-path=config/tls.crt
 infinispan.remote.sni-host-name=${RHDG_CLUSTER_NAME}.${CLUSTER_NAMESPACE}.svc
 ----
 
-Add the following lines to your `application.properties` to configure infinispan-client-hotrod:
+Add the following lines to your `application.properties` to configure the `infinispan-client-hotrod`:
 [source, bash]
 ----
 infinispan.client.hotrod.use_ssl=true
@@ -279,7 +251,7 @@ For more information about configuration parameters check the following resource
 
 The second option is useful when you want custom certificates or you would like to access RHDG from outside your cluster.
 
-The following commands are inspired in the https://github.com/infinispan/infinispan-image-artifacts/blob/9f028ddc1f5e26084b0b0edf46feb11ff3df2570/config-generator/src/main/groovy/org/infinispan/images/ConfigGenerator.groovy#L74-L77[code executed by the RHDG operator] to build SSL configuration from the server side.
+The following commands are inspired in the blog https://github.com/infinispan/infinispan-image-artifacts/blob/9f028ddc1f5e26084b0b0edf46feb11ff3df2570/config-generator/src/main/groovy/org/infinispan/images/ConfigGenerator.groovy#L74-L77[code executed by the RHDG operator] to build SSL configuration from the server side.
 
 
 [source, bash]
@@ -289,7 +261,7 @@ export CLUSTER_NAME=rhdg
 export PCKS12_PASSWORD=changeit
 export PCKS12_ALIAS=rhdg
 
-# Get both tls elements in .pem format 
+# Get both tls secrets in .pem format 
 oc get secret ${CLUSTER_NAME}-cert-secret -o jsonpath='{.data.tls\.key}' | base64 --decode > server.pem
 oc get secret ${CLUSTER_NAME}-cert-secret -o jsonpath='{.data.tls\.crt}' | base64 --decode >> server.pem
 
@@ -308,7 +280,9 @@ After that, you would need to mount the `.jks` into the container and configure 
 
 === Option 3: initContainers
 
-There is another option that I will document, but it is explained https://developers.redhat.com/blog/2017/11/22/dynamically-creating-java-keystores-openshift/[here]. This is an elegant solution for applications that use SSL but do not accept certificates in `.pem` format. The downside is that you are forced to use some kind of persistence.
+It is also possible to use initContainers to execute the commands of Option 2 before deploying the actual container of the application. Basically, you will have an initContainer that launches before the application container, executes the commands and  leaves the JKS file in any sort of persistent volume. After completion, the application container starts and uses the JKS as if it were already inside the container image.
+
+For more information, please check this https://developers.redhat.com/blog/2017/11/22/dynamically-creating-java-keystores-openshift/[blog] from Red Hat Developers. This is the best option for clients or applications that do not accept certificates in `.pem` format. However, this solution forces you to use some kind of persistent in the containers.
 
 
 
@@ -316,17 +290,31 @@ There is another option that I will document, but it is explained https://develo
 
 
 
-== Annex: Comparing cache definitions
-
-In the past, the definition of a cache used to create it was different to the definition retrieved from RHDG. Therefore, it was not straightforward to check if cache definitions had changed. The following procedure will help you to check if there are still changes or not using the REST API.
 
 
-First, define the following environment variables to simplify the following commands:
+
+== Annex B: Comparing cache definitions
+
+Up until now, Red Hat Data Grid does not provide a mechanism to update cache definitions easily. Most of the configuration that you might apply to a cache needs a cache restart. Therefore, the REST API does not allow cache configurations update. You must delete it and create a new cache.
+
+In addition to it, cache definitions retrieved with the REST API might not be identical to the definition used to create it. Data Grid adds, converts, and removes some of the parameters according to the default values.
+
+The following commands show a mechanism to create a new cache, retrieve the modified configuration and check if it is similar or not.
+
+
+If your DG is running on OCP, define these environment variables to simplify the following commands:
 [source, bash]
 ----
 CLUSTER_NAMESPACE="rhdg8"
 CLUSTER_NAME="rhdg"
 RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
+CACHE_NAME="test-01"
+----
+
+On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
+[source, bash]
+----
+RHDG_URL="https://localhost:11222"
 CACHE_NAME="test-01"
 ----
 
@@ -342,7 +330,7 @@ Third retrieve the configuration:
 curl -X GET -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME?action=config | jq > caches/test/$CACHE_NAME-output.json
 ----
 
-Compare them using jq:
+Compare them using `jq`:
 [source, bash]
 ----
 jq --argfile a caches/test/$CACHE_NAME.json --argfile b caches/test/$CACHE_NAME-output.json -n '($a | (.. | arrays) |= sort) as $a | ($b | (.. | arrays) |= sort) as $b | $a == $b'
