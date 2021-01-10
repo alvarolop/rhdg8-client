@@ -17,6 +17,7 @@ objects:
     labels:
       app: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}
+    namespace: ${APP_NAMESPACE}
   spec:
     lookupPolicy:
       local: false
@@ -26,6 +27,7 @@ objects:
     labels:
       app: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}
+    namespace: ${APP_NAMESPACE}
   spec:
     ports:
     - name: 8080-tcp
@@ -34,12 +36,24 @@ objects:
       targetPort: 8080
     selector:
       deploymentconfig: ${APPLICATION_NAME}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: ${APPLICATION_NAME}
+    namespace: ${APP_NAMESPACE}
+  spec:
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+    port:
+      targetPort: 8080
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
     labels:
       app: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}
+    namespace: ${APP_NAMESPACE}
   spec:
     replicas: 1
     revisionHistoryLimit: 10
@@ -67,6 +81,11 @@ objects:
         - name: ${APPLICATION_NAME}
           image: ${APPLICATION_NAME}:latest
           imagePullPolicy: Always
+          env:
+            - name: DATAGRID_HOST
+              value: ${RHDG_CLUSTER_NAME}
+            - name: DATAGRID_PORT
+              value: "11222"
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -110,6 +129,7 @@ objects:
     labels:
       app: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}
+    namespace: ${APP_NAMESPACE}
   spec:
     nodeSelector:
     output:
@@ -138,7 +158,10 @@ objects:
     - type: ImageChange
 parameters:
 - name: APPLICATION_NAME
-  description: "The name for the application."
+  description: "The name of the application."
+  required: true
+- name: APP_NAMESPACE
+  description: "The namespace of the application."
   required: true
 - name: MOUNT_PATH
   description: "The path where the configuration file of the application is mounted."
