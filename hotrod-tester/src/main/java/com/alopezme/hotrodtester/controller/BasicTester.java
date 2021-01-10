@@ -2,6 +2,7 @@ package com.alopezme.hotrodtester.controller;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.jmx.RemoteCacheClientStatisticsMXBean;
 import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,6 @@ public class BasicTester {
 
     Logger logger = LoggerFactory.getLogger(BasicTester.class);
 
-
     @GetMapping("/reset")
     public String reset() throws InterruptedException, ExecutionException, TimeoutException {
 
@@ -43,108 +43,126 @@ public class BasicTester {
         return springRemoteCacheManager.getCacheNames().toString() + System.lineSeparator();
     }
 
-
-    @GetMapping("/cache/{cache}/stats")
-    public String stats(
+    @GetMapping("/cache/{cache}/statistics/server")
+    public String getCacheServerStatistics(
             @PathVariable(value = "cache") String cacheName) {
-
         return remoteCacheManager.getCache(cacheName).serverStatistics().getStatsMap().toString() + System.lineSeparator();
     }
 
-    @GetMapping("/cache/{cache}/put")
-    public String put(
+    @GetMapping("/cache/{cache}/statistics/client")
+    public String getCacheClientStatistics(
+            @PathVariable(value = "cache") String cacheName) {
+        RemoteCacheClientStatisticsMXBean clientStatistics = remoteCacheManager.getCache(cacheName).clientStatistics();
+
+        String string = "{" + "\"remoteHits\":\"" + clientStatistics.getRemoteHits() + "\"," +
+                "\"remoteMisses\":\"" + clientStatistics.getRemoteMisses() + "\"," +
+                "\"remoteRemoves\":\"" + clientStatistics.getRemoteRemoves() + "\"," +
+                "\"remoteStores\":\"" + clientStatistics.getRemoteStores() + "\"," +
+                "\"averageRemoteReadTime\":\"" + clientStatistics.getAverageRemoteReadTime() + "\"," +
+                "\"averageRemoteRemovesTime\":\"" + clientStatistics.getAverageRemoteRemovesTime() + "\"," +
+                "\"averageRemoteStoreTime\":\"" + clientStatistics.getAverageRemoteStoreTime() + "\"," +
+                "\"nearCacheHits\":\"" + clientStatistics.getNearCacheHits() + "\"," +
+                "\"nearCacheMisses\":\"" + clientStatistics.getNearCacheMisses() + "\"," +
+                "\"nearCacheInvalidations\":\"" + clientStatistics.getNearCacheInvalidations() + "\"," +
+                "\"nearCacheSize\":\"" + clientStatistics.getNearCacheSize() + "\"," +
+                "\"timeSinceReset\":\"" + clientStatistics.getTimeSinceReset() + "\"" +
+                "}";// Close JSON
+        return string + System.lineSeparator();
+    }
+
+
+
+
+
+    /**
+     * GET KEYS
+     */
+    @GetMapping("/cache/{cache}/keys")
+    public String getKeys(
+            @PathVariable(value = "cache") String cacheName) {
+
+        return remoteCacheManager.getCache(cacheName).keySet().toString() + System.lineSeparator();
+    }
+
+
+
+
+
+
+
+
+    /**
+     * PUT ENTRIES
+     */
+    @PutMapping("/cache/{cache}/bytes")
+    public String putByte (
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "entries") int numEntries,
             @RequestParam(value = "async", defaultValue = "false") boolean isAsync,
             @RequestParam(value = "asyncTime", defaultValue = "500") int asyncTime,
             @RequestParam(value = "size", defaultValue = "1024") int entrySize,
-            @RequestParam(value = "minkey", defaultValue = "0") int minKey,
-            @RequestParam(value = "keyrange", required = false) Integer entryKeyRange) {
+            @RequestParam(value = "minkey", defaultValue = "0") int minKey) throws Exception {
 
         RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
-
-        int keyrange = numEntries;
-        if (entryKeyRange != null)
-            keyrange = entryKeyRange;
 
         byte[] bytes = new byte[entrySize];
         Random rnd = new Random();
 
-        int key = 0;
-
-        for (int i = minKey; i < (minKey + numEntries); i++) {
+        int maxKey = minKey + numEntries;
+        for (int i = minKey; i < maxKey; i++) {
 
             rnd.nextBytes(bytes);
-
-            try {
-                if (isAsync) {
-                    cache.put(Integer.toString(key + minKey), bytes, asyncTime, TimeUnit.MILLISECONDS);
-                    logger.info("put ok " + i + " Async");
-                } else {
-                    cache.put(Integer.toString(key + minKey), bytes);
-                    logger.info("put ok " + i);
-                }
-            } catch (Exception e) {
-                logger.error("Exception in put " + i, e);
+            if (isAsync) {
+                cache.put(Integer.toString(i), bytes, asyncTime, TimeUnit.MILLISECONDS);
+                logger.info("Put byte " + i + " async");
+            } else {
+                cache.put(Integer.toString(i), bytes);
+                logger.info("put byte " + i + "  sync");
             }
-
-            key++;
-            key %= keyrange;
         }
 
-        return "OK " + numEntries + " " + entrySize + " " + minKey + System.lineSeparator();
+        return "PUT Byte [" + minKey + " , " + maxKey + ")" + System.lineSeparator();
     }
 
-    @GetMapping("/cache/{cache}/put-simple")
-    public String putSimple(
+    @PutMapping("/cache/{cache}/string")
+    public String putString (
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "entries") int numEntries,
             @RequestParam(value = "minkey", defaultValue = "0") int minKey,
-            @RequestParam(value = "entrycontent", defaultValue = "Test") String entryContent,
-            @RequestParam(value = "keyrange", required = false) Integer entryKeyRange) {
+            @RequestParam(value = "entrycontent", defaultValue = "Test") String entryContent) throws Exception {
 
         RemoteCache<String, String> cache = remoteCacheManager.getCache(cacheName);
+        int maxKey = minKey + numEntries;
 
-        int keyrange = numEntries;
-        if (entryKeyRange != null)
-            keyrange = entryKeyRange;
-
-        int key = 0;
-
-        for (int i = minKey; i < (minKey + numEntries); i++) {
-
-            try {
-                cache.put(Integer.toString(key + minKey), entryContent + " " + Integer.toString(key + minKey));
-                System.out.println("put ok " + i);
-            } catch (Exception e) {
-                System.out.println("Exception in put " + i + e);
-            }
-
-            key++;
-            key %= keyrange;
+        for (int i = minKey; i < maxKey; i++) {
+            cache.put(Integer.toString(i), entryContent + " " + Integer.toString(i));
+            logger.info("Put string " + i);
         }
-
-        return "OK " + numEntries + " " + minKey + System.lineSeparator();
+        return "PUT String [" + minKey + " , " + maxKey + ")" + System.lineSeparator();
     }
 
-    @GetMapping("/cache/{cache}/get")
-    public String get(
+
+
+
+
+
+
+    /**
+     * GET ENTRIES
+     */
+    @GetMapping("/cache/{cache}/bulk")
+    public String getBulk (
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "entries") int numEntries,
             @RequestParam(value = "async", defaultValue = "false") boolean isAsync,
             @RequestParam(value = "asyncTime", defaultValue = "500") int asyncTime,
-            @RequestParam(value = "minkey", defaultValue = "0") int minKey) {
+            @RequestParam(value = "minkey", defaultValue = "0") int minKey) throws Exception {
 
         RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
 
         for (int i = minKey; i < (minKey + numEntries); i++) {
             if (isAsync) {
-                try {
-                    cache.getAsync(Integer.toString(i)).get(asyncTime, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    logger.error("Exception in put async " + i, e);
-                    e.printStackTrace();
-                }
+                cache.getAsync(Integer.toString(i)).get(asyncTime, TimeUnit.MILLISECONDS);
                 logger.info("get ok " + i + " Async");
             } else {
                 cache.get(Integer.toString(i));
@@ -156,65 +174,52 @@ public class BasicTester {
         return "OK " + numEntries + " " + minKey + System.lineSeparator();
     }
 
-    @GetMapping("/cache/{cache}/get-single")
-    public String getSingle(
+    @GetMapping("/cache/{cache}/byte")
+    public String getByte(
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "key") int key,
-            @RequestParam(value = "noshow", defaultValue = "true") boolean noShow) {
+            @RequestParam(value = "show", defaultValue = "false") boolean show) {
 
         RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
-
         String result = Arrays.toString(cache.get(Integer.toString(key))) + System.lineSeparator();
 
-        if (noShow) {
-            return "OK" + System.lineSeparator();
-        } else {
-            return result;
-        }
+        return show ? result : "OK" + System.lineSeparator();
     }
 
-    @GetMapping("/cache/{cache}/get-single-string")
-    public String getSingleString(
+    @GetMapping("/cache/{cache}/string")
+    public String getString(
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "key") int key,
-            @RequestParam(value = "noshow", defaultValue = "true") boolean noShow) {
+            @RequestParam(value = "show", defaultValue = "false") boolean show) {
 
         RemoteCache<String, String> cache = remoteCacheManager.getCache(cacheName);
-
         String result = cache.get(Integer.toString(key)) + System.lineSeparator();
-        
-        if (noShow) {
-            return "OK" + System.lineSeparator();
-        } else {
-            return result;
-        }
+
+        return show ? result : "OK" + System.lineSeparator();
     }
 
 
-    @GetMapping("/cache/{cache}/get-keys")
-    public String getKeys(
-            @PathVariable(value = "cache") String cacheName) {
 
-        return remoteCacheManager.getCache(cacheName).keySet().toString() + System.lineSeparator();
-    }
 
-    @GetMapping("/cache/{cache}/remove")
-    public String remove(
+
+    /**
+     * REMOVE ENTRIES
+     */
+
+    @DeleteMapping("/cache/{cache}")
+    public String removeEntries(
             @PathVariable(value = "cache") String cacheName,
             @RequestParam(value = "entries") int numEntries,
-            @RequestParam(value = "minkey", required = false) Integer entryMinkey) {
+            @RequestParam(value = "minkey", required = false, defaultValue = "0") int minKey) {
 
         RemoteCache<String, byte[]> cache = remoteCacheManager.getCache(cacheName);
+        int maxKey = minKey + numEntries;
 
-        int min = 0;
-        if (entryMinkey != null)
-            min = entryMinkey;
-
-        for (int i = min; i < (min + numEntries); i++) {
+        for (int i = minKey; i < maxKey; i++) {
             cache.remove(Integer.toString(i));
         }
 
-        return "OK " + numEntries + " " + entryMinkey + System.lineSeparator();
+        return "Deleted from " + minKey + " to " + maxKey + System.lineSeparator();
     }
 
 }
