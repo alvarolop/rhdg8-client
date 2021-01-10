@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("api/cache")
-public class CacheTester {
+@RequestMapping("api/basic")
+public class BasicTester {
 
     @Autowired
     SpringRemoteCacheManager springRemoteCacheManager;
@@ -24,7 +24,7 @@ public class CacheTester {
     @Autowired
     RemoteCacheManager remoteCacheManager;
 
-    Logger logger = LoggerFactory.getLogger(CacheTester.class);
+    Logger logger = LoggerFactory.getLogger(BasicTester.class);
 
 
     @GetMapping("/reset")

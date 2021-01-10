@@ -1,4 +1,4 @@
-package com.alopezme.hotrodtester.queriesUtils;
+package com.alopezme.hotrodtester.utils;
 
 import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.client.hotrod.DataFormat;
@@ -24,6 +24,8 @@ public class QueriesCacheManager {
     private int port;
     @Value("${alvaro.queries.cache-name}")
     private String cacheName;
+    @Value("${alvaro.queries.enable-ssl}")
+    private boolean enableSSL;
 
     private RemoteCacheManager remoteCacheManager;
     private RemoteCache<Integer, Book> remoteBookCache;
@@ -48,6 +50,15 @@ public class QueriesCacheManager {
                         .password("developer")
                 .marshaller(new ProtoStreamMarshaller())
                 .addContextInitializers(new BookSchemaImpl());
+
+        if (enableSSL) {
+            configuration
+                .security()
+                    .ssl()
+                        .enable()
+                        .trustStorePath("config/tls.crt")
+                        .sniHostName("rhdg.rhdg8.svc");
+        }
 
         DataFormat jsonString = DataFormat.builder()
                 .valueType(MediaType.APPLICATION_JSON)

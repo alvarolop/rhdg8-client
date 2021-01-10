@@ -1,4 +1,4 @@
-package com.alopezme.hotrodtester.queriesUtils;
+package com.alopezme.hotrodtester.utils;
 
 import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.protostream.SerializationContextInitializer;
