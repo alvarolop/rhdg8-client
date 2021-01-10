@@ -102,111 +102,106 @@ oc process -f templates/rhdg-client-ssl.yaml -p APPLICATION_NAME=$app_name -p GI
 
 
 
+== The application components
 
 
+This application may be used to test many different features included in the Java implementation of Hot Rod protocol. All the tests and application logic is exposed via three REST endpoints:
+
+* `api/basic`: Basic methods to test cache behavior: put, get, remove, restart, etc.
+* `api/queries`: Methods to interact with an indexed cache to perform queries, bulk removes based on the result of queries and interact with cache indexes.
+* `api/transaction`: Basic methods to test transactions.
 
 
+=== Environment set up
 
-## 3. Usage
-
-Set your cluster url:
+If your client application is running on OCP, define these environment variables to simplify the following commands:
 [source, bash]
 ----
-# These variables were already settled:
-export app_name=<app_name>
-export namespace=<namespace>
-
-# These are new:
-export cluster_url=<cluster_url>
-export cache_name=default
+APP_NAMESPACE="rhdg8"
+APP_NAME="rhdg8-hotrod-tester"
+APP_URL=$(oc get route ${APP_NAME} -n ${APP_NAMESPACE} -o template='https://{{.spec.host}}')
+CACHE_NAME="distributed-01"
 ----
+
+On the contrary, if your application is running locally, define these environment variables to simplify the following commands:
+[source, bash]
+----
+APP_URL="https://localhost:8080"
+CACHE_NAME="distributed-01"
+----
+
+
+=== Basic features
+
+Basic operations:
 
 [source, bash]
 ----
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=0"
-----
+# Put bytes from 0 to 49
+curl -k -G -X PUT "${APP_URL}/api/basic/cache/${CACHE_NAME}/bytes" -d size=1024 -d entries=50
 
-Usage examples:
-[source, bash]
-----
-# PUT ASYNC
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=0&async=true"
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=100000&async=true"
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=200000&async=true"
+# Put strings from 100 to 149
+curl -k -G -X PUT "${APP_URL}/api/basic/cache/${CACHE_NAME}/string" -d minkey=100 -d entries=50
 
-# GET ASYNC
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/get/?entries=100000&minkey=0&async=true"
+# Get Bulk from 100 to 149
+curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/bulk" -d minkey=100 -d entries=50
 
-# PUT SYNC
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=0"
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=100000"
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=200000"
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=100000&minkey=300000"
+# Get byte entry 0
+curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/byte" -d key=0 -d show=true
 
-# Test 10 entries
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/put/?entries=10&minkey=0"
+# Get string entry 101
+curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/string" -d key=101 -d show=true
 
-# Obtain stats
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/stats"
+# Get keys
+curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/keys"
 
-# Get value of 1 entry
-curl "http://${app_name}-${namespace}.${cluster_url}/api/cache/${cache_name}/get-single?key=0"
+# Remove entries (From 10 to 110)
+curl -k -G -X DELETE "${APP_URL}/api/basic/cache/${CACHE_NAME}" -d minkey=10 -d entries=100
 ----
 
 
 
 
-## 4. Testing RHDG images
+
+
+==== Basic features performed several times
 
 Follow these steps:
-
 [source, bash]
 ----
-export CLIENT_URL=http://localhost:8081
-export CACHE_NAME=bigcache
-curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/put" -d size=41943040 -d entries=1
-
-curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/get-single" -d key=0
+# Put 50 times
+for i in {1..50}; do echo "Time $i"; curl -k -X PUT -G "${CLIENT_URL}/api/basic/cache/${CACHE_NAME}/byte" -d size=41943040 -d entries=1; done
 
 # Get 50 times
-for i in {1..50}; do echo "Time $i"; curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/get-single" -d key=0 -d noshow=true; done
+for i in {1..50}; do echo "Time $i"; curl -k -X GET -G "${CLIENT_URL}/api/basic/cache/${CACHE_NAME}/byte" -d key=0 -d show=true; done
 
-# Put 50 times
-for i in {1..50}; do echo "Time $i"; curl -G "${CLIENT_URL}/api/cache/${CACHE_NAME}/put" -d size=41943040 -d entries=1; done
-
+# Perform gets in parallel (10 threads)
+for ((i=1;i<=10;i++)); do curl -k -X GET -G "${CLIENT_URL}/api/basic/cache/${CACHE_NAME}/string" -d entries=1000 -d minkey=40000 -d async=true; done
 ----
 
 
 
-[source, bash]
-----
-# Fill the cache with 30k entries
-curl -G "${CLIENT_URL}/api/cache/default/put-simple" -d entries=30 -d minkey=0 -d entrycontent=Test
 
-curl -G "${CLIENT_URL}/api/cache/distributed-rest-01/put-simple" -d entries=30 -d minkey=0 -d entrycontent=Test
+=== Queries and indexes
 
-curl -G "${CLIENT_URL}/api/cache/distributed-rest-01/get-single-string" -d key=30
-
-curl -G "${CLIENT_URL}/api/cache/distributed-rest-01/get-single-string" -d key="3"
-
-# Retrieve some of the values
-for ((i=1;i<=100;i++)); do echo "===> ENTRY $((i))"; curl -G "http://${app_name}-${namespace}.${cluster_url}/api/cache/default/get-single-string" -d key=$((i)); done
+TIP: These features are not tested against the cache `$CACHE_NAME`, but against a cache named `indexed-cache`. It is possible to modify the cache you are going to use in the `application.properties` file and restart the client application.
 
 
-# Fill another cache with big key-values of type byte
-curl -G "http://${app_name}-${namespace}.${cluster_url}/api/cache/default/put" -d entries=30000 -d minkey=40000 -d async=false -d size=10
 
 
-# Retrieve some of the values
-for ((i=1;i<=100;i++)); do echo "===> ENTRY $((40000+i))"; curl -G "http://${app_name}-${namespace}.${cluster_url}/api/cache/default/get-single" -d key=$((40000+i)); done
+
+=== Transactions
+
+ERROR: Work in progress
 
 
-# Perform many requests in parallel
-for ((i=1;i<=10;i++)); do curl -G "http://${app_name}-${namespace}.${cluster_url}/api/cache/default/get" -d entries=1000 -d minkey=40000 -d async=true; done
-----
 
 
-## 5. Debugging inside the pod
+
+
+
+
+== ANNEX A: Debugging inside the pod
 
 It is possible to enter into a pod and execute commands to check cache cluster stats:
 

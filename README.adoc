@@ -84,7 +84,7 @@ CACHE_NAME="distributed-01"
 On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
 [source, bash]
 ----
-RHDG_URL="https://localhost:11222"
+RHDG_URL="http://localhost:11222"
 CACHE_NAME="distributed-01"
 ----
 
@@ -100,7 +100,7 @@ curl -X POST -k -u developer:developer -H "Content-Type: application/json" ${RHD
 
 [source, bash]
 ----
-curl -X DELETE -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
+curl -X DELETE -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
 ----
 
 
