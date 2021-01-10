@@ -72,14 +72,19 @@ export git_repo=https://github.com/alvarolop/rhdg8-client.git
 export git_context=hotrod-tester
 ----
 
- 
+
+First, create two Config Maps that will store your application configuration:
 [source, bash]
 ----
-## Create app configuration
 oc create configmap ${app_name}-file-config --from-file=./${git_context}/src/main/resources/application.properties -n $namespace
 oc create configmap ${app_name}-logback-config --from-file=./${git_context}/src/main/resources/logback-spring.xml -n $namespace
+[source, bash]
+----
 
-## Create application from template 
+
+Second, use an Openshift template to create your Openshift resources.
+[source, bash]
+----
 oc process -f templates/rhdg-client-ssl.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p GIT_CONTEXT_DIR=$git_context -p APP_NAMESPACE=$namespace -p RHDG_CLUSTER_NAME=$datagrid_cluster | oc apply -f -
 ----
 
