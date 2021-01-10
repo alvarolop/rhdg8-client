@@ -39,7 +39,13 @@ You can run this application locally or on OCP. These are the steps.
 
 WARNING: The following sections assume that you have a Red Hat Data Grid 8.1 server cluster running either on OCP or locally. For more information about configuring your cluster, check the following https://github.com/alvarolop/rhdg8-server[link].
 
-WARNING: This application needs at least one cache created on the cluster in order to launch without errors. Create a cache as explained in the <<../README.adoc#22-cache-configuration-using-the-rest-api,Cache Configuration section>> of the main Readme of this repository.
+WARNING: This application needs at least one cache created on the cluster in order to launch without errors. Create a cache as explained in the <<../README.adoc#22-cache-configuration-using-the-rest-api,Cache Configuration section>> of the main Readme of this repository:
+
+[source, bash]
+----
+CACHE_NAME="indexed-cache"
+curl -X POST -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@../caches/distributed-indexed.json"
+----
 
 
 === Running the client locally
