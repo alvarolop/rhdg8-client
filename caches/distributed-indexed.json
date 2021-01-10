@@ -14,16 +14,16 @@
             "interval": 60000
         },
         "indexing": {
-            "enabled": false
+            "enabled": true,
+            "key-transformers": [],
+            "indexed-entities": [],
+            "property": ""
         },
         "memory": {
-            "max-size": "1000MB",
-            "max-count": -1,
-            "when-full": "REMOVE",
             "storage": "HEAP"
         },
         "mode": "SYNC",
-        "owners": 2,
+        "owners": 1,
         "partition-handling": {
             "when-split": "ALLOW_READ_WRITES",
             "merge-policy": "REMOVE_ALL"
