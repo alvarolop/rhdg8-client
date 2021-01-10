@@ -47,7 +47,6 @@ Although, there are many different clients that allow you to connect to RHDG, in
 
 
 
-
 WARNING: The following sections assume that you have a Red Hat Data Grid 8.1 server cluster running either on OCP or locally. For more information about configuring your cluster, check the following https://github.com/alvarolop/rhdg8-server[link].
 
 

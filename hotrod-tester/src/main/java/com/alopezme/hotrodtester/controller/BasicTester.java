@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/cache")
 public class CacheTester {
 
     @Autowired
