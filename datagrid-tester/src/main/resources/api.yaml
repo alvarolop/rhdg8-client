@@ -1,0 +1,177 @@
+openapi: 3.0.0
+info:
+  description: Datagrid Tester API
+  version: "1.0.0"
+  title: Datagrid Tester API
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+tags:
+  - name: admin
+    description: Admin operations
+  - name: cache
+    description: Cache operations
+  - name: statistics
+    description: Statistics
+  - name: book
+    description: Book operations
+    
+paths:
+  /admin:
+    post:
+      tags:
+        - admin
+      summary: Reset Cache Manager
+      operationId: resetCacheManager
+      responses:
+        '405':
+          description: Invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/AdminOperation'
+   
+        
+  /cache/getAllCaches:
+    get:
+      tags:
+        - cache
+      summary: Get all cache names
+      description: Get all cache names
+      operationId: getAllcaches
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CacheName'
+       
+  
+  '/cache/{cacheName}':
+    get:
+      tags:
+        - cache
+      summary: Get cache info
+      description: Get cache info
+      operationId: getCacheInfo
+      parameters:
+        - name: cacheName
+          in: path
+          description: Cache name
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheInfo'
+            
+        '400':
+          description: Invalid name supplied
+        '404':
+          description: Cache name not found
+      
+  /book:
+    get:
+      tags:
+        - book
+      summary: Get all book entries
+      description: Get all book entries
+      operationId: getBookEntries
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookDto'
+    post:
+      tags:
+        - book
+      summary: Create new book
+      operationId: createBook
+      responses:
+        '405':
+          description: Invalid input
+        '200':
+          description: successful operation
+      requestBody:
+        $ref: '#/components/requestBodies/CreateBook'
+          
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+  
+components:
+  schemas:
+  
+    CacheName:
+      type: string
+  
+    CacheInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          
+    BookDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        publicationYear:
+          type: integer
+          
+      
+    AdminOperation:
+      type: object
+      required:
+        - operation
+      properties:
+        
+        operation:
+          type: string
+          description: Admin action to perform
+          enum:
+            - reset
+            
+      
+  requestBodies:
+  
+    AdminOperation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminOperation'
+      description: Admin action to perform on Datagrid
+      required: true
+    
+    CreateBook:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookDto'
+      description: Create new book
+      required: true
+      
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/nullp0int3r/DatagridTester/1.0.0

@@ -1,0 +1,14 @@
+server:
+  port: ${SERVER_PORT:8080}
+  
+spring:
+  application:
+    name: datagrid-tester
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+logging:
+  level:
+    root: error
+   
+    
