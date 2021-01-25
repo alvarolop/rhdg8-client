@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ApplicationConfiguration {
+public class InfinispanConfiguration {
 
     @Autowired
     RemoteCacheManager remoteCacheManager;

@@ -3,6 +3,7 @@ package com.alopezme.datagridtester.utils;
 import javax.annotation.PostConstruct;
 
 import com.alopezme.datagridtester.model.Book;
+import com.alopezme.datagridtester.model.BookSchemaImpl;
 
 import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;

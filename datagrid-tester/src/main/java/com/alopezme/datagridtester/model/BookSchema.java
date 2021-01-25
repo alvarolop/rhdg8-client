@@ -1,6 +1,4 @@
-package com.alopezme.datagridtester.utils;
-
-import com.alopezme.datagridtester.model.Book;
+package com.alopezme.datagridtester.model;
 
 import org.infinispan.protostream.SerializationContextInitializer;
 import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
