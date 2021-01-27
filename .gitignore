@@ -70,3 +70,4 @@ yarn.lock
 **/target/
 **/.gradle
 **/caches/test/
+**/caches/example-*
