@@ -11,7 +11,8 @@
         <version.spring.boot>2.3.5.RELEASE</version.spring.boot>
         <version.spring.session>2.3.0.RELEASE</version.spring.session>
         <version.spring.boot.infinispan>2.3.3.Final-redhat-00001</version.spring.boot.infinispan>
-        <version.infinispan>11.0.3.Final-redhat-00001</version.infinispan>
+<!--        <version.infinispan>11.0.3.Final-redhat-00001</version.infinispan>-->
+        <version.infinispan>12.0.0.Final</version.infinispan>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
