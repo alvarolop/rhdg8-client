@@ -17,33 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReproducerTester {
 
     @Autowired
-    RemoteCacheManager remoteCacheManager;
-
-    @Autowired
     QueriesCacheManager queriesCacheManager;
 
     String cacheName = "test-reproducer";
-//    String xml = String.format(
-//            "<infinispan>" +
-//            "   <cache-container>" +
-//            "       <distributed-cache name=\"%s\" mode=\"SYNC\" owners=\"1\" statistics=\"true\">" +
-//            "           <encoding>" +
-//            "               <key media-type=\"application/x-protostream\"/>" +
-//            "               <value media-type=\"application/x-protostream\"/>" +
-//            "           </encoding>" +
-//            "           <transaction mode=\"NONE\"/>" +
-//            "           <expiration lifespan=\"-1\" max-idle=\"-1\" interval=\"60000\"/>" +
-//            "           <memory storage=\"HEAP\"/>" +
-//            "           <indexing enabled=\"true\">" +
-//            "               <key-transformers/>" +
-//            "               <indexed-entities/>" +
-//            "           </indexing>" +
-//            "           <state-transfer enabled=\"false\" await-initial-transfer=\"false\"/>" +
-//            "           <partition-handling when-split=\"ALLOW_READ_WRITES\" merge-policy=\"REMOVE_ALL\"/>" +
-//            "       </distributed-cache>" +
-//            "   </cache-container>" +
-//            "</infinispan>", cacheName);
-
     String xml = String.format(
             "<infinispan>" +
                     "   <cache-container>" +
@@ -75,8 +51,6 @@ public class ReproducerTester {
 
         logger.info("\n--> Test begins <--\n");
         logger.info("Content of entry #100: " + cache.get(100) + "\n");
-
-        // This step will work correctly, as entry #100 is empty
         logger.info("Put entry #100");
         cache.put (100, new Book(100, "Alvaro", "Lopez", 1993));
         logger.info("Content of entry #100: " + cache.get(100) + "\n");
@@ -84,7 +58,7 @@ public class ReproducerTester {
         return "";
     }
 
-    @GetMapping("remove-cache")
+    @GetMapping("clean")
     public String removeTestCache() throws Exception{
 
         queriesCacheManager.getManager().administration().removeCache(cacheName);
