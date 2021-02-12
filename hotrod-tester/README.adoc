@@ -126,8 +126,8 @@ CACHE_NAME="distributed-01"
 On the contrary, if your application is running locally, define these environment variables to simplify the following commands:
 [source, bash]
 ----
-APP_URL="https://localhost:8080"
-CACHE_NAME="distributed-01"
+APP_URL="http://localhost:8080"
+CACHE_NAME="distributed-02"
 ----
 
 
