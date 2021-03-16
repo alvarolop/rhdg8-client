@@ -1,4 +1,4 @@
-= Red Hat Data Grid 8 clients
+= Red Hat Data Grid 8 Java client
 Álvaro López Medina <alopezme@redhat.com>
 v1.0, 2020-12
 // Create TOC wherever needed
@@ -30,7 +30,7 @@ toc::[]
 
 == Introduction
 
-Red Hat Data Grid is an in-memory, distributed, NoSQL datastore solution. Your applications can access, process, and analyze data at in-memory speed to deliver a superior user experience. In a typical Data Grid configuration, you will have your DG client and server instances detached from each other.
+Red Hat Data Grid is an in-memory, distributed, NoSQL datastore solution. Your applications can access, process, and analyze data at in-memory speed to deliver a superior user experience. In the most common Data Grid deployment, you will have your DG client and server instances detached from each other.
 
 
 This repository will focus on two main steps: 
@@ -38,8 +38,7 @@ This repository will focus on two main steps:
 * Creating caches on the server using several methods.
 * Connecting to the Data Grid to perform basic functionality.
 
-
-Although, there are many different clients that allow you to connect to RHDG, in this repository we will explore the usage of the REST API and the HotRod Java client. These are the links to the documentation of these options:
+RHDG provides libraries in several programming languages to consume entries stored in the grid. However, in this section we will focus on the REST API, normally used for testing and occasional operations, and the highly-optimized HotRod Java client. These are the links to their documentation:
 
 * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_rest_api/index[REST API].
 * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/hot_rod_java_client_guide/index[Hot Rod Java client].
@@ -54,7 +53,7 @@ WARNING: The following sections assume that you have a Red Hat Data Grid 8.1 ser
 
 
 
-== Cache configuration
+== RHDG configuration
 
 Add cache definitions to specify how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML or JSON format through Data Grid Console, Data Grid CLI, Hot Rod clients, or Data Grid Operator. This section will explore three ways: Using the REST API, the CLI, and the `Cache` CRD.
 
@@ -81,7 +80,7 @@ RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o temp
 CACHE_NAME="distributed-01"
 ----
 
-On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
+If your DG is running locally, define these environment variables to simplify the following commands:
 [source, bash]
 ----
 RHDG_URL="http://localhost:11222"
@@ -89,14 +88,14 @@ CACHE_NAME="distributed-01"
 ----
 
 
-*Create your cache*:
+*Create a cache*:
 [source, bash]
 ----
 curl -X POST -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/$CACHE_NAME.json"
 ----
 
 
-*Delete your cache*:
+*Delete a cache*:
 
 [source, bash]
 ----
@@ -104,7 +103,7 @@ curl -X DELETE -k -u developer:developer ${RHDG_URL}/rest/v2/caches/${CACHE_NAME
 ----
 
 
-*Check your cache* configuration and status:
+*Check a cache* configuration and status:
 [source,bash]
 ----
 curl -X GET -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
@@ -122,7 +121,7 @@ For more information about using the REST endpoint, check the https://access.red
 WARNING: This feature is Tech Preview as of December, 2020. Use it for development purposes only.
 
 
-The RHDG operator defines a new CRD (`Custom Resource Definition`) called `Cache`. This resource lets you describe a cache configuration and define the cluster where you want it running. 
+The RHDG operator defines a new CRD (`Custom Resource Definition`) named `Cache`. This resource lets you set a cache configuration and add it to your DG cluster. 
 
 For more information about this CRD, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html/running_data_grid_on_openshift/caches#creating_caches_operator-caches[official documentation]. 
 
@@ -134,31 +133,12 @@ For more information about this CRD, check the https://access.redhat.com/documen
 
 
 
-== Data Grid clients
+== Consuming Data Grid: REST client
 
-As we explained before, there are many ways of accessing DG caches. In this section we will explore the REST API and the many ways of configuring your Java application.
-
-=== REST client
-
-In some situations, you might want to test your RHDG cluster using REST prior to use your HotRod client. Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
+In some situations, you might want to test your RHDG cluster using REST prior to the more efficient alternative of the HotRod client. Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
 
 
-If your DG is running on OCP, define these environment variables to simplify the following commands:
-[source, bash]
-----
-CLUSTER_NAMESPACE="rhdg8"
-CLUSTER_NAME="rhdg"
-RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
-CACHE_NAME="distributed-01"
-----
-
-On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
-[source, bash]
-----
-RHDG_URL="https://localhost:11222"
-CACHE_NAME="distributed-01"
-----
-
+WARNING: Make sure to have the env vars of Chapter 2.2 still defined.
 
 Perform CRUD commands to interact with entries in the cache:
 [source,bash]
@@ -181,7 +161,7 @@ For more information about the REST endpoint, check the https://access.redhat.co
 
 
 
-=== Hot Rod Java clients
+== Consuming Data Grid: HotRod Java client
 
 Basically, there are two approaches in Java to interact with Data Grid. You may use the Infinispan libraries directly or the Spring starter. Both approaches let you make the most out of your application:
 
@@ -198,15 +178,11 @@ For more information about the Infinispan client, check the following https://ac
 
 
 
-== Managing indexed caches
 
-Indexed caches keep an index of the desired objects. Some operations update this index asynchronously. Therefore, there may be inconsistencies between the index and the real values stored in the cache. Use the following commands to clear and re-index your cache:
 
-[source, bash]
-----
-curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=clear
-curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=mass-index&mode=sync
-----
+
+
+
 
 
 
@@ -339,4 +315,22 @@ Delete the cache definition:
 [source, bash]
 ----
 curl -X DELETE -k -u developer:developer -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME
+----
+
+
+
+
+
+
+
+
+
+== Annex C: Managing indexed caches
+
+Indexed caches keep an index of the desired objects. Some operations update this index asynchronously. Therefore, there may be inconsistencies between the index and the real values stored in the cache. Use the following commands to clear and re-index your cache:
+
+[source, bash]
+----
+curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=clear
+curl -X POST -k -u developer:developer  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=mass-index&mode=sync
 ----
