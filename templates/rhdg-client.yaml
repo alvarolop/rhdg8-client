@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: rhdg8-client
@@ -91,19 +91,12 @@ objects:
             protocol: TCP
           resources: {}
           volumeMounts:
-          - name: springboot-config
-            mountPath: "${MOUNT_PATH}/application.properties"
-            subPath: application.properties
-          - name: logback-config
-            mountPath: "${MOUNT_PATH}/logback-spring.xml"
-            subPath: logback-spring.xml
+            - name: app-config
+              mountPath: "${MOUNT_PATH}"
         volumes:
-        - name: springboot-config
-          configMap:
-            name: ${APPLICATION_NAME}-file-config
-        - name: logback-config
-          configMap:
-            name: ${APPLICATION_NAME}-logback-config
+          - name: app-config
+            configMap:
+              name: ${APPLICATION_NAME}-config
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -131,7 +124,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: ${GIT_CONTEXT_DIR}
+      # contextDir: ${GIT_CONTEXT_DIR}
       git:
         uri: ${GIT_REPOSITORY}
       type: Git
@@ -161,10 +154,10 @@ parameters:
 - name: GIT_REPOSITORY
   description: "The git repository of the application."
   required: true
-- name: GIT_CONTEXT_DIR
-  description: "The path where the application code is under the git repository."
-  value: "hotrod-tester"
-  required: false
+# - name: GIT_CONTEXT_DIR
+#   description: "The path where the application code is under the git repository."
+#   value: "hotrod-tester"
+#   required: false
 - name: RHDG_CLUSTER_NAME
   description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
   value: "rhdg"

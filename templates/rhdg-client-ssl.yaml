@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: rhdg8-client
@@ -91,28 +91,21 @@ objects:
             protocol: TCP
           resources: {}
           volumeMounts:
-          - name: springboot-config
-            mountPath: "${MOUNT_PATH}/application.properties"
-            subPath: application.properties
-          - name: logback-config
-            mountPath: "${MOUNT_PATH}/logback-spring.xml"
-            subPath: logback-spring.xml
-          - name: ssl-certificate
-            mountPath: "${MOUNT_PATH}/tls.crt"
-            subPath: tls.crt
+            - name: app-config
+              mountPath: "${MOUNT_PATH}"
+            - name: ssl-certificate
+              mountPath: "${MOUNT_PATH}/tls.crt"
+              subPath: tls.crt
         volumes:
-        - name: springboot-config
-          configMap:
-            name: ${APPLICATION_NAME}-file-config
-        - name: logback-config
-          configMap:
-            name: ${APPLICATION_NAME}-logback-config
-        - name: ssl-certificate
-          secret:
-            secretName: "${RHDG_CLUSTER_NAME}-cert-secret"
-            items:
-              - key: tls.crt
-                path: tls.crt
+          - name: app-config
+            configMap:
+              name: ${APPLICATION_NAME}-config
+          - name: ssl-certificate
+            secret:
+              secretName: "${RHDG_CLUSTER_NAME}-cert-secret"
+              items:
+                - key: tls.crt
+                  path: tls.crt
     triggers:
     - type: ConfigChange
     - type: ImageChange
