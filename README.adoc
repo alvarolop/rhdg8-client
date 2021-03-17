@@ -195,18 +195,9 @@ For more information, check <<22-cache-configuration-using-the-rest-api,Cache Co
 
 Developing new functionality directly on OCP can be quite cumbersome due to the long time it takes to build a new version of the image after pushing changes. Therefore, the best way to test your application is running your application locally:
 
-The default configuration of the application is prepared for the DG clusters created on Openshift using the operator (With SSL configured by default). To run it locally, specify a custom `application.properties` path:
-
 [source, bash]
 ----
-$ mvn clean package 
-$ java -jar target/hotrod-tester-1.0.0.jar --spring.config.location=src/main/resources/application-local.properties
-----
-
-or, in one line:
-[source, bash]
-----
-$ mvn clean spring-boot:run -Dspring-boot.run.arguments=--spring.config.location=src/main/resources/application-local.properties
+$ mvn clean spring-boot:run
 ----
 
 

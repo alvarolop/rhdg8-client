@@ -1,4 +1,4 @@
-package com.alopezme.hotrodtester.utils;
+package com.alopezme.hotrodtester.configuration;
 
 import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.client.hotrod.DataFormat;
@@ -30,6 +30,7 @@ public class QueriesCacheManager {
     private RemoteCacheManager remoteCacheManager;
     private RemoteCache<Integer, Book> remoteBookCache;
     private RemoteCache<Integer, String> remoteStringCache;
+
     Logger logger = LoggerFactory.getLogger(QueriesCacheManager.class);
 
     public QueriesCacheManager(){
@@ -37,6 +38,7 @@ public class QueriesCacheManager {
 
     @PostConstruct
     public void init() {
+
         ConfigurationBuilder configuration = new ConfigurationBuilder()
                 .statistics()
                     .enable()

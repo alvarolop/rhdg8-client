@@ -12,6 +12,7 @@
         <version.spring.session>2.3.0.RELEASE</version.spring.session>
         <version.spring.boot.infinispan>2.3.3.Final-redhat-00001</version.spring.boot.infinispan>
         <version.infinispan>11.0.3.Final-redhat-00001</version.infinispan>
+        <lombok.version>1.18.18</lombok.version>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -56,6 +57,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Enable sessions -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-core</artifactId>
+        </dependency>
+
         <!-- <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -87,6 +94,14 @@
 <!--            <artifactId>spring-session-core</artifactId>-->
 <!--            <version>${version.spring.session}</version>-->
 <!--        </dependency>-->
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

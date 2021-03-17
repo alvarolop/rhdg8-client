@@ -1,4 +1,4 @@
-package com.alopezme.hotrodtester.utils;
+package com.alopezme.hotrodtester.configuration;
 
 import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.protostream.SerializationContextInitializer;
@@ -10,6 +10,6 @@ import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
         },
         schemaFileName = "book.proto",
         schemaFilePath = "proto/",
-        schemaPackageName = "org.alopezme.springtester")
+        schemaPackageName = "com.alopezme.hotrodtester.model")
 public interface BookSchema extends SerializationContextInitializer {
 }
