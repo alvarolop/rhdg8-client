@@ -1,6 +1,7 @@
 package com.alopezme.hotrodtester.controller;
 
 import com.alopezme.hotrodtester.model.Book;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.impl.query.RemoteQuery;
@@ -17,10 +18,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @RestController
@@ -29,6 +27,15 @@ public class AdminController {
 
     @Autowired
     private SpringRemoteCacheManager cacheManager;
+
+    @Autowired
+    private RemoteCache<Integer, Book> defaultBooksCache;
+
+    @Autowired
+    private RemoteCache<Integer, String> stringBooksCache;
+
+    @Autowired
+    private RemoteCache<Integer, Book> indexedBooksCache;
 
     // The name of the Scripts cache.
     String SCRIPTS_METADATA_CACHE_NAME = "___script_cache";
@@ -95,152 +102,6 @@ public class AdminController {
         return string + System.lineSeparator();
     }
 
-    /**
-     * GET KEYS
-     */
-    @GetMapping("/cache/{cache}/keys")
-    public String getKeys(
-            @PathVariable(value = "cache") String cacheName) {
-
-        return cacheManager.getNativeCacheManager().getCache(cacheName).keySet().toString() + System.lineSeparator();
-    }
-
-
-    /**
-     * PUT ENTRIES
-     */
-    @PutMapping("/cache/{cache}/bytes")
-    public String putByte (
-            @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "entries") int numEntries,
-            @RequestParam(value = "async", defaultValue = "false") boolean isAsync,
-            @RequestParam(value = "asyncTime", defaultValue = "500") int asyncTime,
-            @RequestParam(value = "size", defaultValue = "1024") int entrySize,
-            @RequestParam(value = "minkey", defaultValue = "0") int minKey) throws Exception {
-
-        RemoteCache<String, byte[]> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-
-        byte[] bytes = new byte[entrySize];
-        Random rnd = new Random();
-
-        int maxKey = minKey + numEntries;
-        for (int i = minKey; i < maxKey; i++) {
-
-            rnd.nextBytes(bytes);
-            if (isAsync) {
-                cache.put(Integer.toString(i), bytes, asyncTime, TimeUnit.MILLISECONDS);
-                logger.info("Put byte " + i + " async");
-            } else {
-                cache.put(Integer.toString(i), bytes);
-                logger.info("put byte " + i + "  sync");
-            }
-        }
-
-        return "PUT Byte [" + minKey + " , " + maxKey + ")" + System.lineSeparator();
-    }
-
-    @PutMapping("/cache/{cache}/string")
-    public String putString (
-            @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "entries") int numEntries,
-            @RequestParam(value = "minkey", defaultValue = "0") int minKey,
-            @RequestParam(value = "entrycontent", defaultValue = "Test") String entryContent) throws Exception {
-
-        RemoteCache<String, String> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-        int maxKey = minKey + numEntries;
-
-        for (int i = minKey; i < maxKey; i++) {
-            cache.put(Integer.toString(i), entryContent + " " + Integer.toString(i));
-            logger.info("Put string " + i);
-        }
-        return "PUT String [" + minKey + " , " + maxKey + ")" + System.lineSeparator();
-    }
-
-
-
-
-
-
-
-    /**
-     * GET ENTRIES
-     */
-    @GetMapping("/cache/{cache}/bulk")
-    public String getBulk (
-            @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "entries") int numEntries,
-            @RequestParam(value = "async", defaultValue = "false") boolean isAsync,
-            @RequestParam(value = "asyncTime", defaultValue = "500") int asyncTime,
-            @RequestParam(value = "minkey", defaultValue = "0") int minKey) throws Exception {
-
-        RemoteCache<String, byte[]> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-
-        for (int i = minKey; i < (minKey + numEntries); i++) {
-            if (isAsync) {
-                cache.getAsync(Integer.toString(i)).get(asyncTime, TimeUnit.MILLISECONDS);
-                logger.info("get ok " + i + " Async");
-            } else {
-                cache.get(Integer.toString(i));
-                logger.info("get ok " + i);
-            }
-
-        }
-
-        return "OK " + numEntries + " " + minKey + System.lineSeparator();
-    }
-
-    @GetMapping("/cache/{cache}/byte")
-    public String getByte(
-            @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "key") int key,
-            @RequestParam(value = "show", defaultValue = "false") boolean show) {
-
-        RemoteCache<String, byte[]> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-        String result = Arrays.toString(cache.get(Integer.toString(key))) + System.lineSeparator();
-
-        return show ? result : "OK" + System.lineSeparator();
-    }
-
-    @GetMapping("/cache/{cache}/string")
-    public String getString(
-            @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "key") int key,
-            @RequestParam(value = "show", defaultValue = "false") boolean show) {
-
-        RemoteCache<String, String> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-        String result = cache.get(Integer.toString(key)) + System.lineSeparator();
-
-        return show ? result : "OK" + System.lineSeparator();
-    }
-
-
-
-
-
-    /**
-     * REMOVE ENTRIES
-     */
-
-    @DeleteMapping("/cache/{cache}")
-    public String removeEntries(
-            @PathVariable(value = "cache") String cacheName,
-            @RequestParam(value = "entries") int numEntries,
-            @RequestParam(value = "minkey", required = false, defaultValue = "0") int minKey) {
-
-        RemoteCache<String, byte[]> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-        int maxKey = minKey + numEntries;
-
-        for (int i = minKey; i < maxKey; i++) {
-            cache.remove(Integer.toString(i));
-        }
-
-        return "Deleted from " + minKey + " to " + maxKey + System.lineSeparator();
-    }
-
-
-
-
-
 
 
 
@@ -296,15 +157,18 @@ public class AdminController {
      * MANAGE BOOKS CACHE: SIZE, LOAD, ETC.
      */
 
-    @GetMapping("/book/size")
-    public String getAll()  {
-        return  cacheManager.getNativeCacheManager().getCache("books").entrySet().size() + System.lineSeparator();
+    @GetMapping("/{cache}/size")
+    public String getSize(
+            @PathVariable(value = "cache") String cacheName
+    )  {
+        return  cacheManager.getNativeCacheManager().getCache(cacheName).entrySet().size() + System.lineSeparator();
     }
 
-    @GetMapping("/book/load")
-    public String loadBooksCache() throws IOException {
+    @GetMapping("/{cache}/load")
+    public String loadBooksCache(
+            @PathVariable(value = "cache") String cacheName) throws IOException {
 
-        RemoteCache< Integer, Book> cache = cacheManager.getNativeCacheManager().getCache("books");
+        RemoteCache< Integer, Book> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
         ObjectMapper mapper = new ObjectMapper();
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
@@ -319,10 +183,11 @@ public class AdminController {
         return "Books cache now contains " + cache.entrySet().size() + " entries";
     }
 
-    @GetMapping("/book/reduced-load")
-    public String miniLoadBooksCache() throws IOException {
+    @GetMapping("/{cache}/reduced-load")
+    public String reducedLoadBooksCache(
+            @PathVariable(value = "cache") String cacheName) throws IOException {
 
-        RemoteCache< Integer, Book> cache = cacheManager.getNativeCacheManager().getCache("books");
+        RemoteCache< Integer, Book> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
         ObjectMapper mapper = new ObjectMapper();
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
@@ -339,6 +204,23 @@ public class AdminController {
         return "Books cache now contains " + cache.entrySet().size() + " entries";
     }
 
+    @GetMapping("/test-cache1")
+    public String testCache1() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        logger.info("GET 1 : " + mapper.writeValueAsString(defaultBooksCache.get(0)));
+        return  defaultBooksCache.entrySet().size() + System.lineSeparator();
+    }
 
+    @GetMapping("/test-cache2")
+    public String testCache2() {
+        logger.info("GET 2 : " + stringBooksCache.get(0));
+        return  stringBooksCache.entrySet().size() + System.lineSeparator();
+    }
 
+    @GetMapping("/test-cache3")
+    public String testCache3() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        logger.info("GET 3 : " + mapper.writeValueAsString(indexedBooksCache.get(0)));
+        return  indexedBooksCache.entrySet().size() + System.lineSeparator();
+    }
 }

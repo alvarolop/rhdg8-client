@@ -1,6 +1,8 @@
 package com.alopezme.hotrodtester.controller;
 
 import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.session.MapSession;
@@ -16,6 +18,8 @@ public class SessionController {
     public static final String LATEST_SESSION_VALUE = "latest";
     @Autowired
     private SpringRemoteCacheManager cacheManager;
+
+    Logger logger = LoggerFactory.getLogger(SessionController.class);
 
     @GetMapping("/")
     public String sessions() {

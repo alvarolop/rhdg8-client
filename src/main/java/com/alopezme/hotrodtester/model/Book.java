@@ -8,13 +8,15 @@ import org.infinispan.protostream.annotations.ProtoDoc;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
+import java.io.Serializable;
+
 @ProtoDoc("@Indexed")
 @Getter
 @Setter
 @NoArgsConstructor
 //@AllArgsConstructor
 @JsonPropertyOrder({"id","title","author","publicationYear"})
-public class Book {
+public class Book implements Serializable {
 
     @ProtoDoc("@Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)")
     @ProtoField(number = 1, defaultValue = "0")
