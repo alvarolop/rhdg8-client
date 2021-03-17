@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/session")
+@RequestMapping("session")
 public class SessionController {
 
     public static final String LATEST_SESSION_VALUE = "latest";

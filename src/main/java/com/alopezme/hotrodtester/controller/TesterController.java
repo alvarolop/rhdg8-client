@@ -1,5 +1,6 @@
 package com.alopezme.hotrodtester.controller;
 
+import com.alopezme.hotrodtester.model.Book;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
 import org.slf4j.Logger;
@@ -12,11 +13,17 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("api/tester")
+@RequestMapping("tester")
 public class TesterController {
 
     @Autowired
     private SpringRemoteCacheManager cacheManager;
+
+    @Autowired
+    private RemoteCache<String, Byte[]> byteTesterCache;
+
+    @Autowired
+    private RemoteCache<String, String> stringTesterCache;
 
     Logger logger = LoggerFactory.getLogger(TesterController.class);
 
@@ -27,7 +34,7 @@ public class TesterController {
     public String getKeys(
             @PathVariable(value = "cache") String cacheName) {
 
-        return cacheManager.getNativeCacheManager().getCache(cacheName).keySet().toString() + System.lineSeparator();
+        return byteTesterCache.keySet().toString() + System.lineSeparator();
     }
 
 

@@ -2,7 +2,7 @@ package com.alopezme.hotrodtester.controller;
 
 import com.alopezme.hotrodtester.model.Book;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.infinispan.client.hotrod.Flag;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.impl.query.RemoteQuery;
 import org.infinispan.client.hotrod.jmx.RemoteCacheClientStatisticsMXBean;
@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("admin")
 public class AdminController {
 
     @Autowired
@@ -110,7 +110,7 @@ public class AdminController {
      * REGISTER PROTOS AND SCRIPTS
      */
 
-    @GetMapping("/cache/register/proto")
+    @GetMapping("/register/proto")
     public String cacheRegisterProto() throws Exception {
 
         // Register Team schema in the server
@@ -121,9 +121,11 @@ public class AdminController {
 
         RemoteCache<String, String> protoCache = cacheManager.getNativeCacheManager().getCache(PROTOBUF_METADATA_CACHE_NAME);
 
-        if (!protoCache.containsKey("book.proto")) {
-            protoCache.put("book.proto", proto);
-        }
+        logger.info("--> REMOVE");
+        protoCache.remove("book.proto");
+        logger.info("--> PUT");
+        protoCache.put("book.proto", proto);
+        logger.info("--> END");
 
         String errors = protoCache.get(ERRORS_KEY_SUFFIX);
         if (errors != null) {
@@ -134,7 +136,7 @@ public class AdminController {
                 protoCache.entrySet().toString() + System.lineSeparator();
     }
 
-    @GetMapping("/cache/register/script")
+    @GetMapping("/register/script")
     public String cacheRegisterScripts()  {
 
         String script = "// mode=local,language=javascript\n"
@@ -142,9 +144,7 @@ public class AdminController {
                 + "cache.put(key, value);";
 
         RemoteCache<String, String> scriptCache = cacheManager.getNativeCacheManager().getCache(SCRIPTS_METADATA_CACHE_NAME);
-        if (!scriptCache.containsKey("putEntries.js")) {
-            scriptCache.put("putEntries.js", script);
-        }
+        scriptCache.put("putEntries.js", script);
 
         return "Scripts cache now contains " + scriptCache.entrySet().size() + " entries: " + System.lineSeparator() +
                 scriptCache.entrySet().toString() + System.lineSeparator();
@@ -164,63 +164,23 @@ public class AdminController {
         return  cacheManager.getNativeCacheManager().getCache(cacheName).entrySet().size() + System.lineSeparator();
     }
 
-    @GetMapping("/{cache}/load")
-    public String loadBooksCache(
-            @PathVariable(value = "cache") String cacheName) throws IOException {
 
-        RemoteCache< Integer, Book> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-        ObjectMapper mapper = new ObjectMapper();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.info("PUT : " + mapper.writeValueAsString(book));
-                cache.put(book.getId(), book);
-            }
-        }
-        return "Books cache now contains " + cache.entrySet().size() + " entries";
-    }
-
-    @GetMapping("/{cache}/reduced-load")
-    public String reducedLoadBooksCache(
-            @PathVariable(value = "cache") String cacheName) throws IOException {
-
-        RemoteCache< Integer, Book> cache = cacheManager.getNativeCacheManager().getCache(cacheName);
-        ObjectMapper mapper = new ObjectMapper();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
-            String line;
-            int iteration = 0;
-            while ((line = br.readLine()) != null && iteration < 100) {
-                String[] values = line.split(",");
-                Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.info("PUT : " + mapper.writeValueAsString(book));
-                cache.put(book.getId(), book);
-                iteration++;
-            }
-        }
-        return "Books cache now contains " + cache.entrySet().size() + " entries";
-    }
 
     @GetMapping("/test-cache1")
     public String testCache1() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        logger.info("GET 1 : " + mapper.writeValueAsString(defaultBooksCache.get(0)));
+        logger.info("GET 1 : " + defaultBooksCache.get(0).toString());
         return  defaultBooksCache.entrySet().size() + System.lineSeparator();
     }
 
     @GetMapping("/test-cache2")
     public String testCache2() {
-        logger.info("GET 2 : " + stringBooksCache.get(0));
+        logger.info("GET 2 : " + stringBooksCache.get(0).toString());
         return  stringBooksCache.entrySet().size() + System.lineSeparator();
     }
 
     @GetMapping("/test-cache3")
     public String testCache3() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        logger.info("GET 3 : " + mapper.writeValueAsString(indexedBooksCache.get(0)));
+        logger.info("GET 3 : " + indexedBooksCache.get(0).toString());
         return  indexedBooksCache.entrySet().size() + System.lineSeparator();
     }
 }

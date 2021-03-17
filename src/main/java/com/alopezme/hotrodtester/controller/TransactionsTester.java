@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/transaction")
+@RequestMapping("transaction")
 public class TransactionsTester {
 
     @Autowired

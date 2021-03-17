@@ -5,6 +5,7 @@ import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.commons.dataconversion.MediaType;
+import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ public class AppConfiguration {
     RemoteCacheManager remoteCacheManager;
 
     private final String BOOKS_CACHE_NAME = "books";
+    private final String TESTER_CACHE_NAME = "tester";
     @Value("${alvaro.queries.cache-name}")
     private String INDEXED_CACHE_NAME;
 
@@ -28,15 +30,32 @@ public class AppConfiguration {
 
     @Bean
     RemoteCache<Integer, String> stringBooksCache(){
-        DataFormat jsonString = DataFormat.builder()
+        DataFormat jsonStringFormat = DataFormat.builder()
                 .valueType(MediaType.APPLICATION_JSON)
                 .valueMarshaller(new UTF8StringMarshaller())
                 .build();
-        return remoteCacheManager.getCache(BOOKS_CACHE_NAME).withDataFormat(jsonString);
+        return remoteCacheManager.getCache(BOOKS_CACHE_NAME).withDataFormat(jsonStringFormat);
 
     }
+
     @Bean
     RemoteCache<Integer, Book> indexedBooksCache(){
-        return remoteCacheManager.getCache(INDEXED_CACHE_NAME);
+        DataFormat protobufFormat = DataFormat.builder()
+                .keyType(MediaType.APPLICATION_PROTOSTREAM)
+                .keyMarshaller(new ProtoStreamMarshaller())
+                .valueType(MediaType.APPLICATION_PROTOSTREAM)
+                .valueMarshaller(new ProtoStreamMarshaller())
+                .build();
+        return remoteCacheManager.getCache(INDEXED_CACHE_NAME).withDataFormat(protobufFormat);
+    }
+
+    @Bean
+    RemoteCache<String, Byte[]> byteTesterCache(){
+        return remoteCacheManager.getCache(TESTER_CACHE_NAME);
+    }
+
+    @Bean
+    RemoteCache<String, String> stringTesterCache(){
+        return remoteCacheManager.getCache(TESTER_CACHE_NAME);
     }
 }
