@@ -1,6 +1,8 @@
 package com.alopezme.hotrodtester.configuration;
 
 import org.infinispan.client.hotrod.DefaultTemplate;
+import org.infinispan.commons.marshall.JavaSerializationMarshaller;
+import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +60,9 @@ public class InfinispanConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
         return b -> {
+            b.marshaller(new JavaSerializationMarshaller());
+            b.marshaller(new ProtoStreamMarshaller());
+            b.addJavaSerialWhiteList(".*");
             b.addContextInitializer(new BookSchemaImpl());
             b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
             b.remoteCache(BOOKS_CACHE_NAME).configuration(String.format(xmlSerialized, BOOKS_CACHE_NAME));
