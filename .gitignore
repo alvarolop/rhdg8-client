@@ -72,3 +72,5 @@ yarn.lock
 **/caches/test/
 **/caches/example-*
 JMeter
+jmeter.log
+jmeter-output

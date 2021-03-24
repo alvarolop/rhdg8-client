@@ -1,0 +1,128 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: jmeter
+  annotations:
+    description: Template to deploy a JMeter load tester to test a RHDG cluster on OCP.
+    tags: infinispan,datagrid,java,jmeter
+    iconClass: icon-rh-openjdk
+    openshift.io/provider-display-name: Red Hat, Inc.
+    openshift.io/support-url: https://access.redhat.com
+labels:
+  template: jmeter
+objects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: ${APPLICATION_NAME}
+      name: ${APPLICATION_NAME}
+      namespace: ${APP_NAMESPACE}
+    spec:
+      ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        deploymentconfig: ${APPLICATION_NAME}
+#  - apiVersion: route.openshift.io/v1
+#    kind: Route
+#    metadata:
+#      name: ${APPLICATION_NAME}
+#      namespace: ${APP_NAMESPACE}
+#    spec:
+#      to:
+#        kind: Service
+#        name: ${APPLICATION_NAME}
+#      port:
+#        targetPort: 8080
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    metadata:
+      name: ${APPLICATION_NAME}
+      namespace: ${APP_NAMESPACE}
+    spec:
+      replicas: 1
+      revisionHistoryLimit: 3
+      selector:
+        app: ${APPLICATION_NAME}
+        deploymentconfig: ${APPLICATION_NAME}
+      strategy:
+        activeDeadlineSeconds: 21600
+        resources: { }
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            app: ${APPLICATION_NAME}
+            deploymentconfig: ${APPLICATION_NAME}
+            template: jmeter
+        spec:
+          containers:
+            - args:
+                - while true; do sleep 30; done;
+              command:
+                - /bin/sh
+                - '-c'
+                - '--'
+              env:
+                - name: APP_NAME
+                  value: jmeter
+              image: 'registry.redhat.io/ubi8/openjdk-11:latest'
+              imagePullPolicy: Always
+              name: jmeter
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: '1'
+                  memory: 2G
+                requests:
+                  memory: 500M
+              securityContext:
+                capabilities: { }
+                privileged: false
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              # volumeMounts:
+              #   - mountPath: /opt/metadata
+              #     name: podinfo
+              #   - mountPath: /native
+              #     name: volume-d6nn4
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: { }
+          terminationGracePeriodSeconds: 30
+          # volumes:
+          #   - emptyDir: {}
+          #     name: podinfo
+          #   - name: volume-d6nn4
+          #     persistentVolumeClaim:
+          #       claimName: native
+      test: false
+      triggers:
+        - type: ConfigChange
+parameters:
+  - name: APPLICATION_NAME
+    description: "The name of the application."
+    required: true
+  - name: APP_NAMESPACE
+    description: "The namespace of the application."
+    required: true
+#  - name: MOUNT_PATH
+#    description: "The path where the configuration file of the application is mounted."
+#    value: "/deployments/config"
+#    required: true
+  - name: RHDG_CLUSTER_NAME
+    description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
+    value: "rhdg"
+    required: false
