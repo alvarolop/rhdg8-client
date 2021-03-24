@@ -71,3 +71,4 @@ yarn.lock
 **/.gradle
 **/caches/test/
 **/caches/example-*
+JMeter
