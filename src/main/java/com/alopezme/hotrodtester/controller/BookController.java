@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -75,6 +73,23 @@ public class BookController {
     }
 
 
+    /**
+     * GET
+     */
+    @GetMapping("/{id}")
+    public String getByID(
+            @PathVariable(value = "id") int id) {
+        return bookRepository.findById(id).toString();
+    }
+
+    /**
+     * REMOVE
+     */
+    @DeleteMapping("/{id}")
+    public void removeById(
+            @PathVariable(value = "id") int id) {
+        bookRepository.delete(id);
+    }
 
 
 }
