@@ -10,10 +10,10 @@
     <properties>
         <version.spring.boot>2.3.4.RELEASE</version.spring.boot>
         <version.spring.session>2.3.0.RELEASE</version.spring.session>
-        <version.spring.boot.infinispan>2.3.6.Final-redhat-00001</version.spring.boot.infinispan>
-        <version.infinispan>11.0.9.Final-redhat-00001</version.infinispan>
-<!--        <version.spring.boot.infinispan>12.1.0.CR2</version.spring.boot.infinispan>-->
-<!--        <version.infinispan>12.1.0.CR2</version.infinispan>-->
+<!--        <version.spring.boot.infinispan>2.3.6.Final-redhat-00001</version.spring.boot.infinispan>-->
+<!--        <version.infinispan>11.0.9.Final-redhat-00001</version.infinispan>-->
+        <version.spring.boot.infinispan>12.1.0.Final</version.spring.boot.infinispan>
+        <version.infinispan>12.1.0.Final</version.infinispan>
         <lombok.version>1.18.18</lombok.version>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
