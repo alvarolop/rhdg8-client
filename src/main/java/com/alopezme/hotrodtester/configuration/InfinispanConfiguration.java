@@ -62,9 +62,9 @@ public class InfinispanConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
         return b -> {
-//            b.marshaller(new JavaSerializationMarshaller());
             b.marshaller(new ProtoStreamMarshaller());
-//            b.addJavaSerialWhiteList(".*");
+            b.marshaller(new JavaSerializationMarshaller());
+            b.addJavaSerialWhiteList(".*");
             b.addContextInitializer(new BookSchemaImpl());
             b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
             b.remoteCache(BOOKS_CACHE_NAME).configuration(String.format(xmlSerialized, BOOKS_CACHE_NAME));
