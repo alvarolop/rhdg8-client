@@ -117,15 +117,10 @@ public class AdminController {
         Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
         String proto = Files.readString(protoPath);
 
-//        logger.info("--> Proto schema: " + proto);
+        logger.info("--> Proto schema: " + proto);
 
         RemoteCache<String, String> protoCache = cacheManager.getNativeCacheManager().getCache(PROTOBUF_METADATA_CACHE_NAME);
-
-        logger.info("--> REMOVE");
-        protoCache.remove("book.proto");
-        logger.info("--> PUT");
         protoCache.put("book.proto", proto);
-        logger.info("--> END");
 
         String errors = protoCache.get(ERRORS_KEY_SUFFIX);
         if (errors != null) {
