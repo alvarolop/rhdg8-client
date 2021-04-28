@@ -32,21 +32,14 @@ public class InfinispanConfiguration {
             b.addJavaSerialWhiteList(".*");
             b.addContextInitializer(new BookSchemaImpl());
             b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
-            try {
-                URI booksJavaSerURI = new URI("caches/books-javaser.xml");
-                URI booksIndexedURI = new URI("caches/books-indexed.xml");
-                URI booksTransacURI = new URI("caches/books-transactional.xml");
-                URI testerCacheURI = new URI("caches/tester.xml");
-                b.remoteCache(TESTER_CACHE_NAME).configurationURI(testerCacheURI);
-                b.remoteCache(BOOKS_CACHE_NAME).configurationURI(booksJavaSerURI);
-                b.remoteCache(INDEXED_CACHE_NAME).configurationURI(booksIndexedURI);
-                b.remoteCache(TRANSACTIONAL_CACHE_NAME)
-                    .configurationURI(booksTransacURI)
-                    .transactionManagerLookup(GenericTransactionManagerLookup.INSTANCE)
-                    .transactionMode(TransactionMode.NON_XA);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+            b.remoteCache(TESTER_CACHE_NAME).configurationURI(URI.create("caches/tester.xml"));
+            b.remoteCache(BOOKS_CACHE_NAME).configurationURI(URI.create("caches/books-javaser.xml"));
+            b.remoteCache(INDEXED_CACHE_NAME).configurationURI(URI.create("caches/books-indexed.xml"));
+            b.remoteCache(TRANSACTIONAL_CACHE_NAME)
+                .configurationURI(URI.create("caches/books-transactional.xml"));
+//                .transactionManagerLookup(GenericTransactionManagerLookup.INSTANCE)
+//                .transactionMode(TransactionMode.NON_XA);
+
         };
     }
 }
