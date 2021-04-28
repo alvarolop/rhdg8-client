@@ -6,13 +6,13 @@ import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 @Configuration
 public class InfinispanConfiguration {
@@ -21,70 +21,7 @@ public class InfinispanConfiguration {
     private final String TESTER_CACHE_NAME = "tester";
     private final String SESSIONS_CACHE_NAME = "sessions";
     private final String TRANSACTIONAL_CACHE_NAME = "books-transactional";
-
-    @Value("${alvaro.queries.cache-name}")
-    private String INDEXED_CACHE_NAME;
-
-    String xmlSerialized = "<infinispan>" +
-                    "   <cache-container>" +
-                    "       <distributed-cache name=\"%s\" mode=\"SYNC\" owners=\"1\" statistics=\"true\">" +
-                    "           <encoding>" +
-                    "               <key media-type=\"application/x-java-serialized-object\"/>" +
-                    "               <value media-type=\"application/x-java-serialized-object\"/>" +
-                    "           </encoding>" +
-                    "           <transaction mode=\"NONE\"/>" +
-                    "           <expiration lifespan=\"-1\" max-idle=\"-1\" interval=\"60000\"/>" +
-                    "           <memory storage=\"HEAP\"/>" +
-                    "           <state-transfer enabled=\"false\" await-initial-transfer=\"false\"/>" +
-                    "           <partition-handling when-split=\"ALLOW_READ_WRITES\" merge-policy=\"REMOVE_ALL\"/>" +
-                    "       </distributed-cache>" +
-                    "   </cache-container>" +
-                    "</infinispan>";
-
-    String xmlProtoStream = "<infinispan>" +
-                    "   <cache-container>" +
-                    "       <distributed-cache name=\"%s\" mode=\"SYNC\" owners=\"1\" statistics=\"true\">" +
-                    "           <encoding>" +
-                    "               <key media-type=\"application/x-protostream\"/>" +
-                    "               <value media-type=\"application/x-protostream\"/>" +
-                    "           </encoding>" +
-                    "           <transaction mode=\"NONE\"/>" +
-                    "           <expiration lifespan=\"-1\" max-idle=\"-1\" interval=\"60000\"/>" +
-                    "           <memory storage=\"HEAP\"/>" +
-                    "           <indexing enabled=\"true\">" +
-                    "               <key-transformers/>" +
-                    "               <indexed-entities>" +
-                    "                 <indexed-entity>com.alopezme.hotrodtester.model.Book</indexed-entity>" +
-                    "               </indexed-entities>" +
-                    "           </indexing>" +
-                    "           <state-transfer enabled=\"false\" await-initial-transfer=\"false\"/>" +
-                    "           <partition-handling when-split=\"ALLOW_READ_WRITES\" merge-policy=\"REMOVE_ALL\"/>" +
-                    "       </distributed-cache>" +
-                    "   </cache-container>" +
-                    "</infinispan>";
-
-    String xmlTransactions = "<infinispan>" +
-            "   <cache-container>" +
-            "       <distributed-cache name=\"%s\" mode=\"SYNC\" owners=\"1\" statistics=\"true\">" +
-            "           <encoding>" +
-            "               <key media-type=\"application/x-protostream\"/>" +
-            "               <value media-type=\"application/x-protostream\"/>" +
-            "           </encoding>" +
-            "           <locking isolation=\"REPEATABLE_READ\"/>" +
-            "           <transaction mode=\"NON_XA\" locking=\"PESSIMISTIC\"/>" +
-            "           <expiration lifespan=\"-1\" max-idle=\"-1\" interval=\"60000\"/>" +
-            "           <memory storage=\"HEAP\"/>" +
-            "           <indexing enabled=\"true\">" +
-            "               <key-transformers/>" +
-            "               <indexed-entities>" +
-            "                 <indexed-entity>com.alopezme.hotrodtester.model.Book</indexed-entity>" +
-            "               </indexed-entities>" +
-            "           </indexing>" +
-            "           <state-transfer enabled=\"false\" await-initial-transfer=\"false\"/>" +
-            "           <partition-handling when-split=\"ALLOW_READ_WRITES\" merge-policy=\"REMOVE_ALL\"/>" +
-            "       </distributed-cache>" +
-            "   </cache-container>" +
-            "</infinispan>";
+    private final String INDEXED_CACHE_NAME = "books-indexed";
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -95,14 +32,21 @@ public class InfinispanConfiguration {
             b.addJavaSerialWhiteList(".*");
             b.addContextInitializer(new BookSchemaImpl());
             b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
-            b.remoteCache(BOOKS_CACHE_NAME).configuration(String.format(xmlSerialized, BOOKS_CACHE_NAME));
-            b.remoteCache(TESTER_CACHE_NAME).configuration(String.format(xmlSerialized, TESTER_CACHE_NAME));
-            b.remoteCache(INDEXED_CACHE_NAME).configuration(String.format(xmlProtoStream, INDEXED_CACHE_NAME));
-//            b.remoteCache(TRANSACTIONAL_CACHE_NAME)
-//                    .configuration(String.format(xmlTransactions, TRANSACTIONAL_CACHE_NAME))
-//                    .transactionManagerLookup(GenericTransactionManagerLookup.INSTANCE)
-//                    .transactionMode(TransactionMode.NON_XA);
-//            b.remoteCache("algo").configurationURI(new URI(););
+            try {
+                URI booksJavaSerURI = new URI("caches/books-javaser.xml");
+                URI booksIndexedURI = new URI("caches/books-indexed.xml");
+                URI booksTransacURI = new URI("caches/books-transactional.xml");
+                URI testerCacheURI = new URI("caches/tester.xml");
+                b.remoteCache(TESTER_CACHE_NAME).configurationURI(testerCacheURI);
+                b.remoteCache(BOOKS_CACHE_NAME).configurationURI(booksJavaSerURI);
+                b.remoteCache(INDEXED_CACHE_NAME).configurationURI(booksIndexedURI);
+                b.remoteCache(TRANSACTIONAL_CACHE_NAME)
+                    .configurationURI(booksTransacURI)
+                    .transactionManagerLookup(GenericTransactionManagerLookup.INSTANCE)
+                    .transactionMode(TransactionMode.NON_XA);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         };
     }
 }

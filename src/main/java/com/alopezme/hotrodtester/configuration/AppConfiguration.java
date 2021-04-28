@@ -24,9 +24,7 @@ public class AppConfiguration {
     private final String BOOKS_CACHE_NAME = "books";
     private final String TESTER_CACHE_NAME = "tester";
     private final String TRANSACTIONAL_CACHE_NAME = "books-transactional";
-
-    @Value("${alvaro.queries.cache-name}")
-    private String INDEXED_CACHE_NAME;
+    private final String INDEXED_CACHE_NAME = "books-indexed";
 
     DataFormat javaSerialization = DataFormat.builder()
             .keyType(MediaType.APPLICATION_SERIALIZED_OBJECT)
