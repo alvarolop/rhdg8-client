@@ -5,6 +5,7 @@ import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.commons.dataconversion.MediaType;
+import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,13 @@ public class AppConfiguration {
 
     @Bean
     RemoteCache<Integer, Book> defaultBooksCache(){
-        return remoteCacheManager.getCache(BOOKS_CACHE_NAME);
+        DataFormat javaSerialization = DataFormat.builder()
+                .keyType(MediaType.APPLICATION_SERIALIZED_OBJECT)
+                .keyMarshaller(new JavaSerializationMarshaller())
+                .valueType(MediaType.APPLICATION_SERIALIZED_OBJECT)
+                .valueMarshaller(new JavaSerializationMarshaller())
+                .build();
+        return remoteCacheManager.getCache(BOOKS_CACHE_NAME).withDataFormat(javaSerialization);
     }
 
     @Bean
@@ -51,7 +58,13 @@ public class AppConfiguration {
 
     @Bean
     RemoteCache<String, Byte[]> byteTesterCache(){
-        return remoteCacheManager.getCache(TESTER_CACHE_NAME);
+        DataFormat javaSerialization = DataFormat.builder()
+                .keyType(MediaType.APPLICATION_SERIALIZED_OBJECT)
+                .keyMarshaller(new JavaSerializationMarshaller())
+                .valueType(MediaType.APPLICATION_SERIALIZED_OBJECT)
+                .valueMarshaller(new JavaSerializationMarshaller())
+                .build();
+        return remoteCacheManager.getCache(TESTER_CACHE_NAME).withDataFormat(javaSerialization);
     }
 
     @Bean

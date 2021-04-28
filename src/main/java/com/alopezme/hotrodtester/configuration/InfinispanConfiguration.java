@@ -48,7 +48,9 @@ public class InfinispanConfiguration {
                     "           <memory storage=\"HEAP\"/>" +
                     "           <indexing enabled=\"true\">" +
                     "               <key-transformers/>" +
-                    "               <indexed-entities/>" +
+                    "               <indexed-entities>" +
+                    "                 <indexed-entity>com.alopezme.hotrodtester.model.Book</indexed-entity>" +
+                    "               </indexed-entities>" +
                     "           </indexing>" +
                     "           <state-transfer enabled=\"false\" await-initial-transfer=\"false\"/>" +
                     "           <partition-handling when-split=\"ALLOW_READ_WRITES\" merge-policy=\"REMOVE_ALL\"/>" +
@@ -60,10 +62,10 @@ public class InfinispanConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
         return b -> {
-//            b.marshaller(new JavaSerializationMarshaller());
-//            b.marshaller(new ProtoStreamMarshaller());
-//            b.addJavaSerialWhiteList(".*");
-//            b.addContextInitializer(new BookSchemaImpl());
+            b.marshaller(new ProtoStreamMarshaller());
+            b.marshaller(new JavaSerializationMarshaller());
+            b.addJavaSerialWhiteList(".*");
+            b.addContextInitializer(new BookSchemaImpl());
             b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
             b.remoteCache(BOOKS_CACHE_NAME).configuration(String.format(xmlSerialized, BOOKS_CACHE_NAME));
             b.remoteCache(TESTER_CACHE_NAME).configuration(String.format(xmlSerialized, TESTER_CACHE_NAME));
