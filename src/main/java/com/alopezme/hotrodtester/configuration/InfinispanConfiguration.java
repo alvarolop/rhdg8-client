@@ -2,6 +2,7 @@ package com.alopezme.hotrodtester.configuration;
 
 import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
+import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
@@ -13,6 +14,7 @@ import org.springframework.core.annotation.Order;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class InfinispanConfiguration {
@@ -31,14 +33,15 @@ public class InfinispanConfiguration {
             b.marshaller(new JavaSerializationMarshaller());
             b.addJavaSerialWhiteList(".*");
             b.addContextInitializer(new BookSchemaImpl());
+            b.transaction().transactionTimeout(1, TimeUnit.MINUTES);
             b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
             b.remoteCache(TESTER_CACHE_NAME).configurationURI(URI.create("caches/tester.xml"));
             b.remoteCache(BOOKS_CACHE_NAME).configurationURI(URI.create("caches/books-javaser.xml"));
             b.remoteCache(INDEXED_CACHE_NAME).configurationURI(URI.create("caches/books-indexed.xml"));
             b.remoteCache(TRANSACTIONAL_CACHE_NAME)
-                .configurationURI(URI.create("caches/books-transactional.xml"));
-//                .transactionManagerLookup(GenericTransactionManagerLookup.INSTANCE)
-//                .transactionMode(TransactionMode.NON_XA);
+                    .configurationURI(URI.create("caches/books-transactional.xml"))
+                    .transactionManagerLookup(RemoteTransactionManagerLookup.getInstance())
+                    .transactionMode(TransactionMode.NON_XA);
 
         };
     }
