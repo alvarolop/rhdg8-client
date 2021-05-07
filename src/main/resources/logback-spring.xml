@@ -20,6 +20,9 @@
     <!-- LOG "com.example*" at TRACE level -->
     <logger name="org.infinispan.client.hotrod" level="debug"/>
 
+    <!-- LOG "com.example*" at TRACE level -->
+    <logger name="com.alopezme.hotrodtester" level="debug"/>
+
     <!-- LOG "org.infinispan*" at TRACE level -->
 <!--    <logger name="org.infinispan" level="info" additivity="false">-->
 <!--        <appender-ref ref="Console" />-->

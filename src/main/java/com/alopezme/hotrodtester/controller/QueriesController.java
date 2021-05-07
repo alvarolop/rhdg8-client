@@ -40,7 +40,7 @@ public class QueriesController {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.info("PUT : " + book.toString());
+                logger.debug("PUT : " + book.toString());
                 bookRepository.insert(book.getId(), book);
             }
         } catch (IOException e) {
@@ -57,7 +57,7 @@ public class QueriesController {
             while ((line = br.readLine()) != null && iteration < 100) {
                 String[] values = line.split(",");
                 Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.info("PUT : " + book.toString());
+                logger.debug("PUT : " + book.toString());
                 bookRepository.insert(book.getId(), book);
                 iteration++;
             }

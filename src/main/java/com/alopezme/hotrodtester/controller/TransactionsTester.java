@@ -52,18 +52,18 @@ public class TransactionsTester {
 
         logger.info("--> Transaction - New value: " + trollBook.toString());
 
-        logger.info("--> Transaction BEGINS");
+        logger.debug("--> Transaction BEGINS");
         // Obtain the transaction manager
         TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
-        logger.info("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
+        logger.debug("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
         // Perform some operations within a transaction and commit it
         transactionManager.begin();
-        logger.info("--> Transaction - Initial value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Initial value: " + transactionalBooksCache.get(valueID));
         transactionalBooksCache.put(valueID, trollBook);
-        logger.info("--> Transaction - Updated value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Updated value: " + transactionalBooksCache.get(valueID));
         transactionManager.commit();
-        logger.info("--> Transaction ENDS");
-        logger.info("--> Transaction - Final   value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction ENDS");
+        logger.debug("--> Transaction - Final   value: " + transactionalBooksCache.get(valueID));
 
         return transactionalBooksCache.get(valueID).toString();
     }
@@ -80,18 +80,18 @@ public class TransactionsTester {
 
         logger.info("--> Transaction - New value: " + trollBook.toString());
 
-        logger.info("--> Transaction BEGINS");
+        logger.debug("--> Transaction BEGINS");
         // Obtain the transaction manager
         TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
-        logger.info("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
+        logger.debug("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
         // Perform some operations within a transaction and commit it
         transactionManager.begin();
-        logger.info("--> Transaction - Initial value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Initial value: " + transactionalBooksCache.get(valueID));
         transactionalBooksCache.put(valueID, trollBook);
-        logger.info("--> Transaction - Updated value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Updated value: " + transactionalBooksCache.get(valueID));
         transactionManager.rollback();
-        logger.info("--> Transaction ENDS");
-        logger.info("--> Transaction - Final   value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction ENDS");
+        logger.debug("--> Transaction - Final   value: " + transactionalBooksCache.get(valueID));
 
         return transactionalBooksCache.get(valueID).toString();
     }
@@ -110,7 +110,7 @@ public class TransactionsTester {
             while ((line = br.readLine()) != null && iteration < 100) {
                 String[] values = line.split(",");
                 Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.info("PUT : " + book.toString());
+                logger.debug("PUT : " + book.toString());
                 transactionalBooksCache.put(book.getId(), book);
                 iteration++;
             }
