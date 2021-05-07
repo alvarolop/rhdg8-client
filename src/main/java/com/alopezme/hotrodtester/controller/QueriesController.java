@@ -34,7 +34,7 @@ public class QueriesController {
      */
 
     @GetMapping("/load")
-    public String loadBooksCache() throws IOException {
+    public String loadBooksCache() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -43,12 +43,14 @@ public class QueriesController {
                 logger.info("PUT : " + book.toString());
                 bookRepository.insert(book.getId(), book);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }
 
     @GetMapping("/reduced-load")
-    public String reducedLoadBooksCache() throws IOException {
+    public String reducedLoadBooksCache() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
             String line;
             int iteration = 0;
@@ -59,6 +61,8 @@ public class QueriesController {
                 bookRepository.insert(book.getId(), book);
                 iteration++;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }

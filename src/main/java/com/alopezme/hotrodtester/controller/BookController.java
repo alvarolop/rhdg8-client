@@ -2,7 +2,6 @@ package com.alopezme.hotrodtester.controller;
 
 import com.alopezme.hotrodtester.model.Book;
 import com.alopezme.hotrodtester.repository.BookService;
-import com.alopezme.hotrodtester.repository.impl.BookServiceJavaImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class BookController {
      */
 
     @GetMapping("/load")
-    public String loadBooksCache() throws IOException {
+    public String loadBooksCache() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -38,12 +37,14 @@ public class BookController {
                 logger.info("PUT : " + book.toString());
                 bookRepository.insert(book.getId(), book);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }
 
     @GetMapping("/reduced-load")
-    public String reducedLoadBooksCache() throws IOException {
+    public String reducedLoadBooksCache() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
             String line;
             int iteration = 0;
@@ -54,6 +55,8 @@ public class BookController {
                 bookRepository.insert(book.getId(), book);
                 iteration++;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }
