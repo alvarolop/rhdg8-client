@@ -7,12 +7,15 @@
             </encoding>
             <expiration lifespan="-1" max-idle="-1" interval="60000"/>
             <indexing enabled="false"/>
-<!--            Data Grid offers two isolation levels - READ_COMMITTED and REPEATABLE_READ.-->
+<!--            Data Grid offers two isolation levels - READ_COMMITTED and REPEATABLE_READ. Only REPEATABLE_READ
+                allows a recovery mechanism different to rollback only -->
             <locking isolation="REPEATABLE_READ"/>
             <memory storage="HEAP"/>
             <partition-handling when-split="ALLOW_READ_WRITES" merge-policy="REMOVE_ALL"/>
             <state-transfer enabled="false" await-initial-transfer="false"/>
-            <transaction mode="NON_XA" locking="PESSIMISTIC"/>"
+            <transaction
+                    mode="NON_XA"
+                    locking="PESSIMISTIC"/>"
 <!--             https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_developer_guide/index#tx_configuration -->
 <!--            <transaction-->
 <!--                locking="OPTIMISTIC"-->

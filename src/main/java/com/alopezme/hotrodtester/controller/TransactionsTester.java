@@ -50,9 +50,8 @@ public class TransactionsTester {
 
         Book trollBook = new Book(valueID,"Coding from home" ,"Álvaro López Medina",2021);
 
-        logger.info("--> Transaction - New value: " + trollBook.toString());
-
-        logger.debug("--> Transaction BEGINS");
+        logger.info("--> Transaction test 01 BEGINS");
+        logger.debug("--> Transaction - New value: " + trollBook.toString());
         // Obtain the transaction manager
         TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
         logger.debug("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
@@ -62,8 +61,8 @@ public class TransactionsTester {
         transactionalBooksCache.put(valueID, trollBook);
         logger.debug("--> Transaction - Updated value: " + transactionalBooksCache.get(valueID));
         transactionManager.commit();
-        logger.debug("--> Transaction ENDS");
         logger.debug("--> Transaction - Final   value: " + transactionalBooksCache.get(valueID));
+        logger.info("--> Transaction test 01 ENDS");
 
         return transactionalBooksCache.get(valueID).toString();
     }
@@ -78,9 +77,8 @@ public class TransactionsTester {
 
         Book trollBook = new Book(valueID,"Coding from home" ,"Álvaro López Medina",2021);
 
-        logger.info("--> Transaction - New value: " + trollBook.toString());
-
-        logger.debug("--> Transaction BEGINS");
+        logger.info("--> Transaction test 02 BEGINS");
+        logger.debug("--> Transaction - New value: " + trollBook.toString());
         // Obtain the transaction manager
         TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
         logger.debug("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
@@ -90,13 +88,59 @@ public class TransactionsTester {
         transactionalBooksCache.put(valueID, trollBook);
         logger.debug("--> Transaction - Updated value: " + transactionalBooksCache.get(valueID));
         transactionManager.rollback();
-        logger.debug("--> Transaction ENDS");
         logger.debug("--> Transaction - Final   value: " + transactionalBooksCache.get(valueID));
+        logger.info("--> Transaction test 02 ENDS");
 
         return transactionalBooksCache.get(valueID).toString();
     }
 
+    /**
+     * Test 03:
+     * Two transactions simultaneously
+     */
+    @GetMapping("/test03/{value}")
+    public String test03 (
+            @PathVariable(value = "value") int valueID) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException, InvalidTransactionException {
 
+        Book trollBook1 = new Book(valueID,"Coding from home" ,"Álvaro López Medina",2021);
+        Book trollBook2 = new Book(valueID,"Sleeping at home" ,"Álvaro López Medina",2021);
+
+        logger.info("--> Transaction test 03 BEGINS");
+        logger.debug("--> Transaction 1 - New value: " + trollBook1.toString());
+        logger.debug("--> Transaction 2 - New value: " + trollBook2.toString());
+        // Obtain the transaction manager
+        final TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
+        logger.debug("--> Transaction - isTransactional?: " + transactionalBooksCache.isTransactional());
+
+        // Transaction 1 begins
+        transactionManager.begin();
+        logger.debug("--> Transaction 1 - Initial value: " + transactionalBooksCache.get(valueID));
+        transactionalBooksCache.put(valueID, trollBook1);
+        logger.debug("--> Transaction 1 - Updated value: " + transactionalBooksCache.get(valueID));
+        final Transaction tx1 = transactionManager.suspend();
+
+        logger.debug("--> Transaction 1 - Suspended value: " + transactionalBooksCache.get(valueID));
+
+        // Transaction 2 begins
+        transactionManager.begin();
+        logger.debug("--> Transaction 2 - Initial value: " + transactionalBooksCache.get(valueID));
+        transactionalBooksCache.put(valueID, trollBook2);
+        logger.debug("--> Transaction 2 - Updated value: " + transactionalBooksCache.get(valueID));
+        transactionManager.commit();
+
+        logger.debug("--> Transaction 2 - Committed value: " + transactionalBooksCache.get(valueID));
+
+        // Transaction 1 resumes
+        transactionManager.resume(tx1);
+        //it shouldn't see the other transaction updates!
+        logger.debug("--> Transaction 1 - Resumed value: " + transactionalBooksCache.get(valueID));
+        transactionManager.commit();
+        logger.debug("--> Transaction 1 - Committed value: " + transactionalBooksCache.get(valueID));
+
+        logger.info("--> Transaction test 03 ENDS");
+
+        return transactionalBooksCache.get(valueID).toString();
+    }
 
 
 
