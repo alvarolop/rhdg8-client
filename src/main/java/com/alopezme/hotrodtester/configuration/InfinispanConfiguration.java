@@ -29,6 +29,7 @@ public class InfinispanConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
         return b -> {
+            b.transaction();
             b.marshaller(new ProtoStreamMarshaller());
             b.marshaller(new JavaSerializationMarshaller());
             b.addJavaSerialWhiteList(".*");
@@ -39,6 +40,7 @@ public class InfinispanConfiguration {
             b.remoteCache(BOOKS_CACHE_NAME).configurationURI(URI.create("caches/books-javaser.xml"));
             b.remoteCache(INDEXED_CACHE_NAME).configurationURI(URI.create("caches/books-indexed.xml"));
             b.remoteCache(TRANSACTIONAL_CACHE_NAME)
+                    .marshaller(ProtoStreamMarshaller.class)
                     .configurationURI(URI.create("caches/books-transactional.xml"))
                     .transactionManagerLookup(RemoteTransactionManagerLookup.getInstance())
                     .transactionMode(TransactionMode.NON_XA);

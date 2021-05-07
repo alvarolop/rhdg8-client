@@ -5,6 +5,7 @@ import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
+import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.dataconversion.MediaType;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
 import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
@@ -67,7 +68,10 @@ public class AppConfiguration {
     }
 
     @Bean
-    RemoteCache<Integer, Book> transactionalBooksCache(){
-        return remoteCacheManager.getCache(TRANSACTIONAL_CACHE_NAME).withDataFormat(protobufFormat);
+    RemoteCache<Integer, Book> transactionalBooksCache() throws Exception {
+        return remoteCacheManager
+                    .getCache(TRANSACTIONAL_CACHE_NAME,TransactionMode.NON_XA, RemoteTransactionManagerLookup.getInstance()
+                    .getTransactionManager());
+//                    .withDataFormat(protobufFormat);
     }
 }
