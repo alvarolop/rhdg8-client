@@ -84,7 +84,7 @@ public class QueriesController {
     public void putBulk(
             @PathVariable(value = "maxKey") int maxKey) {
         readFileToLoadCache(2679);
-        for (int id = 0; id < maxKey; id++) {
+        for (int id = 0; id < maxKey - 2679; id++) {
             Book book = new Book(id,"Coding from home" ,"Álvaro López Medina",2021);
             bookRepository.insert(id,book);
             logger.info("PUT - " + book.toString());
