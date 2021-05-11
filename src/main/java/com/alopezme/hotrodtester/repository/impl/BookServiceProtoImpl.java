@@ -49,12 +49,7 @@ public class BookServiceProtoImpl implements BookService {
 
     @Override
     public void deleteAll(){
-//        Iterator<Integer> iterator =  defaultBooksCache.keySet().iterator();
-//        while (iterator.hasNext()){
-//            defaultBooksCache.remove(iterator.next());
-//        }
         indexedBooksCache.clear();
-        return;
     }
 
     @Override

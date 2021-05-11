@@ -45,12 +45,7 @@ public class BookServiceJavaImpl implements BookService {
 
     @Override
     public void deleteAll(){
-//        Iterator<Integer> iterator =  defaultBooksCache.keySet().iterator();
-//        while (iterator.hasNext()){
-//            defaultBooksCache.remove(iterator.next());
-//        }
         defaultBooksCache.clear();
-        return;
     }
 
     @Override
