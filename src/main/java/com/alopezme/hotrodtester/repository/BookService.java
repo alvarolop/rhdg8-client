@@ -13,13 +13,15 @@ public interface BookService {
 
     public void delete(int id);
 
+    public boolean bulkRemove(Set<Integer> keys);
+
+    public void deleteAll();
+
     public int getSize();
 
     public String getKeys();
 
     public String getValues();
-
-    public boolean bulkRemove(Set<Integer> keys);
 
     public List<Book> query(String query);
 

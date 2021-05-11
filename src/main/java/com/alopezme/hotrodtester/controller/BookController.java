@@ -61,6 +61,14 @@ public class BookController {
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }
 
+    /**
+     * GET
+     */
+    @GetMapping("/{id}")
+    public String getByID(
+            @PathVariable(value = "id") int id) {
+        return bookRepository.findById(id).toString();
+    }
 
     /**
      * GET ALL
@@ -76,14 +84,17 @@ public class BookController {
     }
 
 
+
     /**
-     * GET
+     * PUT
      */
-    @GetMapping("/{id}")
-    public String getByID(
+    @PutMapping("/{id}")
+    public void putById(
             @PathVariable(value = "id") int id) {
-        return bookRepository.findById(id).toString();
+        Book book = new Book(id,"Coding from home" ,"Álvaro López Medina",2021);
+        bookRepository.insert(id,book);
     }
+
 
     /**
      * REMOVE
@@ -92,6 +103,14 @@ public class BookController {
     public void removeById(
             @PathVariable(value = "id") int id) {
         bookRepository.delete(id);
+    }
+
+    /**
+     * REMOVE ALL
+     */
+    @DeleteMapping("/")
+    public void removeById() {
+        bookRepository.deleteAll();
     }
 
 

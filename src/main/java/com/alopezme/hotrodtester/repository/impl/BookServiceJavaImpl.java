@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @EnableCaching
 @CacheConfig(cacheNames="books")
@@ -41,6 +39,21 @@ public class BookServiceJavaImpl implements BookService {
     }
 
     @Override
+    public boolean bulkRemove(Set<Integer> keys){
+        return defaultBooksCache.keySet().removeAll(keys);
+    }
+
+    @Override
+    public void deleteAll(){
+//        Iterator<Integer> iterator =  defaultBooksCache.keySet().iterator();
+//        while (iterator.hasNext()){
+//            defaultBooksCache.remove(iterator.next());
+//        }
+        defaultBooksCache.clear();
+        return;
+    }
+
+    @Override
     public int getSize(){
         return defaultBooksCache.size();
     }
@@ -55,10 +68,7 @@ public class BookServiceJavaImpl implements BookService {
         return defaultBooksCache.values().toString();
     }
 
-    @Override
-    public boolean bulkRemove(Set<Integer> keys){
-        return defaultBooksCache.keySet().removeAll(keys);
-    }
+
 
     @Override
     public List<Book> query(String query){

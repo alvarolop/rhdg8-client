@@ -2,14 +2,11 @@ package com.alopezme.hotrodtester.controller;
 
 import com.alopezme.hotrodtester.model.Book;
 import com.alopezme.hotrodtester.repository.BookService;
-import com.alopezme.hotrodtester.repository.impl.BookServiceProtoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,6 +65,14 @@ public class QueriesController {
     }
 
 
+    /**
+     * GET
+     */
+    @GetMapping("/{id}")
+    public String getByID(
+            @PathVariable(value = "id") int id) {
+        return bookRepository.findById(id).toString();
+    }
 
     /**
      * GET ALL
@@ -80,6 +85,36 @@ public class QueriesController {
     @GetMapping("/entries")
     public String getEntries() {
         return bookRepository.getValues();
+    }
+
+
+
+    /**
+     * PUT
+     */
+    @PutMapping("/{id}")
+    public void putById(
+            @PathVariable(value = "id") int id) {
+        Book book = new Book(id,"Coding from home" ,"Álvaro López Medina",2021);
+        bookRepository.insert(id,book);
+    }
+
+
+    /**
+     * REMOVE
+     */
+    @DeleteMapping("/{id}")
+    public void removeById(
+            @PathVariable(value = "id") int id) {
+        bookRepository.delete(id);
+    }
+
+    /**
+     * REMOVE ALL
+     */
+    @DeleteMapping("/")
+    public void removeById() {
+        bookRepository.deleteAll();
     }
 
 
