@@ -32,35 +32,13 @@ public class QueriesController {
 
     @GetMapping("/load")
     public String loadBooksCache() {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.debug("PUT : " + book.toString());
-                bookRepository.insert(book.getId(), book);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        readFileToLoadCache(2679);
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }
 
     @GetMapping("/reduced-load")
     public String reducedLoadBooksCache() {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
-            String line;
-            int iteration = 0;
-            while ((line = br.readLine()) != null && iteration < 100) {
-                String[] values = line.split(",");
-                Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
-                logger.debug("PUT : " + book.toString());
-                bookRepository.insert(book.getId(), book);
-                iteration++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        readFileToLoadCache(100);
         return "Books cache now contains " + bookRepository.getSize() + " entries";
     }
 
@@ -97,6 +75,20 @@ public class QueriesController {
             @PathVariable(value = "id") int id) {
         Book book = new Book(id,"Coding from home" ,"Álvaro López Medina",2021);
         bookRepository.insert(id,book);
+    }
+
+    /**
+     * PUT BULK
+     */
+    @PutMapping("/bulk/{maxKey}")
+    public void putBulk(
+            @PathVariable(value = "maxKey") int maxKey) {
+        readFileToLoadCache(2679);
+        for (int id = 0; id < maxKey; id++) {
+            Book book = new Book(id,"Coding from home" ,"Álvaro López Medina",2021);
+            bookRepository.insert(id,book);
+            logger.info("PUT - " + book.toString());
+        }
     }
 
 
@@ -186,4 +178,22 @@ public class QueriesController {
         else
             return "Remove operation failed." + System.lineSeparator();
     }
+
+
+    private void readFileToLoadCache(int limit) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/books.csv")))) {
+            String line;
+            int iteration = 0;
+            while ((line = br.readLine()) != null && iteration < limit) {
+                String[] values = line.split(",");
+                Book book = new Book(Integer.valueOf(values[0].trim()), values[1].trim(), values[2].trim(), Integer.valueOf(values[3].trim()));
+                logger.debug("PUT : " + book.toString());
+                bookRepository.insert(book.getId(), book);
+                iteration++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
