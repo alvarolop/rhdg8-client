@@ -10,6 +10,7 @@ import org.infinispan.client.hotrod.impl.query.RemoteQuery;
 import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.dataconversion.MediaType;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
+import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,11 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Priority;
+import javax.annotation.Resources;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,17 +45,21 @@ public class AppConfiguration {
 
     @PostConstruct
     public void registerProtoSchemas() throws IOException, URISyntaxException {
-        logger.warn("Start method registerProtoSchemas()");
+        logger.warn("Start method registerProtoSchemas()" +
+                Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI()).toAbsolutePath());
         // Configure your proto schemas here
-        Path protoPath = Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI());
-        String proto = Files.readString(protoPath);
+//        Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
+//        String proto = Files.readString(protoPath);
 
-//        logger.debug("--> Proto schema: " + proto);
+        Path path = Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI());
+        String proto = Files.readString(path);
 
-        RemoteCache<String, String> protoCache = remoteCacheManager.getCache(CacheNames.PROTOBUF_METADATA_CACHE_NAME);
+        logger.debug("--> Proto schema: " + System.lineSeparator() + proto + System.lineSeparator());
+
+        RemoteCache<String, String> protoCache = remoteCacheManager.getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
         protoCache.put("book.proto", proto);
 
-        String errors = protoCache.get(".errors");
+        String errors = protoCache.get(ProtobufMetadataManagerConstants.ERRORS_KEY_SUFFIX);
         if (errors != null) {
             throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
         }
@@ -59,12 +67,6 @@ public class AppConfiguration {
         logger.warn("Protobuf cache now contains " + protoCache.entrySet().size() + " entries: " +
         protoCache.entrySet().toString());
 
-    }
-
-    @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    RemoteCache<Integer, Book> registerProto(){
-        return remoteCacheManager.getCache(CacheNames.BOOKS_CACHE_NAME);
     }
 
     @Bean

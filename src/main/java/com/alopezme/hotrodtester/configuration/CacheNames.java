@@ -11,8 +11,6 @@ public final class CacheNames {
 
     // The name of the Scripts cache.
     public static final String SCRIPTS_METADATA_CACHE_NAME = "___script_cache";
-    // The name of the Protobuf definitions cache.
-    public static final String PROTOBUF_METADATA_CACHE_NAME = "___protobuf_metadata";
 
     private CacheNames() {
 

@@ -7,6 +7,7 @@ import org.infinispan.client.hotrod.Flag;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.impl.query.RemoteQuery;
 import org.infinispan.client.hotrod.jmx.RemoteCacheClientStatisticsMXBean;
+import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
 import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +112,7 @@ public class AdminController {
 
 //        logger.debug("--> Proto schema: " + proto);
 
-        RemoteCache<String, String> protoCache = cacheManager.getNativeCacheManager().getCache(CacheNames.PROTOBUF_METADATA_CACHE_NAME);
+        RemoteCache<String, String> protoCache = cacheManager.getNativeCacheManager().getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
         protoCache.put("book.proto", proto);
 
         String errors = protoCache.get(".errors");
