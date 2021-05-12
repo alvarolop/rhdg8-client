@@ -105,7 +105,7 @@ public class AdminController {
     @GetMapping("/register/proto")
     public String cacheRegisterProto() throws Exception {
 
-        // Register Team schema in the server
+        // Register Book schema in the server
         Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
         String proto = Files.readString(protoPath);
 

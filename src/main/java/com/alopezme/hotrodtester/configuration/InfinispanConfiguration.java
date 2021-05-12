@@ -1,26 +1,33 @@
 package com.alopezme.hotrodtester.configuration;
 
+import com.alopezme.hotrodtester.controller.AdminController;
 import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
 import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class InfinispanConfiguration {
 
+    Logger logger = LoggerFactory.getLogger(InfinispanConfiguration.class);
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
         return b -> {
+            logger.warn("Start method infinispanRemoteCacheCustomizer()");
             b.transaction();
             b.marshaller(new ProtoStreamMarshaller());
             b.marshaller(new JavaSerializationMarshaller());
