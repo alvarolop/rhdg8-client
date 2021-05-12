@@ -43,31 +43,31 @@ public class AppConfiguration {
             .valueMarshaller(new UTF8StringMarshaller())
             .build();
 
-    @PostConstruct
-    public void registerProtoSchemas() throws IOException, URISyntaxException {
-        logger.warn("Start method registerProtoSchemas()" +
-                Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI()).toAbsolutePath());
-        // Configure your proto schemas here
-//        Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
-//        String proto = Files.readString(protoPath);
-
-        Path path = Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI());
-        String proto = Files.readString(path);
-
-        logger.debug("--> Proto schema: " + System.lineSeparator() + proto + System.lineSeparator());
-
-        RemoteCache<String, String> protoCache = remoteCacheManager.getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
-        protoCache.put("book.proto", proto);
-
-        String errors = protoCache.get(ProtobufMetadataManagerConstants.ERRORS_KEY_SUFFIX);
-        if (errors != null) {
-            throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
-        }
-
-        logger.warn("Protobuf cache now contains " + protoCache.entrySet().size() + " entries: " +
-        protoCache.entrySet().toString());
-
-    }
+//    @PostConstruct
+//    public void registerProtoSchemas() throws IOException, URISyntaxException {
+//        logger.warn("Start method registerProtoSchemas()" +
+//                Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI()).toAbsolutePath());
+//        // Configure your proto schemas here
+////        Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
+////        String proto = Files.readString(protoPath);
+//
+//        Path path = Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI());
+//        String proto = Files.readString(path);
+//
+//        logger.debug("--> Proto schema: " + System.lineSeparator() + proto + System.lineSeparator());
+//
+//        RemoteCache<String, String> protoCache = remoteCacheManager.getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
+//        protoCache.put("book.proto", proto);
+//
+//        String errors = protoCache.get(ProtobufMetadataManagerConstants.ERRORS_KEY_SUFFIX);
+//        if (errors != null) {
+//            throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
+//        }
+//
+//        logger.warn("Protobuf cache now contains " + protoCache.entrySet().size() + " entries: " +
+//        protoCache.entrySet().toString());
+//
+//    }
 
     @Bean
     RemoteCache<Integer, Book> serializationBooksCache(){
