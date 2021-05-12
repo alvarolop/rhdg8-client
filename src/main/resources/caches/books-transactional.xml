@@ -16,17 +16,6 @@
             <transaction
                     mode="NON_XA"
                     locking="PESSIMISTIC"/>"
-<!--             https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html-single/data_grid_developer_guide/index#tx_configuration -->
-<!--            <transaction-->
-<!--                locking="OPTIMISTIC"-->
-<!--                auto-commit="true"-->
-<!--                complete-timeout="60000"-->
-<!--                mode="NONE"-->
-<!--                notifications="true"-->
-<!--                reaper-interval="30000"-->
-<!--                recovery-cache="__recoveryInfoCacheName__"-->
-<!--                stop-timeout="30000"-->
-<!--                transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"/>-->
         </distributed-cache>
     </cache-container>
 </infinispan>
