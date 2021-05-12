@@ -1,5 +1,6 @@
 package com.alopezme.hotrodtester.controller;
 
+import com.alopezme.hotrodtester.configuration.CacheNames;
 import com.alopezme.hotrodtester.model.Book;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.infinispan.client.hotrod.Flag;
@@ -10,11 +11,9 @@ import org.infinispan.spring.remote.provider.SpringRemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,25 +28,18 @@ public class AdminController {
     private SpringRemoteCacheManager cacheManager;
 
     @Autowired
-    private RemoteCache<Integer, Book> defaultBooksCache;
+    @Qualifier("serializationBooksCache")
+    private RemoteCache<Integer, Book> javaBooksCache;
 
     @Autowired
+    @Qualifier("stringBooksCache")
     private RemoteCache<Integer, String> stringBooksCache;
 
     @Autowired
-    private RemoteCache<Integer, Book> indexedBooksCache;
-
-    // The name of the Scripts cache.
-    String SCRIPTS_METADATA_CACHE_NAME = "___script_cache";
-    // The name of the Protobuf definitions cache.
-    String PROTOBUF_METADATA_CACHE_NAME = "___protobuf_metadata";
-    // All error status keys end with this suffix. This is also the name of the global error key.
-    String ERRORS_KEY_SUFFIX = ".errors";
-    // All protobuf definition source files must end with this suffix.
-    String PROTO_KEY_SUFFIX = ".proto";
+    @Qualifier("protostreamBooksCache")
+    private RemoteCache<Integer, Book> protoBooksCache;
 
     Logger logger = LoggerFactory.getLogger(AdminController.class);
-
 
 
     /***
@@ -117,12 +109,12 @@ public class AdminController {
         Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
         String proto = Files.readString(protoPath);
 
-        logger.info("--> Proto schema: " + proto);
+//        logger.debug("--> Proto schema: " + proto);
 
-        RemoteCache<String, String> protoCache = cacheManager.getNativeCacheManager().getCache(PROTOBUF_METADATA_CACHE_NAME);
+        RemoteCache<String, String> protoCache = cacheManager.getNativeCacheManager().getCache(CacheNames.PROTOBUF_METADATA_CACHE_NAME);
         protoCache.put("book.proto", proto);
 
-        String errors = protoCache.get(ERRORS_KEY_SUFFIX);
+        String errors = protoCache.get(".errors");
         if (errors != null) {
             throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
         }
@@ -138,7 +130,7 @@ public class AdminController {
                 + "var cache = cacheManager.getCache(cacheName);\n"
                 + "cache.put(key, value);";
 
-        RemoteCache<String, String> scriptCache = cacheManager.getNativeCacheManager().getCache(SCRIPTS_METADATA_CACHE_NAME);
+        RemoteCache<String, String> scriptCache = cacheManager.getNativeCacheManager().getCache(CacheNames.SCRIPTS_METADATA_CACHE_NAME);
         scriptCache.put("putEntries.js", script);
 
         return "Scripts cache now contains " + scriptCache.entrySet().size() + " entries: " + System.lineSeparator() +
@@ -159,12 +151,19 @@ public class AdminController {
         return  cacheManager.getNativeCacheManager().getCache(cacheName).entrySet().size() + System.lineSeparator();
     }
 
+    @DeleteMapping("/{cache}")
+    public String cleanCache(
+            @PathVariable(value = "cache") String cacheName)  {
+        cacheManager.getCache(cacheName).clear();
+        return "Cleaned cache: " + cacheName + System.lineSeparator();
+    }
+
 
 
     @GetMapping("/test-cache1")
     public String testCache1() throws JsonProcessingException {
-        logger.info("GET 1 : " + defaultBooksCache.get(0).toString());
-        return  defaultBooksCache.entrySet().size() + System.lineSeparator();
+        logger.info("GET 1 : " + javaBooksCache.get(0).toString());
+        return  javaBooksCache.entrySet().size() + System.lineSeparator();
     }
 
     @GetMapping("/test-cache2")
@@ -175,7 +174,7 @@ public class AdminController {
 
     @GetMapping("/test-cache3")
     public String testCache3() throws JsonProcessingException {
-        logger.info("GET 3 : " + indexedBooksCache.get(0).toString());
-        return  indexedBooksCache.entrySet().size() + System.lineSeparator();
+        logger.info("GET 3 : " + protoBooksCache.get(0).toString());
+        return  protoBooksCache.entrySet().size() + System.lineSeparator();
     }
 }

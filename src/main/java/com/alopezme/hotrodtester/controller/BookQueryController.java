@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("query")
-public class QueriesController {
+public class BookQueryController {
 
     @Autowired
     @Qualifier("BookServiceProtoImpl")
     private BookService bookRepository;
 
-    Logger logger = LoggerFactory.getLogger(QueriesController.class);
+    Logger logger = LoggerFactory.getLogger(BookQueryController.class);
 
     /**
      * LOAD CACHE
@@ -50,6 +50,17 @@ public class QueriesController {
     public String getByID(
             @PathVariable(value = "id") int id) {
         return bookRepository.findById(id).toString();
+    }
+
+    /**
+     * GET BULK
+     */
+    @GetMapping("/bulk/{maxKey}")
+    public void getBulk(
+            @PathVariable(value = "maxKey") int maxKey) {
+        for (int id = 0; id < maxKey; id++) {
+            bookRepository.findById(id);
+        }
     }
 
     /**

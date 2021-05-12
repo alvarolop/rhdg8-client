@@ -6,24 +6,16 @@ import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerL
 import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
-import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class InfinispanConfiguration {
-
-    private final String BOOKS_CACHE_NAME = "books";
-    private final String TESTER_CACHE_NAME = "tester";
-    private final String SESSIONS_CACHE_NAME = "sessions";
-    private final String TRANSACTIONAL_CACHE_NAME = "books-transactional";
-    private final String INDEXED_CACHE_NAME = "books-indexed";
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -35,16 +27,25 @@ public class InfinispanConfiguration {
             b.addJavaSerialWhiteList(".*");
             b.addContextInitializer(new BookSchemaImpl());
             b.transaction().transactionTimeout(1, TimeUnit.MINUTES);
-            b.remoteCache(SESSIONS_CACHE_NAME).templateName(DefaultTemplate.DIST_SYNC);
-            b.remoteCache(TESTER_CACHE_NAME).configurationURI(URI.create("caches/tester.xml"));
-            b.remoteCache(BOOKS_CACHE_NAME).configurationURI(URI.create("caches/books-javaser.xml"));
-            b.remoteCache(INDEXED_CACHE_NAME).configurationURI(URI.create("caches/books-indexed.xml"));
-            b.remoteCache(TRANSACTIONAL_CACHE_NAME)
+            b.remoteCache(CacheNames.SESSIONS_CACHE_NAME)
+                    .templateName(DefaultTemplate.DIST_SYNC);
+            b.remoteCache(CacheNames.TESTER_CACHE_NAME)
+                    .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".xml"))
+                    .marshaller(JavaSerializationMarshaller.class);
+            b.remoteCache(CacheNames.BOOKS_CACHE_NAME)
+                    .configurationURI(URI.create("caches/" + CacheNames.BOOKS_CACHE_NAME + ".xml"))
+                    .marshaller(JavaSerializationMarshaller.class);
+            b.remoteCache(CacheNames.PROTO_CACHE_NAME)
+                    .configurationURI(URI.create("caches/" + CacheNames.PROTO_CACHE_NAME + ".xml"))
+                    .marshaller(ProtoStreamMarshaller.class);
+            b.remoteCache(CacheNames.INDEXED_CACHE_NAME)
+                    .configurationURI(URI.create("caches/" + CacheNames.INDEXED_CACHE_NAME + ".xml"))
+                    .marshaller(ProtoStreamMarshaller.class);
+            b.remoteCache(CacheNames.TRANSACTIONAL_CACHE_NAME)
+                    .configurationURI(URI.create("caches/" + CacheNames.TRANSACTIONAL_CACHE_NAME + ".xml"))
                     .marshaller(ProtoStreamMarshaller.class)
-                    .configurationURI(URI.create("caches/books-transactional.xml"))
                     .transactionManagerLookup(RemoteTransactionManagerLookup.getInstance())
                     .transactionMode(TransactionMode.NON_XA);
-
         };
     }
 }

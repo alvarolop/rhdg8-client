@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @RestController
-@RequestMapping("book")
-public class BookController {
+@RequestMapping("proto")
+public class BookProtoController {
 
     @Autowired
-    @Qualifier("BookServiceJavaImpl")
+    @Qualifier("BookServiceProtoImpl")
     private BookService bookRepository;
 
-    Logger logger = LoggerFactory.getLogger(BookController.class);
+    Logger logger = LoggerFactory.getLogger(BookProtoController.class);
 
 
     /**
@@ -46,6 +46,17 @@ public class BookController {
     public String getByID(
             @PathVariable(value = "id") int id) {
         return bookRepository.findById(id).toString();
+    }
+
+    /**
+     * GET BULK
+     */
+    @GetMapping("/bulk/{maxKey}")
+    public void getBulk(
+            @PathVariable(value = "maxKey") int maxKey) {
+        for (int id = 0; id < maxKey; id++) {
+            bookRepository.findById(id);
+        }
     }
 
     /**

@@ -1,23 +1,26 @@
 package com.alopezme.hotrodtester.repository.impl;
 
+import com.alopezme.hotrodtester.configuration.CacheNames;
 import com.alopezme.hotrodtester.model.Book;
 import com.alopezme.hotrodtester.repository.BookService;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @EnableCaching
-@CacheConfig(cacheNames="books")
+@CacheConfig(cacheNames = CacheNames.BOOKS_CACHE_NAME)
 @Service(value="BookServiceJavaImpl")
 public class BookServiceJavaImpl implements BookService {
 
     @Autowired
-    private RemoteCache<Integer, Book> defaultBooksCache;
+    @Qualifier("serializationBooksCache")
+    private RemoteCache<Integer, Book> booksCache;
 
     Logger logger = LoggerFactory.getLogger(BookServiceJavaImpl.class);
 
@@ -40,30 +43,28 @@ public class BookServiceJavaImpl implements BookService {
 
     @Override
     public boolean bulkRemove(Set<Integer> keys){
-        return defaultBooksCache.keySet().removeAll(keys);
+        return booksCache.keySet().removeAll(keys);
     }
 
     @Override
     public void deleteAll(){
-        defaultBooksCache.clear();
+        booksCache.clear();
     }
 
     @Override
     public int getSize(){
-        return defaultBooksCache.size();
+        return booksCache.size();
     }
 
     @Override
     public String getKeys(){
-        return defaultBooksCache.keySet().toString();
+        return booksCache.keySet().toString();
     }
 
     @Override
     public String getValues(){
-        return defaultBooksCache.values().toString();
+        return booksCache.values().toString();
     }
-
-
 
     @Override
     public List<Book> query(String query){

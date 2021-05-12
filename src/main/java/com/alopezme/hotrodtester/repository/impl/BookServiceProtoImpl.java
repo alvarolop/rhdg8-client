@@ -1,83 +1,80 @@
 package com.alopezme.hotrodtester.repository.impl;
 
+import com.alopezme.hotrodtester.configuration.CacheNames;
 import com.alopezme.hotrodtester.model.Book;
 import com.alopezme.hotrodtester.repository.BookService;
 import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.Search;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Service(value="BookServiceProtoImpl")
+@EnableCaching
+@CacheConfig(cacheNames = CacheNames.PROTO_CACHE_NAME)
+@Service(value = "BookServiceProtoImpl")
 public class BookServiceProtoImpl implements BookService {
 
     @Autowired
-    private RemoteCache<Integer, Book> indexedBooksCache;
+    @Qualifier("protostreamBooksCache")
+    private RemoteCache<Integer, Book> booksCache;
 
     Logger logger = LoggerFactory.getLogger(BookServiceProtoImpl.class);
 
-    @Cacheable(key="#id")
     @Override
     public Book findById(int id){
-        return null;
+        return booksCache.get(id);
     }
 
-    @CachePut(key="#id")
     @Override
     public Book insert(int id, Book book){
-        return book;
+        return booksCache.put(id, book);
     }
 
-    @CacheEvict(key="#id")
     @Override
     public void delete(int id){
+        booksCache.remove(id);
     }
 
     @Override
     public boolean bulkRemove(Set<Integer> keys){
-        return indexedBooksCache.keySet().removeAll(keys);
+        return booksCache.keySet().removeAll(keys);
     }
 
     @Override
     public void deleteAll(){
-        indexedBooksCache.clear();
+        booksCache.clear();
     }
 
     @Override
     public int getSize(){
-        return indexedBooksCache.size();
+        return booksCache.size();
     }
 
     @Override
     public String getKeys(){
-        return indexedBooksCache.keySet().toString();
+        return booksCache.keySet().toString();
     }
 
     @Override
     public String getValues(){
-        return indexedBooksCache.values().toString();
+        return booksCache.values().toString();
     }
 
     @Override
     public List<Book> query(String query){
-        QueryFactory queryFactory = Search.getQueryFactory(indexedBooksCache);
-        Query<Book> myQuery = queryFactory.create(query);
-        return myQuery.execute().list();
+        // Method not supported for Java Serialization implementation
+        return new ArrayList<Book>();
     }
 
     @Override
     public List<Object[]> queryObject(String query){
-        QueryFactory queryFactory = Search.getQueryFactory(indexedBooksCache);
-        Query<Object[]> myQuery = queryFactory.create(query);
-        return myQuery.execute().list();
+        // Method not supported for Java Serialization implementation
+        return new ArrayList<Object[]>();
     }
 }

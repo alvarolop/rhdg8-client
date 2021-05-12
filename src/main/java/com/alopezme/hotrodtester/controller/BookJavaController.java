@@ -14,13 +14,13 @@ import java.io.InputStreamReader;
 
 @RestController
 @RequestMapping("book")
-public class BookController {
+public class BookJavaController {
 
     @Autowired
     @Qualifier("BookServiceJavaImpl")
     private BookService bookRepository;
 
-    Logger logger = LoggerFactory.getLogger(BookController.class);
+    Logger logger = LoggerFactory.getLogger(BookJavaController.class);
 
 
     /**
@@ -49,6 +49,17 @@ public class BookController {
     }
 
     /**
+     * GET BULK
+     */
+    @GetMapping("/bulk/{maxKey}")
+    public void getBulk(
+            @PathVariable(value = "maxKey") int maxKey) {
+        for (int id = 0; id < maxKey; id++) {
+            bookRepository.findById(id);
+        }
+    }
+
+    /**
      * GET ALL
      */
     @GetMapping("/keys")
@@ -60,8 +71,6 @@ public class BookController {
     public String getEntries() {
         return bookRepository.getValues();
     }
-
-
 
     /**
      * PUT

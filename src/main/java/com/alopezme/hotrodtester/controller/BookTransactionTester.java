@@ -28,7 +28,7 @@ import java.io.InputStreamReader;
 
 @RestController
 @RequestMapping("transaction")
-public class TransactionsTester {
+public class BookTransactionTester {
 
     @Autowired
     private SpringRemoteCacheManager cacheManager;
@@ -37,7 +37,7 @@ public class TransactionsTester {
     private RemoteCache<Integer, Book> transactionalBooksCache;
 
 
-    Logger logger = LoggerFactory.getLogger(TransactionsTester.class);
+    Logger logger = LoggerFactory.getLogger(BookTransactionTester.class);
 
 
     /**
