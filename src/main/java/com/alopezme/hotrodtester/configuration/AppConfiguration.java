@@ -43,7 +43,7 @@ public class AppConfiguration {
     public void registerProtoSchemas() throws IOException, URISyntaxException {
         logger.warn("Start method registerProtoSchemas()");
         // Configure your proto schemas here
-        Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
+        Path protoPath = Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI());
         String proto = Files.readString(protoPath);
 
 //        logger.debug("--> Proto schema: " + proto);
