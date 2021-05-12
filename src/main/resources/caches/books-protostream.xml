@@ -1,0 +1,21 @@
+<infinispan>
+    <cache-container>
+        <distributed-cache name="books-indexed" mode="SYNC" owners="1" statistics="true">
+            <encoding>
+                <key media-type="application/x-protostream"/>
+                <value media-type="application/x-protostream"/>
+            </encoding>
+            <expiration lifespan="-1" max-idle="-1" interval="60000"/>
+            <indexing enabled="true">
+                <key-transformers/>
+                <indexed-entities>
+                <indexed-entity>com.alopezme.hotrodtester.model.Book</indexed-entity>
+                </indexed-entities>
+            </indexing>
+            <memory storage="HEAP"/>
+            <partition-handling when-split="ALLOW_READ_WRITES" merge-policy="REMOVE_ALL"/>
+            <state-transfer enabled="false" await-initial-transfer="false"/>
+            <transaction mode="NONE"/>
+        </distributed-cache>
+    </cache-container>
+</infinispan>

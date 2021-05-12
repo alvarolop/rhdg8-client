@@ -1,6 +1,6 @@
 <infinispan>
     <cache-container>
-        <distributed-cache name="books" mode="SYNC" owners="1" statistics="true">
+        <distributed-cache name="books-serialization" mode="SYNC" owners="1" statistics="true">
             <encoding>
                 <key media-type="application/x-java-serialized-object"/>
                 <value media-type="application/x-java-serialized-object"/>
