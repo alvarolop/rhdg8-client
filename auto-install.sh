@@ -69,12 +69,16 @@ message Book {
 # Create RHDG Client configmap
 echo -e "\n[2/3]Creating client ConfigMap"
 oc create configmap ${RHDG_CLIENT_NAME}-config \
---from-file=application.properties=src/main/resources/application-k8s.properties \
---from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $RHDG_NAMESPACE
+    --from-file=application.properties=src/main/resources/application-k8s.properties \
+    --from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $RHDG_NAMESPACE
 
 # Deploy the RHDG client
 echo -e "\n[3/3]Deploying the RHDG client"
-oc process -f templates/rhdg-client.yaml -p APP_NAMESPACE=$RHDG_NAMESPACE -p APPLICATION_NAME=$RHDG_CLIENT_NAME -p GIT_REPOSITORY=$RHDG_GIT_REPO -p RHDG_CLUSTER_NAME=$RHDG_CLUSTER_NAME | oc apply -f -
+oc process -f templates/rhdg-client.yaml \
+    -p APP_NAMESPACE=$RHDG_NAMESPACE \
+    -p APPLICATION_NAME=$RHDG_CLIENT_NAME \
+    -p GIT_REPOSITORY=$RHDG_GIT_REPO \
+    -p RHDG_CLUSTER_NAME=$RHDG_CLUSTER_NAME | oc apply -f -
 
 # Wait for DeploymentConfig
 echo -n "Waiting for pods ready..."
