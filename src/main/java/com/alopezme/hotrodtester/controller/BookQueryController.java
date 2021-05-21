@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class BookQueryController {
 
     @Autowired
-    @Qualifier("BookServiceProtoImpl")
+    @Qualifier("BookServiceIndexedImpl")
     private BookService bookRepository;
 
     Logger logger = LoggerFactory.getLogger(BookQueryController.class);
