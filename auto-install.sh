@@ -68,6 +68,7 @@ message Book {
 
 # Create RHDG Client configmap
 echo -e "\n[2/3]Creating client ConfigMap"
+oc delete configmap ${RHDG_CLIENT_NAME}-config -n $RHDG_NAMESPACE
 oc create configmap ${RHDG_CLIENT_NAME}-config \
     --from-file=application.properties=src/main/resources/application-k8s.properties \
     --from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $RHDG_NAMESPACE
