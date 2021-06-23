@@ -42,11 +42,14 @@ objects:
     name: ${APPLICATION_NAME}
     namespace: ${APP_NAMESPACE}
   spec:
+    port:
+      targetPort: 8080
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Allow
     to:
       kind: Service
       name: ${APPLICATION_NAME}
-    port:
-      targetPort: 8080
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
