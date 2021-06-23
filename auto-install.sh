@@ -23,7 +23,7 @@ echo -e "==============\n"
 
 # Check if the user is logged in 
 if ! oc whoami &> /dev/null; then
-    echo -e "Check. You are not logged out. Please log in and run the script again."
+    echo -e "Check. You are not logged in. Please log in and run the script again."
     exit 1
 else
     echo -e "Check. You are correctly logged in. Continue..."
@@ -33,7 +33,7 @@ fi
 # Register Proto Schema
 echo -e "\n[1/3]Register Book Proto Schema"
 RHDG_SERVER_ROUTE=$(oc get routes ${RHDG_CLUSTER_NAME}-external -n $RHDG_NAMESPACE --template='http://{{.spec.host}}')
-curl -X POST -u developer:developer $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d '// Generated from : com.alopezme.hotrodtester.configuration.BookSchema
+curl -X POST $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d '// Generated from : com.alopezme.hotrodtester.configuration.BookSchema
 
 syntax = "proto2";
 
@@ -68,7 +68,11 @@ message Book {
 
 # Create RHDG Client configmap
 echo -e "\n[2/3]Creating client ConfigMap"
-oc delete configmap ${RHDG_CLIENT_NAME}-config -n $RHDG_NAMESPACE
+if oc get cm ${RHDG_CLIENT_NAME}-config -n $RHDG_NAMESPACE &> /dev/null; then
+    echo -e "Check. There was a previous configuration. Deleting..."
+    oc delete configmap ${RHDG_CLIENT_NAME}-config -n $RHDG_NAMESPACE
+fi
+
 oc create configmap ${RHDG_CLIENT_NAME}-config \
     --from-file=application.properties=src/main/resources/application-k8s.properties \
     --from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $RHDG_NAMESPACE
