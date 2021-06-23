@@ -127,6 +127,7 @@ objects:
       # contextDir: ${GIT_CONTEXT_DIR}
       git:
         uri: ${GIT_REPOSITORY}
+        ref: ${GIT_BRANCH}
       type: Git
     strategy:
       sourceStrategy:
@@ -154,6 +155,10 @@ parameters:
 - name: GIT_REPOSITORY
   description: "The git repository of the application."
   required: true
+- name: GIT_BRANCH
+  description: "The git repository of the application."
+  required: true
+  value: "rhdg81"
 # - name: GIT_CONTEXT_DIR
 #   description: "The path where the application code is under the git repository."
 #   value: "hotrod-tester"
