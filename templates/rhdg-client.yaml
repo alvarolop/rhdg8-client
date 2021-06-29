@@ -59,7 +59,7 @@ objects:
     namespace: ${APP_NAMESPACE}
   spec:
     replicas: 1
-    revisionHistoryLimit: 1
+    revisionHistoryLimit: 0
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
@@ -89,6 +89,10 @@ objects:
               value: ${RHDG_CLUSTER_NAME}
             - name: DATAGRID_PORT
               value: "11222"
+            - name: DATAGRID_AUTH_ENABLED
+              value: ${DATAGRID_AUTH_ENABLED}
+            - name: DATAGRID_SSL_ENABLED
+              value: ${DATAGRID_SSL_ENABLED}
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -140,7 +144,7 @@ objects:
           namespace: openshift
       type: Source
     failedBuildsHistoryLimit: 1
-    successfulBuildsHistoryLimit: 1
+    successfulBuildsHistoryLimit: 0
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -169,4 +173,12 @@ parameters:
 - name: RHDG_CLUSTER_NAME
   description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
   value: "rhdg"
+  required: false
+- name: DATAGRID_AUTH_ENABLED
+  description: "If the RHDG will try to authenticate to the Red Hat Data Grid server."
+  value: "false"
+  required: false
+- name: DATAGRID_SSL_ENABLED
+  description: "If the RHDG will try to establish an SSL connection to the Red Hat Data Grid server."
+  value: "false"
   required: false

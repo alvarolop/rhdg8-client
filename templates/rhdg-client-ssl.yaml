@@ -59,7 +59,7 @@ objects:
     namespace: ${APP_NAMESPACE}
   spec:
     replicas: 1
-    revisionHistoryLimit: 10
+    revisionHistoryLimit: 0
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
@@ -89,16 +89,27 @@ objects:
               value: ${RHDG_CLUSTER_NAME}
             - name: DATAGRID_PORT
               value: "11222"
+            - name: DATAGRID_AUTH_ENABLED
+              value: ${DATAGRID_AUTH_ENABLED}
+            - name: DATAGRID_SSL_ENABLED
+              value: ${DATAGRID_SSL_ENABLED}
           ports:
-          - containerPort: 8080
-            protocol: TCP
+            - containerPort: 8080
+              protocol: TCP
           resources: {}
           volumeMounts:
             - name: app-config
-              mountPath: "${MOUNT_PATH}"
+              mountPath: "${MOUNT_PATH}/application.properties"
+              readOnly: true
+              subPath: application.properties
+            - name: app-config
+              mountPath: "${MOUNT_PATH}/logback-spring.xml"
+              readOnly: true
+              subPath: logback-spring.xml
             - name: ssl-certificate
               mountPath: "${MOUNT_PATH}/tls.crt"
               subPath: tls.crt
+              readOnly: true
         volumes:
           - name: app-config
             configMap:
@@ -148,8 +159,8 @@ objects:
           name: ubi8-openjdk-11:1.3
           namespace: openshift
       type: Source
-    failedBuildsHistoryLimit: 5
-    successfulBuildsHistoryLimit: 5
+    failedBuildsHistoryLimit: 1
+    successfulBuildsHistoryLimit: 0
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -178,4 +189,12 @@ parameters:
 - name: RHDG_CLUSTER_NAME
   description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
   value: "rhdg"
+  required: false
+- name: DATAGRID_AUTH_ENABLED
+  description: "If the RHDG will try to authenticate to the Red Hat Data Grid server."
+  value: "true"
+  required: false
+- name: DATAGRID_SSL_ENABLED
+  description: "If the RHDG will try to establish an SSL connection to the Red Hat Data Grid server."
+  value: "true"
   required: false
