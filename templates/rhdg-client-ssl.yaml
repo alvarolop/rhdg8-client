@@ -147,7 +147,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: ${GIT_CONTEXT_DIR}
+      # contextDir: ${GIT_CONTEXT_DIR}
       git:
         uri: ${GIT_REPOSITORY}
         ref: ${GIT_BRANCH}
@@ -182,10 +182,10 @@ parameters:
   description: "The git branch of the application."
   required: true
   value: "main"
-- name: GIT_CONTEXT_DIR
-  description: "The path where the application code is under the git repository."
-  value: "hotrod-tester"
-  required: false
+# - name: GIT_CONTEXT_DIR
+#   description: "The path where the application code is under the git repository."
+#   value: "hotrod-tester"
+#   required: false
 - name: RHDG_CLUSTER_NAME
   description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
   value: "rhdg"
