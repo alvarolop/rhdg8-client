@@ -1,6 +1,5 @@
 package com.alopezme.hotrodtester.configuration;
 
-import com.alopezme.hotrodtester.controller.AdminController;
 import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
 import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
-import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +29,7 @@ public class InfinispanConfiguration {
             b.transaction();
             b.marshaller(new ProtoStreamMarshaller());
             b.marshaller(new JavaSerializationMarshaller());
-            b.addJavaSerialWhiteList(".*");
+            b.addJavaSerialAllowList(".*");
             b.addContextInitializer(new BookSchemaImpl());
             b.transaction().transactionTimeout(1, TimeUnit.MINUTES);
             b.remoteCache(CacheNames.SESSIONS_CACHE_NAME)

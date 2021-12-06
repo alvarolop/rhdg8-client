@@ -20,7 +20,7 @@ objects:
     namespace: ${APP_NAMESPACE}
   spec:
     lookupPolicy:
-      local: false
+      local: true
 - apiVersion: v1
   kind: Service
   metadata:
@@ -50,8 +50,8 @@ objects:
     to:
       kind: Service
       name: ${APPLICATION_NAME}
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: ${APPLICATION_NAME}
@@ -61,8 +61,8 @@ objects:
     replicas: 1
     revisionHistoryLimit: 0
     selector:
-      app: ${APPLICATION_NAME}
-      deploymentconfig: ${APPLICATION_NAME}
+      matchLabels:
+        app: ${APPLICATION_NAME}
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -72,13 +72,12 @@ objects:
         maxUnavailable: 25%
         timeoutSeconds: 600
         updatePeriodSeconds: 1
-      type: Rolling
+      type: RollingUpdate
     template:
       metadata:
         name: ${APPLICATION_NAME}
         labels:
           app: ${APPLICATION_NAME}
-          deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
         - name: ${APPLICATION_NAME}
@@ -120,16 +119,6 @@ objects:
               items:
                 - key: tls.crt
                   path: tls.crt
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${APPLICATION_NAME}
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
 - apiVersion: v1
   kind: BuildConfig
   metadata:
@@ -147,7 +136,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: ${GIT_CONTEXT_DIR}
+      # contextDir: ${GIT_CONTEXT_DIR}
       git:
         uri: ${GIT_REPOSITORY}
         ref: ${GIT_BRANCH}
@@ -182,10 +171,10 @@ parameters:
   description: "The git branch of the application."
   required: true
   value: "main"
-- name: GIT_CONTEXT_DIR
-  description: "The path where the application code is under the git repository."
-  value: "hotrod-tester"
-  required: false
+# - name: GIT_CONTEXT_DIR
+#   description: "The path where the application code is under the git repository."
+#   value: "hotrod-tester"
+#   required: false
 - name: RHDG_CLUSTER_NAME
   description: "The name of the cluster that this client will connect to. It is needed to automatically configure ssl."
   value: "rhdg"

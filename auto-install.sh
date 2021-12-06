@@ -3,7 +3,7 @@
 set -e
 
 # Set your environment variables here
-RHDG_NAMESPACE=rhdg8
+RHDG_NAMESPACE=my-rhdg8
 RHDG_CLUSTER_NAME=rhdg
 RHDG_CLIENT_NAME=rhdg-client
 RHDG_GIT_REPO=https://github.com/alvarolop/rhdg8-client.git
