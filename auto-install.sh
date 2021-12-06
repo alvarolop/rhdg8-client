@@ -40,7 +40,7 @@ if ! oc whoami &> /dev/null; then
     exit 1
 else
     echo -e "Check. You are correctly logged in. Continue..."
-    oc project rhdg8
+    oc project $RHDG_NAMESPACE
 fi
 
 # Register Proto Schema

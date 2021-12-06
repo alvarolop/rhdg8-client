@@ -20,8 +20,8 @@
     </root>
 
     <!-- LOG "com.example*" at TRACE level -->
-    <logger name="org.infinispan.client.hotrod" level="debug"/>
+    <logger name="org.infinispan.client.hotrod" level="INFO"/>
 
     <!-- LOG "com.example*" at TRACE level -->
-    <logger name="com.alopezme.hotrodtester" level="debug"/>
+    <logger name="com.alopezme.hotrodtester" level="DEBUG"/>
 </configuration>
