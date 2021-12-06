@@ -1,0 +1,119 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    app: {{ .Values.application.name }}
+  name: {{ .Values.application.name }}-config
+  namespace: {{ .Values.application.namespace }}
+data:
+  application.properties: >
+    # Infinispan
+
+    infinispan.remote.server-list=${DATAGRID_HOST:127.0.0.1}:${DATAGRID_PORT:11222}
+
+    infinispan.remote.client-intelligence=HASH_DISTRIBUTION_AWARE
+
+    infinispan.remote.socket-timeout=${DATAGRID_SOCKET_TIMEOUT:1000}
+
+    infinispan.remote.connect-timeout=${DATAGRID_CONNECT_TIMEOUT:500}
+
+    infinispan.remote.max-retries=${DATAGRID_MAX_RETRIES:0}
+
+
+    # Near caching
+
+    #
+    https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.2/html-single/hot_rod_java_client_guide/index#configuring-near-caching-hotrod-client-configuration
+
+    #infinispan.remote.near-cache-mode=INVALIDATED
+
+    #infinispan.remote.near-cache-max-entries=5
+
+    #infinispan.remote.near-cache-name-pattern=book*
+
+
+    # Activates statistics for actuator
+
+    infinispan.remote.statistics=true
+
+    infinispan.remote.jmx=true
+
+
+    management.endpoints.web.exposure.include=*
+
+
+    server.servlet.context-path=/api
+
+
+    # Security settings. Comment these properties if you are using a non secured
+    server
+
+    infinispan.remote.use-auth=${DATAGRID_AUTH_ENABLED:false}
+
+    infinispan.remote.sasl-mechanism=DIGEST-MD5
+
+    infinispan.remote.auth-realm=default
+
+    infinispan.remote.auth-server-name=infinispan
+
+    infinispan.remote.auth-username=developer
+
+    infinispan.remote.auth-password=developer
+
+
+    # Encryption
+
+    #
+    https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.2/html-single/hot_rod_java_client_guide/index#configuring-hotrod-encryption_hotrod-client-configuration
+
+    #
+    https://github.com/infinispan/infinispan-spring-boot/blob/master/infinispan-spring-boot-starter-remote/src/test/resources/test-application.properties
+
+    infinispan.remote.use-ssl=${DATAGRID_SSL_ENABLED:false}
+
+    infinispan.remote.trust-store-path=config/tls.crt
+
+    infinispan.remote.sni-host-name=rhdg.rhdg8.svc
+
+
+    # Logging
+
+    logging.config=file:config/logback-spring.xml
+
+
+    ## Important to add the java marshaller if you need SpringSession or avoid
+    Protostream
+
+    #infinispan.remote.java-serial-whitelist=.*
+
+    #infinispan.remote.marshaller=org.infinispan.commons.marshall.JavaSerializationMarshaller
+
+    #infinispan.remote.marshaller=org.infinispan.commons.marshall.ProtoStreamMarshaller
+  logback-spring.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!-- https://www.baeldung.com/spring-boot-logging -->
+    <configuration>
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+        <property name="LOGS" value="./logs" />
+
+        <!--    <appender name="Console"-->
+        <!--              class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+        <!--            <Pattern>-->
+        <!--                %cyan(%d{ISO8601}) %highlight(%-5level) [%cyan(%t)] %yellow(%C{1.}): %msg%n%throwable-->
+        <!--            </Pattern>-->
+        <!--        </layout>-->
+        <!--    </appender>-->
+
+        <!-- LOG everything at INFO level -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+
+        <!-- LOG "com.example*" at TRACE level -->
+        <logger name="org.infinispan.client.hotrod" level="INFO"/>
+
+        <!-- LOG "com.example*" at TRACE level -->
+        <logger name="com.alopezme.hotrodtester" level="DEBUG"/>
+    </configuration>

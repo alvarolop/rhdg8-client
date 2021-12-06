@@ -1,0 +1,29 @@
+# Default values for rhdg-client-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+application:
+  name: rhdg-client
+  namespace: my-rhdg8
+  replicaCount: 2
+
+server:
+  name: rhdg
+  namespace: my-rhdg8
+  port: 11222
+
+git:
+  repository: https://github.com/alvarolop/rhdg8-client.git
+  branch: main
+
+image:
+  name: rhdg-client
+  tag: latest
+
+security:
+  auth:
+    enabled: false
+  encryption:
+    enabled: false
+
+mountPath: /deployments/config

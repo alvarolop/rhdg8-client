@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.application.name }}
+  name: {{ .Values.application.name }}
+  namespace: {{ .Values.application.namespace }}
+spec:
+  replicas: {{ .Values.application.replicaCount }}
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: {{ .Values.application.name }}
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      name: {{ .Values.application.name }}
+      labels:
+        app: {{ .Values.application.name }}
+    spec:
+      containers:
+        - name: {{ .Values.application.name }}
+          image: image-registry.openshift-image-registry.svc:5000/{{ .Values.server.namespace }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          imagePullPolicy: Always
+          env:
+            - name: DATAGRID_HOST
+              value: '{{ .Values.server.name }}{{"."}}{{ .Values.server.namespace }}{{".svc"}}'
+            - name: DATAGRID_PORT
+              value: "{{ .Values.server.port }}"
+            - name: DATAGRID_AUTH_ENABLED
+              value: "{{ .Values.security.auth.enabled }}"
+            - name: DATAGRID_SSL_ENABLED
+              value: "{{ .Values.security.encryption.enabled }}"
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: app-config
+          {{ if eq .Values.security.encryption.enabled true }}
+              mountPath: "{{ .Values.mountPath }}/application.properties"
+              readOnly: true
+              subPath: application.properties
+            - name: app-config
+              mountPath: "{{ .Values.mountPath }}/logback-spring.xml"
+              readOnly: true
+              subPath: logback-spring.xml
+            - name: ssl-certificate
+              mountPath: "{{ .Values.mountPath }}/tls.crt"
+              subPath: tls.crt
+              readOnly: true
+          {{ else }}
+              mountPath: {{ .Values.mountPath }}
+          {{ end }}
+      volumes:
+        - name: app-config
+          configMap:
+            name: {{ .Values.application.name }}-config
+      {{ if eq .Values.security.encryption.enabled true }}
+        - name: ssl-certificate
+          secret:
+            secretName: "{{ .Values.server.name }}-cert-secret"
+            items:
+              - key: tls.crt
+                path: tls.crt
+      {{ end }}

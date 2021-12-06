@@ -1,0 +1,10 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: {{ .Values.application.name }}
+  name: {{ .Values.image.name }}
+  namespace: {{ .Values.application.namespace }}
+spec:
+  lookupPolicy:
+    local: true
