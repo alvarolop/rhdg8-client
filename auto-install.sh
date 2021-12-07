@@ -31,7 +31,7 @@ if ! $RHDG_SSL_ENABLED; then
 else
     OCP_CLUSTER_TEMPLATE="rhdg-client-ssl"
     SERVICE_MONITOR_HTTP_SCHEME="https"
-    RHDG_SECURITY="-u developer:developer"
+    RHDG_SECURITY="--digest -u developer:developer"
 fi
 
 # Check if the user is logged in 
@@ -46,7 +46,7 @@ fi
 # Register Proto Schema
 echo -e "\n[1/3]Register Book Proto Schema"
 RHDG_SERVER_ROUTE=$(oc get routes ${RHDG_CLUSTER_NAME}-external -n $RHDG_NAMESPACE --template="${SERVICE_MONITOR_HTTP_SCHEME}://{{.spec.host}}")
-curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d '// Generated from : com.alopezme.hotrodtester.configuration.BookSchema
+curl -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d '// Generated from : com.alopezme.hotrodtester.configuration.BookSchema
 
 syntax = "proto2";
 
