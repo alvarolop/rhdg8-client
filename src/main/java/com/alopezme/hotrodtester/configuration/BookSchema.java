@@ -1,6 +1,7 @@
 package com.alopezme.hotrodtester.configuration;
 
 import com.alopezme.hotrodtester.model.Book;
+import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.protostream.SerializationContextInitializer;
 import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
 
@@ -11,5 +12,5 @@ import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
         schemaFileName = "book.proto",
         schemaFilePath = "proto/",
         schemaPackageName = "com.alopezme.hotrodtester.model")
-public interface BookSchema extends SerializationContextInitializer {
+public interface BookSchema extends GeneratedSchema {
 }

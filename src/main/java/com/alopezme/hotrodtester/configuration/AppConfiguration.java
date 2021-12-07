@@ -10,7 +10,10 @@ import org.infinispan.client.hotrod.impl.query.RemoteQuery;
 import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.dataconversion.MediaType;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
+import org.infinispan.protostream.GeneratedSchema;
+import org.infinispan.protostream.SerializationContextInitializer;
 import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
+import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,32 +45,6 @@ public class AppConfiguration {
             .valueType(MediaType.APPLICATION_JSON)
             .valueMarshaller(new UTF8StringMarshaller())
             .build();
-
-//    @PostConstruct
-//    public void registerProtoSchemas() throws IOException, URISyntaxException {
-//        logger.warn("Start method registerProtoSchemas()" +
-//                Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI()).toAbsolutePath());
-//        // Configure your proto schemas here
-////        Path protoPath = Paths.get(RemoteQuery.class.getClassLoader().getResource("proto/book.proto").toURI());
-////        String proto = Files.readString(protoPath);
-//
-//        Path path = Paths.get(AppConfiguration.class.getClassLoader().getResource("proto/book.proto").toURI());
-//        String proto = Files.readString(path);
-//
-//        logger.debug("--> Proto schema: " + System.lineSeparator() + proto + System.lineSeparator());
-//
-//        RemoteCache<String, String> protoCache = remoteCacheManager.getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
-//        protoCache.put("book.proto", proto);
-//
-//        String errors = protoCache.get(ProtobufMetadataManagerConstants.ERRORS_KEY_SUFFIX);
-//        if (errors != null) {
-//            throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
-//        }
-//
-//        logger.warn("Protobuf cache now contains " + protoCache.entrySet().size() + " entries: " +
-//        protoCache.entrySet().toString());
-//
-//    }
 
     @Bean
     RemoteCache<Integer, Book> serializationBooksCache(){
@@ -104,5 +81,31 @@ public class AppConfiguration {
         return remoteCacheManager
                     .getCache(CacheNames.TRANSACTIONAL_CACHE_NAME,TransactionMode.NON_XA, RemoteTransactionManagerLookup.getInstance()
                     .getTransactionManager());
+    }
+
+/*    @Bean
+    public void registerSchemas() {
+        registerSchema();
+    }*/
+
+    /**
+     * Register generated Protobuf schema with Infinispan Server.
+     * This requires the RemoteCacheManager to be initialized.
+     *
+     * @param schema The serialization context initializer for the schema.
+     */
+    private void registerSchema(GeneratedSchema schema) {
+        // Store schemas in the '___protobuf_metadata' cache to register them.
+        // Using ProtobufMetadataManagerConstants might require the query dependency.
+        final RemoteCache<String, String> protoMetadataCache = remoteCacheManager.getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
+        // Add the generated schema to the cache.
+        protoMetadataCache.put(schema.getProtoFileName(), schema.getProtoFile());
+
+        // Ensure the registered Protobuf schemas do not contain errors.
+        // Throw an exception if errors exist.
+        String errors = protoMetadataCache.get(ProtobufMetadataManagerConstants.ERRORS_KEY_SUFFIX);
+        if (errors != null) {
+            throw new IllegalStateException("Some Protobuf schema files contain errors: " + errors + "\nSchema :\n" + schema.getProtoFileName());
+        }
     }
 }
