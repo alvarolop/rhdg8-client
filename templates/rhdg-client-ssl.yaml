@@ -92,6 +92,8 @@ objects:
               value: ${DATAGRID_AUTH_ENABLED}
             - name: DATAGRID_SSL_ENABLED
               value: ${DATAGRID_SSL_ENABLED}
+            - name: DATAGRID_SSL_SNI_HOST_NAME
+              value: "${RHDG_CLUSTER_NAME}.${APP_NAMESPACE}.svc"
           ports:
             - containerPort: 8080
               protocol: TCP
