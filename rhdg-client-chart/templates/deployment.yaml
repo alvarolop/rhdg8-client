@@ -40,6 +40,8 @@ spec:
               value: "{{ .Values.security.auth.enabled }}"
             - name: DATAGRID_SSL_ENABLED
               value: "{{ .Values.security.encryption.enabled }}"
+            - name: DATAGRID_SSL_SNI_HOST_NAME
+              value: '{{ .Values.server.name }}{{"."}}{{ .Values.server.namespace }}{{".svc"}}'
           ports:
           - containerPort: 8080
             protocol: TCP
