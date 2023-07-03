@@ -2,6 +2,7 @@ package com.alopezme.hotrodtester.configuration;
 
 import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
+import org.infinispan.client.hotrod.transaction.lookup.GenericTransactionManagerLookup;
 import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
@@ -26,7 +27,6 @@ public class InfinispanConfiguration {
     public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
         return b -> {
             logger.warn("Start method infinispanRemoteCacheCustomizer()");
-            b.transaction();
             b.marshaller(new ProtoStreamMarshaller());
             b.marshaller(new JavaSerializationMarshaller());
             b.addJavaSerialAllowList(".*");
@@ -38,19 +38,20 @@ public class InfinispanConfiguration {
                     .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".xml"))
                     .marshaller(JavaSerializationMarshaller.class);
             b.remoteCache(CacheNames.BOOKS_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.BOOKS_CACHE_NAME + ".xml"))
+                    .configurationURI(URI.create("caches/" + CacheNames.BOOKS_CACHE_NAME + ".yaml"))
                     .marshaller(JavaSerializationMarshaller.class);
             b.remoteCache(CacheNames.PROTO_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.PROTO_CACHE_NAME + ".xml"))
+                    .configurationURI(URI.create("caches/" + CacheNames.PROTO_CACHE_NAME + ".yaml"))
                     .marshaller(ProtoStreamMarshaller.class);
             b.remoteCache(CacheNames.INDEXED_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.INDEXED_CACHE_NAME + ".xml"))
+                    .configurationURI(URI.create("caches/" + CacheNames.INDEXED_CACHE_NAME + ".yaml"))
                     .marshaller(ProtoStreamMarshaller.class);
             b.remoteCache(CacheNames.TRANSACTIONAL_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.TRANSACTIONAL_CACHE_NAME + ".xml"))
+                    .configurationURI(URI.create("caches/" + CacheNames.TRANSACTIONAL_CACHE_NAME + ".yaml"))
                     .marshaller(ProtoStreamMarshaller.class)
-                    .transactionManagerLookup(RemoteTransactionManagerLookup.getInstance())
-                    .transactionMode(TransactionMode.NON_XA);
+                    .transactionMode(TransactionMode.NON_XA)
+                    .transactionManagerLookup(GenericTransactionManagerLookup.getInstance())
+            ;
         };
     }
 }

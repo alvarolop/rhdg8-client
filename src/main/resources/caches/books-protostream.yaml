@@ -1,0 +1,17 @@
+distributedCache:
+  owners: "1"
+  mode: "SYNC"
+  statistics: "true"
+  encoding:
+    key:
+      mediaType: "application/x-protostream"
+    value:
+      mediaType: "application/x-protostream"
+  expiration:
+    lifespan: "-1"
+    maxIdle: "-1"
+    interval: "60000"
+  memory:
+    storage: "HEAP"
+  indexing:
+    enabled: "false"
