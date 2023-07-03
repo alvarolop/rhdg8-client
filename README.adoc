@@ -42,7 +42,7 @@ toc::[]
 RHDG provides libraries in several programming languages to consume entries stored in the grid. However, in this section, we will focus on the highly-optimized HotRod Java client. Here the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.4/html/hot_rod_java_client_guide/index[documentation].
 
 
-WARNING: The following sections assume that you have a Red Hat Data Grid 8.4 server cluster running either on OCP or locally. For more information about configuring your cluster, check the following https://github.com/alvarolop/rhdg8-server[link].
+WARNING: The following sections assume that you have a Red Hat Data Grid 8 server cluster running either on OCP or locally. For more information about configuring your cluster, check the following https://github.com/alvarolop/rhdg8-server[link].
 
 
 
@@ -302,7 +302,7 @@ infinispan.client.hotrod.sni_host_name=${RHDG_CLUSTER_NAME}.${CLUSTER_NAMESPACE}
 
 For more information about configuration parameters check the following resources:
 
-* https://access.redhat.com/webassets/avalon/d/red-hat-data-grid/8.4/api/org/infinispan/client/hotrod/configuration/package-summary.html[RHDG 8.1 JavaDoc].
+* https://access.redhat.com/webassets/avalon/d/red-hat-data-grid/8.4/api/org/infinispan/client/hotrod/configuration/package-summary.html[RHDG 8.4 JavaDoc].
 * https://github.com/infinispan/infinispan-spring-boot/blob/main/infinispan-spring-boot-starter-remote/src/test/resources/test-application.properties[Testing configuration of the Spring Starter].
 
 
@@ -315,7 +315,7 @@ There are other mechanisms to add the credentials to the client application for 
 
 == Annex B: Comparing cache definitions
 
-Up until now, Red Hat Data Grid does not provide a mechanism to update cache definitions easily. Most of the configuration that you might apply to a cache needs a cache restart. Therefore, the REST API does not allow cache configurations update. You must delete it and create a new cache.
+Up until now, Red Hat Data Grid does not provide a mechanism to update cache definitions easily. Most of the configuration that you might apply to a cache needs a cache restart. Therefore, the REST API does not allow cache configuration updates. You must delete it and create a new cache.
 
 In addition to it, cache definitions retrieved with the REST API might not be identical to the definition used to create it. Data Grid adds, converts, and removes some of the parameters according to the default values.
 
