@@ -46,37 +46,13 @@ fi
 # Register Proto Schema
 echo -e "\n[1/3]Register Book Proto Schema"
 RHDG_SERVER_ROUTE=$(oc get routes ${RHDG_CLUSTER_NAME}-external -n $RHDG_NAMESPACE --template="${SERVICE_MONITOR_HTTP_SCHEME}://{{.spec.host}}")
-curl -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d '// Generated from : com.alopezme.hotrodtester.configuration.BookSchema
 
-syntax = "proto2";
+# Local
+# curl -X POST -k -v -u admin:password --digest localhost:11222/rest/v2/schemas/book.proto -d @protos/book.proto
+# curl -X POST -k -v -u admin:password --digest localhost:11322/rest/v2/schemas/book.proto -d @protos/book.proto
 
-package com.alopezme.hotrodtester.model;
-
-/**
- * @Indexed
- */
-message Book {
-   
-   /**
-    * @Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)
-    */
-   optional int32 id = 1 [default = 0];
-   
-   /**
-    * @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO)
-    */
-   optional string title = 2;
-   
-   /**
-    * @Field(index=Index.YES, store = Store.YES, analyze = Analyze.YES)
-    */
-   optional string author = 3;
-   
-   /**
-    * @Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)
-    */
-   optional int32 publicationYear = 4 [default = 0];
-}'
+# OCP
+curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto
 
 
 # Create RHDG Client configmap

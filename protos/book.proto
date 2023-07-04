@@ -1,0 +1,28 @@
+syntax = "proto2";
+package com.alopezme.hotrodtester.model;
+
+/**
+ * @Indexed
+ */
+message Book {
+   
+   /**
+    * @Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)
+    */
+   optional int32 id = 1 [default = 0];
+   
+   /**
+    * @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO)
+    */
+   optional string title = 2;
+   
+   /**
+    * @Field(index=Index.YES, store = Store.YES, analyze = Analyze.YES)
+    */
+   optional string author = 3;
+   
+   /**
+    * @Field(index=Index.NO, store = Store.NO, analyze = Analyze.NO)
+    */
+   optional int32 publicationYear = 4 [default = 0];
+}
