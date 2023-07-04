@@ -28,12 +28,10 @@ public class TesterController {
     Logger logger = LoggerFactory.getLogger(TesterController.class);
 
     /**
-     * GET KEYS
-     */
+    * GET KEYS
+    */
     @GetMapping("/cache/{cache}/keys")
-    public String getKeys(
-            @PathVariable(value = "cache") String cacheName) {
-
+    public String getKeys(@PathVariable(value = "cache") String cacheName) {
         return byteTesterCache.keySet().toString() + System.lineSeparator();
     }
 

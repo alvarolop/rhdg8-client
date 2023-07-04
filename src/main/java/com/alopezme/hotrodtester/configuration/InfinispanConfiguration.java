@@ -1,9 +1,7 @@
 package com.alopezme.hotrodtester.configuration;
 
-import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
 import org.infinispan.client.hotrod.transaction.lookup.GenericTransactionManagerLookup;
-import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
 import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
@@ -33,9 +31,10 @@ public class InfinispanConfiguration {
             b.addContextInitializer(new BookSchemaImpl());
             b.transaction().transactionTimeout(1, TimeUnit.MINUTES);
             b.remoteCache(CacheNames.SESSIONS_CACHE_NAME)
-                    .templateName(DefaultTemplate.DIST_SYNC);
+                    .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".yaml"))
+                    .marshaller(JavaSerializationMarshaller.class);
             b.remoteCache(CacheNames.TESTER_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".xml"))
+                    .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".yaml"))
                     .marshaller(JavaSerializationMarshaller.class);
             b.remoteCache(CacheNames.BOOKS_CACHE_NAME)
                     .configurationURI(URI.create("caches/" + CacheNames.BOOKS_CACHE_NAME + ".yaml"))
@@ -50,8 +49,7 @@ public class InfinispanConfiguration {
                     .configurationURI(URI.create("caches/" + CacheNames.TRANSACTIONAL_CACHE_NAME + ".yaml"))
                     .marshaller(ProtoStreamMarshaller.class)
                     .transactionMode(TransactionMode.NON_XA)
-                    .transactionManagerLookup(GenericTransactionManagerLookup.getInstance())
-            ;
+                    .transactionManagerLookup(GenericTransactionManagerLookup.getInstance());
         };
     }
 }
