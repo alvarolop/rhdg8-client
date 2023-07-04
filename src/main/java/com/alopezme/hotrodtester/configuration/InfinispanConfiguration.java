@@ -20,36 +20,36 @@ public class InfinispanConfiguration {
 
     Logger logger = LoggerFactory.getLogger(InfinispanConfiguration.class);
 
-    @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
-        return b -> {
-            logger.warn("Start method infinispanRemoteCacheCustomizer()");
-            b.marshaller(new ProtoStreamMarshaller());
-            b.marshaller(new JavaSerializationMarshaller());
-            b.addJavaSerialAllowList(".*");
-            b.addContextInitializer(new BookSchemaImpl());
-            b.transaction().transactionTimeout(1, TimeUnit.MINUTES);
-            b.remoteCache(CacheNames.SESSIONS_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".yaml"))
-                    .marshaller(JavaSerializationMarshaller.class);
-            b.remoteCache(CacheNames.TESTER_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".yaml"))
-                    .marshaller(JavaSerializationMarshaller.class);
-            b.remoteCache(CacheNames.BOOKS_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.BOOKS_CACHE_NAME + ".yaml"))
-                    .marshaller(JavaSerializationMarshaller.class);
-            b.remoteCache(CacheNames.PROTO_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.PROTO_CACHE_NAME + ".yaml"))
-                    .marshaller(ProtoStreamMarshaller.class);
-            b.remoteCache(CacheNames.INDEXED_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.INDEXED_CACHE_NAME + ".yaml"))
-                    .marshaller(ProtoStreamMarshaller.class);
-            b.remoteCache(CacheNames.TRANSACTIONAL_CACHE_NAME)
-                    .configurationURI(URI.create("caches/" + CacheNames.TRANSACTIONAL_CACHE_NAME + ".yaml"))
-                    .marshaller(ProtoStreamMarshaller.class)
-                    .transactionMode(TransactionMode.NON_XA)
-                    .transactionManagerLookup(GenericTransactionManagerLookup.getInstance());
-        };
-    }
+    // @Bean
+    // @Order(Ordered.HIGHEST_PRECEDENCE)
+    // public InfinispanRemoteCacheCustomizer infinispanRemoteCacheCustomizer() {
+    //     return b -> {
+    //         logger.warn("Start method infinispanRemoteCacheCustomizer()");
+    //         b.marshaller(new ProtoStreamMarshaller());
+    //         b.marshaller(new JavaSerializationMarshaller());
+    //         b.addJavaSerialAllowList(".*");
+    //         b.addContextInitializer(new BookSchemaImpl());
+    //         b.transaction().transactionTimeout(1, TimeUnit.MINUTES);
+    //         b.remoteCache(CacheNames.SESSIONS_CACHE_NAME)
+    //                 .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".yaml"))
+    //                 .marshaller(JavaSerializationMarshaller.class);
+    //         b.remoteCache(CacheNames.TESTER_CACHE_NAME)
+    //                 .configurationURI(URI.create("caches/" + CacheNames.TESTER_CACHE_NAME + ".yaml"))
+    //                 .marshaller(JavaSerializationMarshaller.class);
+    //         b.remoteCache(CacheNames.BOOKS_CACHE_NAME)
+    //                 .configurationURI(URI.create("caches/" + CacheNames.BOOKS_CACHE_NAME + ".yaml"))
+    //                 .marshaller(JavaSerializationMarshaller.class);
+    //         b.remoteCache(CacheNames.PROTO_CACHE_NAME)
+    //                 .configurationURI(URI.create("caches/" + CacheNames.PROTO_CACHE_NAME + ".yaml"))
+    //                 .marshaller(ProtoStreamMarshaller.class);
+    //         b.remoteCache(CacheNames.INDEXED_CACHE_NAME)
+    //                 .configurationURI(URI.create("caches/" + CacheNames.INDEXED_CACHE_NAME + ".yaml"))
+    //                 .marshaller(ProtoStreamMarshaller.class);
+    //         b.remoteCache(CacheNames.TRANSACTIONAL_CACHE_NAME)
+    //                 .configurationURI(URI.create("caches/" + CacheNames.TRANSACTIONAL_CACHE_NAME + ".yaml"))
+    //                 .marshaller(ProtoStreamMarshaller.class)
+    //                 .transactionMode(TransactionMode.NON_XA)
+    //                 .transactionManagerLookup(GenericTransactionManagerLookup.getInstance());
+    //     };
+    // }
 }
