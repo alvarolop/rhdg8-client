@@ -8,19 +8,12 @@
     <version>1.0.0</version>
 
     <properties>
-        <version.spring.boot>2.3.4.RELEASE</version.spring.boot>
-        <version.spring.session>2.3.0.RELEASE</version.spring.session>
-<!--        <version.spring.boot.infinispan>2.3.6.Final-redhat-00001</version.spring.boot.infinispan>-->
-<!--        <version.infinispan>11.0.9.Final-redhat-00001</version.infinispan>-->
-<!--        <version.spring.boot.infinispan>12.1.1.Final</version.spring.boot.infinispan>-->
-        <!-- <version.spring.boot.infinispan>12.1.3.Final-redhat-00001</version.spring.boot.infinispan>
-        <version.infinispan>12.1.3.Final-redhat-00001</version.infinispan> -->
-        <version.spring.boot.infinispan>13.0.6.Final-redhat-00001</version.spring.boot.infinispan>
-        <version.infinispan>13.0.6.Final-redhat-00001</version.infinispan>
-        <lombok.version>1.18.24</lombok.version>
-        <java.version>11</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <version.spring.boot>2.7.13</version.spring.boot>
+        <version.spring.session>2.7.2</version.spring.session>
+        <version.infinispan>14.0.11.Final-redhat-00001</version.infinispan>
+        <lombok.version>1.18.28</lombok.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -41,45 +34,26 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.infinispan</groupId>-->
-<!--                <artifactId>infinispan-spring-boot-starter</artifactId>-->
-<!--                <version>${version.spring.boot.infinispan}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <!-- Infinispan: Spring Boot starter -->
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-spring-boot-starter-remote</artifactId>
-            <version>${version.spring.boot.infinispan}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Enable sessions -->
+        <!-- Infinispan: Enable sessions -->
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
+        </dependency>
+
+        <!-- Infinispan: Enable queries -->
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-remote-query-client</artifactId>
         </dependency>
 
         <!-- <dependency>
@@ -88,11 +62,33 @@
             <version>${version.micrometer.registry.prometheus}</version>
         </dependency> -->
 
+        <!-- Spring: 3 Default dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- END - Spring: 3 Default dependencies -->     
+
+        <!-- Lombok: Autogenerate fields -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Infinispan: Autogenerate Proto file -->
         <dependency>
             <groupId>org.infinispan.protostream</groupId>
             <artifactId>protostream-processor</artifactId>
@@ -101,27 +97,7 @@
               because it is a compile-only dependency and is not required at runtime.
               Transitive propagation of this dependency should be also be avoided.
             -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-remote-query-client</artifactId>
-        </dependency>
-
-
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.session</groupId>-->
-<!--            <artifactId>spring-session-core</artifactId>-->
-<!--            <version>${version.spring.session}</version>-->
-<!--        </dependency>-->
-
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
+            <!-- <scope>provided</scope> -->
         </dependency>
     </dependencies>
 
@@ -130,12 +106,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.3.0</version>
                 <configuration>
                     <excludes>
                         <!-- This is where the exclusion occurs -->
-                        <exclude>**/logback-spring.xml</exclude>
-                        <exclude>**/application.properties</exclude>
+<!--                        <exclude>**/logback-spring.xml</exclude>
+                        <exclude>**/application.properties</exclude>-->
                     </excludes>
                 </configuration>
             </plugin>
