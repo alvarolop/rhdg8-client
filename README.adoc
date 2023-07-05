@@ -158,78 +158,109 @@ oc process -f templates/rhdg-client-basic.yaml \
 
 
 
+== Use it!
+
+This app was conceived to test Hotrod features available in the Java dependency. It also has a simple mechanism to perform load tests on the Data Grid server using the Hot Rod protocol.
+
+The application is split into different classes to simplify code readability.
+
+[cols="3*",options="header",width=100%]
+|===
+|API
+|Controller
+|Description
 
 
-== The rhdg8-client app
+|`api/book`
+|link:src/main/java/com/alopezme/hotrodtester/controller/BookJavaController.java[BookJavaController]
+|CRUD methods to test cache behavior using Spring Cache and Java Serialization
 
+|`api/proto`
+|link:src/main/java/com/alopezme/hotrodtester/controller/BookProtoController.java[BookProtoController]
+|CRUD methods to test cache behavior using Proto Serialization
+ 
+|`api/query`
+|link:src/main/java/com/alopezme/hotrodtester/controller/BookQueryController.java[BookQueryController]
+|CRUD methods to test cache behavior using Proto Serialization over an indexed cache (With Queries)
+ 
+|`api/transaction`
+|link:src/main/java/com/alopezme/hotrodtester/controller/BookTransactionTester.java[BookTransactionTester]
+|Example of how transactions work in DG, but this is not a real usage example
+ 
+|`api/session`
+|link:src/main/java/com/alopezme/hotrodtester/controller/SessionController.java[SessionController]
+|Example of how to use sessions and their reutilization using Hotrod 
+ 
+|`api/admin`
+|link:src/main/java/com/alopezme/hotrodtester/controller/AdminController.java[AdminController]
+|Uploading Proto files and Scripts as well as retrieving statistics
+ 
+|`api/tester`
+|link:src/main/java/com/alopezme/hotrodtester/controller/TesterController.java[TesterController]
+|Perform load testing to caches containing Strings or Byte[]
 
-This application may be used to test many different features included in the Java implementation of Hot Rod protocol. All the tests and application logic is exposed via three REST endpoints:
+|===
 
-* `api/basic`: Basic methods to test cache behavior: put, get, remove, restart, etc.
-* `api/queries`: Methods to interact with an indexed cache to perform queries, bulk removes based on the result of queries and interact with cache indexes.
-* `api/transaction`: Basic methods to test transactions.
 
 
 === Environment set up
 
-If your client application is running on OCP, define these environment variables to simplify the following commands:
-[source, bash]
-----
-APP_NAMESPACE="rhdg8"
-APP_NAME="rhdg8-hotrod-tester"
-APP_URL=$(oc get route ${APP_NAME} -n ${APP_NAMESPACE} -o template='http://{{.spec.host}}')
-CACHE_NAME="distributed-01"
-----
+You will need to define different variables depending on where the server is deployed
 
-On the contrary, if your application is running locally, define these environment variables to simplify the following commands:
 [source, bash]
 ----
+# 1) Deployed locally
+
 APP_URL="http://localhost:8080"
-CACHE_NAME="distributed-02"
+
+# 2) Deployed on OCP (Check the rhdg8-server for more details of the deployment)
+
+APP_URL=$(oc get route ${APP_NAME} -n ${APP_NAMESPACE} -o template='http://{{.spec.host}}')
 ----
 
 
-=== Basic features
 
-Basic operations:
 
+
+
+== Use it! Features
+
+.Basic features
 [source, bash]
 ----
 # Put bytes from 0 to 49
-curl -k -G -X PUT "${APP_URL}/api/basic/cache/${CACHE_NAME}/bytes" -d size=1024 -d entries=50
+curl -k -G -X PUT "${APP_URL}/api/book/cache/${CACHE_NAME}/bytes" -d size=1024 -d entries=50
 
 # Put strings from 100 to 149
-curl -k -G -X PUT "${APP_URL}/api/basic/cache/${CACHE_NAME}/string" -d minkey=100 -d entries=50
+curl -k -G -X PUT "${APP_URL}/api/book/cache/${CACHE_NAME}/string" -d minkey=100 -d entries=50
 
 # Get Bulk from 100 to 149
-curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/bulk" -d minkey=100 -d entries=50
+curl -k -G -X GET "${APP_URL}/api/book/cache/${CACHE_NAME}/bulk" -d minkey=100 -d entries=50
 
 # Get byte entry 0
-curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/byte" -d key=0 -d show=true
+curl -k -G -X GET "${APP_URL}/api/book/cache/${CACHE_NAME}/byte" -d key=0 -d show=true
 
 # Get string entry 101
-curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/string" -d key=101 -d show=true
+curl -k -G -X GET "${APP_URL}/api/book/cache/${CACHE_NAME}/string" -d key=101 -d show=true
 
 # Get keys
-curl -k -G -X GET "${APP_URL}/api/basic/cache/${CACHE_NAME}/keys"
+curl -k -G -X GET "${APP_URL}/api/book/cache/${CACHE_NAME}/keys"
 
 # Remove entries (From 10 to 110)
-curl -k -G -X DELETE "${APP_URL}/api/basic/cache/${CACHE_NAME}" -d minkey=10 -d entries=100
+curl -k -G -X DELETE "${APP_URL}/api/book/cache/${CACHE_NAME}" -d minkey=10 -d entries=100
 ----
 
-
-=== Queries and indexes
-
+.Queries and indexes
 TIP: These features are not tested against the cache `$CACHE_NAME`, but against a cache named `indexed-cache`. It is possible to modify the cache you are going to use in the `application.properties` file and restart the client application.
 
 
+.Transactions
+WARNING: Work in progress
 
 
 
-=== Transactions
 
-ERROR: Work in progress
-
+== Use it! Load testing
 
 
 
@@ -291,69 +322,3 @@ There are other mechanisms to add the credentials to the client application for 
 
 
 
-== Annex C: Comparing cache definitions
-
-Up until now, Red Hat Data Grid does not provide a mechanism to update cache definitions easily. Most of the configuration that you might apply to a cache needs a cache restart. Therefore, the REST API does not allow cache configuration updates. You must delete it and create a new cache.
-
-In addition to it, cache definitions retrieved with the REST API might not be identical to the definition used to create it. Data Grid adds, converts, and removes some of the parameters according to the default values.
-
-The following commands show a mechanism to create a new cache, retrieve the modified configuration and check if it is similar or not.
-
-
-If your DG is running on OCP, define these environment variables to simplify the following commands:
-[source, bash]
-----
-CLUSTER_NAMESPACE="rhdg8"
-CLUSTER_NAME="rhdg"
-RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
-CACHE_NAME="test-01"
-----
-
-On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
-[source, bash]
-----
-RHDG_URL="https://localhost:11222"
-CACHE_NAME="test-01"
-----
-
-Second, create your cache:
-[source, bash]
-----
-curl -X POST -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/test/$CACHE_NAME.json"
-----
-
-Third retrieve the configuration:
-[source, bash]
-----
-curl -X GET -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME?action=config | jq > caches/test/$CACHE_NAME-output.json
-----
-
-Compare them using `jq`:
-[source, bash]
-----
-jq --argfile a caches/test/$CACHE_NAME.json --argfile b caches/test/$CACHE_NAME-output.json -n '($a | (.. | arrays) |= sort) as $a | ($b | (.. | arrays) |= sort) as $b | $a == $b'
-----
-
-Delete the cache definition:
-[source, bash]
-----
-curl -X DELETE -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME
-----
-
-
-
-
-
-
-
-
-
-== Annex D: Managing indexed caches
-
-Indexed caches keep an index of the desired objects. Some operations update this index asynchronously. Therefore, there may be inconsistencies between the index and the real values stored in the cache. Use the following commands to clear and re-index your cache:
-
-[source, bash]
-----
-curl -X POST -k --digest -u admin:password  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=clear
-curl -X POST -k --digest -u admin:password  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=mass-index&mode=sync
-----

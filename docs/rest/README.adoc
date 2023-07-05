@@ -32,7 +32,7 @@ endif::[]
 
 
 [NOTE]
-====
+===
 
 To use the REST API to manage Cache configurations or modify cache entries, you need to determine the RHDG_URL. This will depend on the type of deployment:
 
@@ -47,7 +47,7 @@ RHDG_URL="http://localhost:11222"
 RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='http://{{.spec.host}}')
 ----
 
-====
+===
 
 
 == Managing caches
