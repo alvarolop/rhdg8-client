@@ -1,0 +1,87 @@
+= RHDG REST API playground
+
+
+
+[NOTE]
+====
+
+To use the REST API to manage Cache configurations or modify cache entries, you need to determine the RHDG_URL. This will depend on the type of deployment:
+
+[source, bash]
+----
+# 1) Deployed locally
+
+RHDG_URL="http://localhost:11222"
+
+# 2) Deployed on OCP (Check the rhdg8-server for more details of the deployment)
+
+RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='http://{{.spec.host}}')
+----
+
+====
+
+
+== Managing caches
+
+Add cache definitions to specify how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML, JSON or YAML format. You have examples of cache definitions in the `caches` folder of this repository.
+
+
+.*Create a cache*
+[source, bash]
+----
+curl -X POST -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/$CACHE_NAME.json"
+----
+
+
+.*Delete a cache*
+[source, bash]
+----
+curl -X DELETE -k --digest -u admin:password ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
+----
+
+
+.*Check cache* configuration and status:
+[source,bash]
+----
+curl -X GET -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
+----
+
+
+
+
+
+== CRUD operations with `text/plain`
+
+
+
+In some situations, you might want to test your RHDG cluster using REST prior to the more efficient alternative of the HotRod client. Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
+
+
+WARNING: Make sure to have the env vars of Chapter 2.2 still defined.
+
+Perform CRUD commands to interact with entries in the cache:
+[source,bash]
+----
+# Create
+curl -X POST -k --digest -u admin:password -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
+# Retrieve
+curl -X GET -k --digest -u admin:password ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
+# Update 
+curl -X PUT -k --digest -u admin:password -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hola mundo"
+# Delete
+curl -X DELETE -k --digest -u admin:password ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
+----
+
+
+For more information about the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.4/html/data_grid_rest_api/index[documentation].
+
+
+
+
+== CRUD operations with `application/json`
+
+
+
+== CRUD operations with `application/x-protostream`
+
+

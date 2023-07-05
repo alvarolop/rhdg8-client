@@ -42,160 +42,125 @@ toc::[]
 RHDG provides libraries in several programming languages to consume entries stored in the grid. However, in this section, we will focus on the highly-optimized HotRod Java client. Here the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.4/html/hot_rod_java_client_guide/index[documentation].
 
 
-WARNING: The following sections assume that you have a Red Hat Data Grid 8 server cluster running either on OCP or locally. For more information about configuring your cluster, check the following https://github.com/alvarolop/rhdg8-server[link].
 
 
 
 
 
 
+== Run it! Part 1: Deploy the server
 
+This Spring Boot application needs a running Red Hat Data Grid server to connect to either on OCP or locally. If you need help with this task, you can check the code that I have in this sibling repository: https://github.com/alvarolop/rhdg8-server[alvarolop/rhdg8-server].
 
-== Cache configuration using the REST API
-
-Add cache definitions to specify how Data Grid stores your data. You can create caches from configuration templates or from valid cache definitions in XML, JSON or YAML format. You have examples of cache definitions in the `caches` folder of this repository.
-
-
-[NOTE]
-====
-
-To use the REST API to manage Cache configurations, you need to determine the RHDG_URL. This will depend on the type of deployment:
+If you don't want a complex setup, you can use the easiest way to deploy the server:
 
 [source, bash]
 ----
-# 1) Deployed locally
-
-RHDG_URL="http://localhost:11222"
-
-# 2) Deployed on OCP (Check the rhdg8-server for more details of the deployment)
-
-RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='http://{{.spec.host}}')
-----
-
-====
-
-
-
-.*Create a cache*
-[source, bash]
-----
-curl -X POST -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/$CACHE_NAME.json"
+podman run -it -p 11222:11222 -e USER="admin" -e PASS="password" --net=host quay.io/infinispan/server:14.0
 ----
 
 
-.*Delete a cache*
-[source, bash]
-----
-curl -X DELETE -k --digest -u admin:password ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
-----
+== Run it! Part 2: Configure the schema
 
+This application uses several caches to stores and indexes a Book object serialized using Protostream. Therefore, both the server and the client need to know the details of the serialization. While the client application knows it thanks to several annotations, we need to send the `book.proto` definition to the server prior to running the client application.
 
-.*Check cache* configuration and status:
-[source,bash]
-----
-curl -X GET -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} 
-----
-
-
-
-
-
-
-
-
-
-
-== Consuming Data Grid: REST client
-
-In some situations, you might want to test your RHDG cluster using REST prior to the more efficient alternative of the HotRod client. Data Grid servers provide RESTful HTTP access to data through a REST endpoint built on Netty.
-
-
-WARNING: Make sure to have the env vars of Chapter 2.2 still defined.
-
-Perform CRUD commands to interact with entries in the cache:
-[source,bash]
-----
-# Create
-curl -X POST -k --digest -u admin:password -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
-# Retrieve
-curl -X GET -k --digest -u admin:password ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
-# Update 
-curl -X PUT -k --digest -u admin:password -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hola mundo"
-# Delete
-curl -X DELETE -k --digest -u admin:password ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0
-----
-
-
-For more information about the REST endpoint, check the https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.4/html/data_grid_rest_api/index[documentation].
-
-
-
-
-
-
-
-== Running your HotRod Java client
-
-
-Red Hat Data Grid provides dependencies to simplify your development of a Hot Rod client using basic Java, Quarkus, and the Spring Framework. In this repository, we explore the features provided by the Infinispan Starter for Spring. 
-
-[WARNING]
-==== 
-The application needs at least a cache indexed. Use the following code:
+There are several mechanisms, but probably the REST API is the easiest one:
 
 [source, bash]
 ----
-CACHE_NAME="indexed-cache"
-curl -X POST -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@../caches/distributed-indexed.json"
+# Server deployed locally
+curl -X POST -k -v -u admin:password --digest localhost:11222/rest/v2/schemas/book.proto -d @protos/book.proto
+
+# Server on OCP
+curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto
 ----
-For more information, check <<22-cache-configuration-using-the-rest-api,Cache Configuration section>>.
-====
 
-=== Running the client locally
 
-Developing new functionality directly on OCP can be quite cumbersome due to the long time it takes to build a new version of the image after pushing changes. Therefore, the best way to test your application is running your application locally:
+
+== Run it! Part 3: Run your application
+
+
+=== Run it locally
+
+Just use the following command to launch the application locally and test it:
+
 
 [source, bash]
 ----
-$ mvn clean spring-boot:run
+mvn clean spring-boot:run
 ----
 
 
-=== Running the client on Openshift
+
+=== Run it on Openshift
 
 Deploying your client application on OCP requires to create several Openshift objects. Therefore, we are going to define some common variables that will be used from now onwards:
 
 [source, bash]
 ----
-export app_name=rhdg8-hotrod-tester
-export namespace=rhdg8
-export datagrid_cluster=rhdg
-export git_repo=https://github.com/alvarolop/rhdg8-client.git
+export APP_NAME=rhdg8-client
+export APP_NAMESPACE=rhdg8
+export RHDG_CLUSTER=rhdg
+export GIT_REPO=https://github.com/alvarolop/rhdg8-client.git
 ----
 
+==== App configuration
 
 First, create a ConfigMap that will store your application configuration:
 [source, bash]
 ----
-oc create configmap ${app_name}-config \
+oc create configmap $APP_NAME-config \
 --from-file=application.properties=src/main/resources/application-k8s.properties \
---from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $namespace
+--from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $APP_NAMESPACE
 ----
 
 
-Second, use an Openshift template to create your Openshift resources. There are two templates inside the `templates` folder:
+==== App deployment
 
-* `rhdg-client.yaml`: Template that creates all the necessary OCP objects for your application. 
-* `rhdg-client-ssl.yaml`: The same template but including the `.pem` file generated by the operator inside the client's container.
+Second, use an Openshift template to create the resources. There are two templates inside the `templates` folder:
+
+[cols="5*",options="header",width=100%]
+|===
+|Template
+|Authentication
+|Authorization
+|SSL Encryption
+|Notes
+
+| link:templates/rhdg-client-basic.yaml[Basic]
+|{yes} Not by default
+|{yes} Not by default
+|{no}  Not possible
+|Does not allow SSL encryption
+ 
+| link:templates/rhdg-client-ssl.yaml[SSL]
+|{yes} Not by default
+|{yes} Not by default
+|{yes}  By default
+|Mounts `.pem` file in the container
+
+|===
+
 
 This is the command to apply the template on your cluster:
 [source, bash]
 ----
-oc process -f templates/rhdg-client.yaml -p APPLICATION_NAME=$app_name -p GIT_REPOSITORY=$git_repo -p APP_NAMESPACE=$namespace -p RHDG_CLUSTER_NAME=$datagrid_cluster | oc apply -f -
+oc process -f templates/rhdg-client-basic.yaml \
+    -p APPLICATION_NAME=$APP_NAME \
+    -p GIT_REPOSITORY=$GIT_REPO \
+    -p APP_NAMESPACE=$APP_NAMESPACE \
+    -p RHDG_CLUSTER_NAME=$RHDG_CLUSTER | oc apply -f -
 ----
 
 
-=== The application components
+
+
+
+
+
+
+
+== The rhdg8-client app
 
 
 This application may be used to test many different features included in the Java implementation of Hot Rod protocol. All the tests and application logic is exposed via three REST endpoints:
@@ -276,9 +241,22 @@ ERROR: Work in progress
 :sectnums!:
 
 
+== Annex A: Mastering the REST API
+
+The REST API provides a very adequate alternative to the Java Hotrod client to interact with RH Data Grid. In the following section we explore the following topics:
+
+* Managing and configuring caches using the REST API.
+* CRUD operations in a `text/plain` cache.
+* CRUD operations in a `application/json` cache.
+* CRUD operations in a `application/x-protostream` cache.
+
+>> link:docs/rest/README.adoc[Click Here] <<
 
 
-== Annex A: Managing SSL configuration
+
+
+
+== Annex B: Managing SSL configuration
 
 
 * The RHDG operator provides certificates by default in a secret with name `${RHDG_CLUSTER_NAME}-cert-secret`.
@@ -313,7 +291,7 @@ There are other mechanisms to add the credentials to the client application for 
 
 
 
-== Annex B: Comparing cache definitions
+== Annex C: Comparing cache definitions
 
 Up until now, Red Hat Data Grid does not provide a mechanism to update cache definitions easily. Most of the configuration that you might apply to a cache needs a cache restart. Therefore, the REST API does not allow cache configuration updates. You must delete it and create a new cache.
 
@@ -370,7 +348,7 @@ curl -X DELETE -k --digest -u admin:password -H "Content-Type: application/json"
 
 
 
-== Annex C: Managing indexed caches
+== Annex D: Managing indexed caches
 
 Indexed caches keep an index of the desired objects. Some operations update this index asynchronously. Therefore, there may be inconsistencies between the index and the real values stored in the cache. Use the following commands to clear and re-index your cache:
 
