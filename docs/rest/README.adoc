@@ -1,5 +1,34 @@
 = RHDG REST API playground
-
+Álvaro López Medina <alopezme@redhat.com>
+v1.0, 2020-12
+// Metadata
+:description: This repository contains a simple Java example that interacts with Data Grid
+:keywords: infinispan, datagrid, openshift, red hat, java
+// Create TOC wherever needed
+:toc: macro
+:sectanchors:
+:sectnumlevels: 2
+:sectnums: 
+:source-highlighter: pygments
+:imagesdir: images
+// Start: Enable admonition icons
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+// Icons for GitHub
+:yes: :heavy_check_mark:
+:no: :x:
+endif::[]
+ifndef::env-github[]
+:icons: font
+// Icons not for GitHub
+:yes: icon:check[]
+:no: icon:times[]
+endif::[]
+// End: Enable admonition icons
 
 
 [NOTE]
@@ -85,3 +114,75 @@ For more information about the REST endpoint, check the https://access.redhat.co
 == CRUD operations with `application/x-protostream`
 
 
+
+
+:sectnums!:
+
+
+
+== Annex A: Comparing cache definitions
+
+Up until now, Red Hat Data Grid does not provide a mechanism to update cache definitions easily. Most of the configuration that you might apply to a cache needs a cache restart. Therefore, the REST API does not allow cache configuration updates. You must delete it and create a new cache.
+
+In addition to it, cache definitions retrieved with the REST API might not be identical to the definition used to create it. Data Grid adds, converts, and removes some of the parameters according to the default values.
+
+The following commands show a mechanism to create a new cache, retrieve the modified configuration and check if it is similar or not.
+
+
+If your DG is running on OCP, define these environment variables to simplify the following commands:
+[source, bash]
+----
+CLUSTER_NAMESPACE="rhdg8"
+CLUSTER_NAME="rhdg"
+RHDG_URL=$(oc get route ${CLUSTER_NAME}-external -n ${CLUSTER_NAMESPACE} -o template='https://{{.spec.host}}')
+CACHE_NAME="test-01"
+----
+
+On the contrary, if your DG is running locally, define these environment variables to simplify the following commands:
+[source, bash]
+----
+RHDG_URL="https://localhost:11222"
+CACHE_NAME="test-01"
+----
+
+Second, create your cache:
+[source, bash]
+----
+curl -X POST -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME} --data-binary "@caches/test/$CACHE_NAME.json"
+----
+
+Third retrieve the configuration:
+[source, bash]
+----
+curl -X GET -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME?action=config | jq > caches/test/$CACHE_NAME-output.json
+----
+
+Compare them using `jq`:
+[source, bash]
+----
+jq --argfile a caches/test/$CACHE_NAME.json --argfile b caches/test/$CACHE_NAME-output.json -n '($a | (.. | arrays) |= sort) as $a | ($b | (.. | arrays) |= sort) as $b | $a == $b'
+----
+
+Delete the cache definition:
+[source, bash]
+----
+curl -X DELETE -k --digest -u admin:password -H "Content-Type: application/json" ${RHDG_URL}/rest/v2/caches/$CACHE_NAME
+----
+
+
+
+
+
+
+
+
+
+== Annex B: Managing indexed caches
+
+Indexed caches keep an index of the desired objects. Some operations update this index asynchronously. Therefore, there may be inconsistencies between the index and the real values stored in the cache. Use the following commands to clear and re-index your cache:
+
+[source, bash]
+----
+curl -X POST -k --digest -u admin:password  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=clear
+curl -X POST -k --digest -u admin:password  ${RHDG_URL}/rest/v2/caches/distributed-01/search/indexes?action=mass-index&mode=sync
+----

@@ -5,7 +5,7 @@
 application:
   name: rhdg-client
   namespace: my-rhdg8
-  replicaCount: 2
+  replicaCount: 1
 
 server:
   name: rhdg
@@ -22,8 +22,8 @@ image:
 
 security:
   auth:
-    enabled: false
+    enabled: true
   encryption:
-    enabled: false
+    enabled: true
 
 mountPath: /deployments/config
