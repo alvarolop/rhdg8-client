@@ -94,14 +94,13 @@ mvn clean spring-boot:run
 
 === Run it on Openshift
 
-Deploying your client application on OCP requires to create several Openshift objects. Therefore, we are going to define some common variables that will be used from now onwards:
+Deploying your client application on OCP requires creating several Openshift objects. Therefore, we are going to define some common variables that will be used from now onwards:
 
 [source, bash]
 ----
-export APP_NAME=rhdg8-client
-export APP_NAMESPACE=rhdg8
-export RHDG_CLUSTER=rhdg
-export GIT_REPO=https://github.com/alvarolop/rhdg8-client.git
+APP_NAME=rhdg-client
+APP_NAMESPACE=rhdg8
+RHDG_CLUSTER=rhdg
 ----
 
 ==== App configuration
@@ -145,14 +144,13 @@ Second, use an Openshift template to create the resources. There are two templat
 This is the command to apply the template on your cluster:
 [source, bash]
 ----
-oc process -f templates/rhdg-client-basic.yaml \
-    -p APPLICATION_NAME=$APP_NAME \
-    -p GIT_REPOSITORY=$GIT_REPO \
+oc process -f openshift/rhdg-client-basic.yaml \
+    -p APP_NAME=$APP_NAME \
     -p APP_NAMESPACE=$APP_NAMESPACE \
-    -p RHDG_CLUSTER_NAME=$RHDG_CLUSTER | oc apply -f -
+    -p RHDG_CLUSTER=$RHDG_CLUSTER \
+    -p DATAGRID_AUTH_ENABLED=$RHDG_AUTH_ENABLED \
+    -p DATAGRID_SSL_ENABLED=$RHDG_SSL_ENABLED | oc apply -f -
 ----
-
-
 
 
 
@@ -250,11 +248,11 @@ curl -k -G -X GET "${APP_URL}/api/book/cache/${CACHE_NAME}/keys"
 curl -k -G -X DELETE "${APP_URL}/api/book/cache/${CACHE_NAME}" -d minkey=10 -d entries=100
 ----
 
-.Queries and indexes
+.**Queries and indexes**
 TIP: These features are not tested against the cache `$CACHE_NAME`, but against a cache named `indexed-cache`. It is possible to modify the cache you are going to use in the `application.properties` file and restart the client application.
 
 
-.Transactions
+.**Transactions**
 WARNING: Work in progress
 
 
@@ -262,6 +260,7 @@ WARNING: Work in progress
 
 == Use it! Load testing
 
+WARNING: Work in progress
 
 
 
