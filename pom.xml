@@ -130,4 +130,19 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>redhat-ga-repository</id>
+            <name>Red Hat GA Repository</name>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>redhat-ga-repository</id>
+            <name>Red Hat GA Repository</name>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
