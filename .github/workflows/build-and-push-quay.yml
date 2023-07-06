@@ -48,8 +48,8 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Build native executable
-        run: mvn clean package
+      - name: Build JAR file
+        run: ./mvnw clean package
 
       - name: Release if it is a new tag
         uses: softprops/action-gh-release@v1
@@ -58,7 +58,7 @@ jobs:
           files: target/*.jar
           generate_release_notes: true
 
-      - name: Upload native executable
+      - name: Upload JAR file
         uses: actions/upload-artifact@v3
         with:
           name: app-jar
@@ -75,7 +75,7 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
 
-      - name: Download the native executable
+      - name: Download the JAR file
         uses: actions/download-artifact@v3
         with:
           name: app-jar
