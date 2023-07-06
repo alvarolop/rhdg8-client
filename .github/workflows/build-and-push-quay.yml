@@ -32,7 +32,7 @@ on:
 jobs:
   build-artifact:
     runs-on: ubuntu-latest
-    name: "Build Native Package"
+    name: "Build Package"
     steps:
 
       - name: Checkout the code
