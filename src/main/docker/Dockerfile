@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-17-runtime:1.16
+FROM registry.redhat.io/ubi8/openjdk-17-runtime:1.16
 
 COPY ./target/*.jar /deployments/
 
