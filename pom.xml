@@ -137,6 +137,7 @@
             <url>https://maven.repository.redhat.com/ga/</url>
         </repository>
     </repositories>
+    
     <pluginRepositories>
         <pluginRepository>
             <id>redhat-ga-repository</id>
