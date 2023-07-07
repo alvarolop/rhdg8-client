@@ -6,6 +6,7 @@ public final class CacheNames {
     public static final String PROTO_CACHE_NAME = "books-protostream";
     public static final String INDEXED_CACHE_NAME = "books-indexed";
     public static final String TRANSACTIONAL_CACHE_NAME = "books-transactional";
+    public static final String TRANSACTIONAL_CACHE_NAME2 = "books-transactional-02";
     static final String TESTER_CACHE_NAME = "tester";
     static final String SESSIONS_CACHE_NAME = "sessions";
 

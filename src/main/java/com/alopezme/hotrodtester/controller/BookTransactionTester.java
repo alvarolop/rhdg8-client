@@ -36,6 +36,8 @@ public class BookTransactionTester {
     @Autowired
     private RemoteCache<Integer, Book> transactionalBooksCache;
 
+    @Autowired
+    private RemoteCache<Integer, Book> transactionalBooksCache2;
 
     Logger logger = LoggerFactory.getLogger(BookTransactionTester.class);
 
@@ -194,6 +196,120 @@ public class BookTransactionTester {
         return transactionalBooksCache.get(valueID1).toString() + System.lineSeparator()
                 + transactionalBooksCache.get(valueID2).toString();
     }
+
+
+
+
+    /**
+     * Test 05:
+     * One transaction simultaneously over two different caches, commit
+     */
+    @GetMapping("/test05/{value}")
+    public String test05 (
+            @PathVariable(value = "value") int valueID) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException, InvalidTransactionException {
+
+        Book trollBook1 = new Book(valueID,"Coding from home" ,"Álvaro López Medina",2021);
+        Book trollBook2 = new Book(valueID,"Sleeping at home" ,"Álvaro López Medina",2021);
+
+        logger.info("--> Transaction test 05 BEGINS");
+        logger.debug("--> Transaction - New value for cache 1: " + trollBook1.toString());
+        logger.debug("--> Transaction - New value for cache 2: " + trollBook2.toString());
+
+        // Obtain the transaction manager
+        // The transaction Manager is common to all the caches (In fact should be common to all the app)
+        final TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
+
+        logger.debug("--> Cache 1 - isTransactional?: " + transactionalBooksCache.isTransactional());
+        logger.debug("--> Cache 2 - isTransactional?: " + transactionalBooksCache2.isTransactional());
+
+        // Transaction begins
+        transactionManager.begin();
+        logger.debug("--> Transaction - Cache 1 - Initial value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Cache 2 - Initial value: " + transactionalBooksCache2.get(valueID));
+
+        transactionalBooksCache.put(valueID, trollBook1);
+        transactionalBooksCache2.put(valueID, trollBook2);
+
+        logger.debug("--> Transaction - Cache 1 - Updated value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Cache 2 - Updated value: " + transactionalBooksCache2.get(valueID));
+
+        transactionManager.commit();
+
+        logger.info("--> Transaction test 05 ENDS");
+
+        logger.debug("--> Transaction - Cache 1 - Committed value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Cache 2 - Committed value: " + transactionalBooksCache2.get(valueID));
+
+        return transactionalBooksCache.get(valueID).toString() + System.lineSeparator()
+                + transactionalBooksCache.get(valueID).toString();
+    }
+
+
+    /**
+     * Test 06:
+     * One transaction simultaneously over two different caches, rollback
+     */
+    @GetMapping("/test06/{value}")
+    public String test06 (
+            @PathVariable(value = "value") int valueID) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException, InvalidTransactionException {
+
+        Book trollBook1 = new Book(valueID,"Coding from home" ,"Álvaro López Medina",2021);
+        Book trollBook2 = new Book(valueID,"Sleeping at home" ,"Álvaro López Medina",2021);
+
+        logger.info("--> Transaction test 06 BEGINS");
+        logger.debug("--> Transaction - New value for cache 1: " + trollBook1.toString());
+        logger.debug("--> Transaction - New value for cache 2: " + trollBook2.toString());
+
+        // Obtain the transaction manager
+        // The transaction Manager is common to all the caches (In fact should be common to all the app)
+        final TransactionManager transactionManager = transactionalBooksCache.getTransactionManager();
+
+        logger.debug("--> Cache 1 - isTransactional?: " + transactionalBooksCache.isTransactional());
+        logger.debug("--> Cache 2 - isTransactional?: " + transactionalBooksCache2.isTransactional());
+
+        // Transaction begins
+        transactionManager.begin();
+        logger.debug("--> Transaction - Cache 1 - Initial value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Cache 2 - Initial value: " + transactionalBooksCache2.get(valueID));
+
+        transactionalBooksCache.put(valueID, trollBook1);
+        transactionalBooksCache2.put(valueID, trollBook2);
+
+        logger.debug("--> Transaction - Cache 1 - Updated value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Cache 2 - Updated value: " + transactionalBooksCache2.get(valueID));
+
+        transactionManager.rollback();
+
+        logger.info("--> Transaction test 06 ENDS");
+
+        logger.debug("--> Transaction - Cache 1 - Committed value: " + transactionalBooksCache.get(valueID));
+        logger.debug("--> Transaction - Cache 2 - Committed value: " + transactionalBooksCache2.get(valueID));
+
+        return "Finished";
+    }
+
+
+
+    /**
+     * Test 07:
+     * Check that the Transaction Manager is common to all the caches
+     */
+    @GetMapping("/test07")
+    public String test07 () {
+
+        // Obtain the transaction manager
+        final TransactionManager transactionManager1 = transactionalBooksCache.getTransactionManager();
+        final TransactionManager transactionManager2 = transactionalBooksCache2.getTransactionManager();
+
+        logger.info("--> transactionManager1 to String: " + transactionManager1.toString());
+        logger.info("--> transactionManager2 to String: " + transactionManager2.toString());
+        logger.info("--> transactionManager1 Hash Code: " + System.identityHashCode(transactionManager1));
+        logger.info("--> transactionManager2 Hash Code: " + System.identityHashCode(transactionManager2));
+
+        return "END";
+    }
+
+
 
 
     @GetMapping("/reduced-load")

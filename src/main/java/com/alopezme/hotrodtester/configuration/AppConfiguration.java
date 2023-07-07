@@ -62,6 +62,11 @@ public class AppConfiguration {
         return remoteCacheManager.getCache(CacheNames.TRANSACTIONAL_CACHE_NAME);
     }
 
+    @Bean
+    RemoteCache<Integer, Book> transactionalBooksCache2()  {
+        return remoteCacheManager.getCache(CacheNames.TRANSACTIONAL_CACHE_NAME2);
+    }
+
     /**
      * Register generated Protobuf schema with Infinispan Server.
      * This requires the RemoteCacheManager to be initialized.
