@@ -24,16 +24,16 @@ echo -e " * RHDG_SSL_ENABLED: $RHDG_SSL_ENABLED"
 echo -e "==============\n"
 
 if ! $RHDG_AUTH_ENABLED; then
-    OCP_APP_TEMPLATE="rhdg-client-basic"
+    OCP_APP_TEMPLATE="01-rhdg-client-basic"
     HTTP_SCHEME="http"
     RHDG_SECURITY=""
 else 
     if ! $RHDG_SSL_ENABLED; then
-        OCP_APP_TEMPLATE="rhdg-client-basic"
+        OCP_APP_TEMPLATE="01-rhdg-client-basic"
         HTTP_SCHEME="http"
         RHDG_SECURITY="--digest -u admin:password"
     else
-        OCP_APP_TEMPLATE="rhdg-client-ssl"
+        OCP_APP_TEMPLATE="01-rhdg-client-ssl"
         HTTP_SCHEME="https"
         RHDG_SECURITY="--digest -u admin:password"
     fi
