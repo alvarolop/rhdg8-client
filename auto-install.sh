@@ -8,6 +8,8 @@ RHDG_CLUSTER=rhdg
 RHDG_APP_NAME=rhdg-client
 RHDG_AUTH_ENABLED=true
 RHDG_SSL_ENABLED=false
+GRAFANA_NAMESPACE=grafana
+GRAFANA_DASHBOARD_NAME="grafana-dashboard-rhdg8-client"
 
 #############################
 ## Do not modify anything from this line
@@ -49,14 +51,14 @@ else
 fi
 
 # Register Proto Schema
-echo -e "\n[1/3]Register Book Proto Schema"
+echo -e "\n[1/5]Register Book Proto Schema"
 RHDG_SERVER_ROUTE=$(oc get routes $RHDG_CLUSTER-external -n $RHDG_NAMESPACE --template="$HTTP_SCHEME://{{ .spec.host }}")
 
 # echo "curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto"
 # curl -X POST -k $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto
 
 # Create RHDG Client configmap
-echo -e "\n[2/3]Creating client ConfigMap"
+echo -e "\n[2/5]Creating client ConfigMap"
 if oc get configmap $RHDG_APP_NAME-config -n $RHDG_NAMESPACE &> /dev/null; then
     echo -e "Check. There was a previous configuration. Deleting..."
     oc delete configmap ${RHDG_APP_NAME}-config -n $RHDG_NAMESPACE
@@ -67,7 +69,7 @@ oc create configmap $RHDG_APP_NAME-config \
     --from-file=logback-spring.xml=src/main/resources/logback-spring-k8s.xml -n $RHDG_NAMESPACE
 
 # Deploy the RHDG client
-echo -e "\n[3/3]Deploying the RHDG client"
+echo -e "\n[3/5]Deploying the RHDG client"
 oc process -f openshift/$OCP_APP_TEMPLATE.yaml \
     -p APP_NAMESPACE=$RHDG_NAMESPACE \
     -p APP_NAME=$RHDG_APP_NAME \
@@ -80,7 +82,27 @@ echo -n "Waiting for pods ready..."
 while [[ $(oc get pods -l app=$RHDG_APP_NAME -n $RHDG_NAMESPACE -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo -n "." && sleep 1; done; echo -n -e "  [OK]\n"
 
 
+# Configure Prometheus to monitor RHDG Client
+echo -e "\n[4/8]Configure Prometheus to monitor RHDG Client"
+oc process -f openshift/02-rhdg-service-monitor.yaml \
+    -p APP_NAME=$RHDG_APP_NAME \
+    -p APP_NAMESPACE=$RHDG_NAMESPACE | oc apply -f -
+
+
+
+
+# Create a Grafana dashboard
+echo -e "\n[5/5]Creating the Grafana dashboard"
+if oc get cm $GRAFANA_DASHBOARD_NAME -n $GRAFANA_NAMESPACE &> /dev/null; then
+    echo -e "Check. There was a previous configuration. Deleting..."
+    oc delete configmap $GRAFANA_DASHBOARD_NAME -n $GRAFANA_NAMESPACE
+    oc process -f openshift/03-rhdg-grafana-dashboard.yaml | oc delete -f -
+fi
+oc create configmap $GRAFANA_DASHBOARD_NAME --from-file=dashboard.json=openshift/$GRAFANA_DASHBOARD_NAME.json -n $GRAFANA_NAMESPACE
+oc process -f openshift/03-rhdg-grafana-dashboard.yaml | oc apply -f -
+
+
 APP_URL=$(oc get routes $RHDG_APP_NAME -n $RHDG_NAMESPACE --template="$HTTP_SCHEME://{{ .spec.host }}")
 
-echo -e "\RHDG Client information:"
+echo -e "\nRHDG Client information:"
 echo -e " * URL: $APP_URL"

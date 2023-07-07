@@ -153,7 +153,28 @@ oc process -f openshift/rhdg-client-basic.yaml \
 ----
 
 
+==== Monitoring
 
+
+First, create a Service Monitor to grab metrics:
+
+[source, bash]
+----
+oc process -f openshift/02-rhdg-service-monitor.yaml \
+    -p APP_NAME=$APP_NAME \
+    -p APP_NAMESPACE=$APP_NAMESPACE | oc apply -f -
+----
+
+Second, create a Grafana Dashboard:
+
+[source, bash]
+----
+DASHBOARD_NAME="grafana-dashboard-rhdg8-client"
+# Create a configMap containing the Dashboard
+oc create configmap $DASHBOARD_NAME --from-file=dashboard=openshift/$DASHBOARD_NAME.json -n grafana
+# Create a Dashboard object that automatically updates Grafana
+oc process -f openshift/03-rhdg-grafana-dashboard.yaml | oc apply -f -
+----
 
 
 == Use it!
