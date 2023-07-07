@@ -12,6 +12,7 @@
         <version.spring.session>2.7.2</version.spring.session>
         <version.infinispan>14.0.11.Final-redhat-00001</version.infinispan>
         <lombok.version>1.18.28</lombok.version>
+        <version.micrometer.registry.prometheus>1.11.1</version.micrometer.registry.prometheus>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,11 +57,12 @@
             <artifactId>infinispan-remote-query-client</artifactId>
         </dependency>
 
-        <!-- <dependency>
+        <!-- Infinispan: Expose metrics in Prometheus format -->
+        <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${version.micrometer.registry.prometheus}</version>
-        </dependency> -->
+        </dependency>
 
         <!-- Spring: 3 Default dependencies -->
         <dependency>
