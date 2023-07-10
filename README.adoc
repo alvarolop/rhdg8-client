@@ -169,11 +169,9 @@ Second, create a Grafana Dashboard:
 
 [source, bash]
 ----
-DASHBOARD_NAME="grafana-dashboard-rhdg8-client"
-# Create a configMap containing the Dashboard
-oc create configmap $DASHBOARD_NAME --from-file=dashboard=openshift/$DASHBOARD_NAME.json -n grafana
-# Create a Dashboard object that automatically updates Grafana
-oc process -f openshift/03-rhdg-grafana-dashboard.yaml | oc apply -f -
+oc process -f https://raw.githubusercontent.com/alvarolop/rhdg8-server/main/grafana/grafana-04-dashboard.yaml \
+    -p DASHBOARD_GZIP="$(cat openshift/grafana-dashboard-rhdg8-client.json | gzip | base64 -w0)" \
+    -p DASHBOARD_NAME=grafana-dashboard-rhdg8-client | oc apply -f -
 ----
 
 

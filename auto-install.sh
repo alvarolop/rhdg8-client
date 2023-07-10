@@ -55,7 +55,7 @@ echo -e "\n[1/5]Register Book Proto Schema"
 RHDG_SERVER_ROUTE=$(oc get routes $RHDG_CLUSTER-external -n $RHDG_NAMESPACE --template="$HTTP_SCHEME://{{ .spec.host }}")
 
 # echo "curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto"
-# curl -X POST -k $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto
+curl -X POST -k $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto --data-binary @protos/book.proto
 
 # Create RHDG Client configmap
 echo -e "\n[2/5]Creating client ConfigMap"
@@ -83,23 +83,17 @@ while [[ $(oc get pods -l app=$RHDG_APP_NAME -n $RHDG_NAMESPACE -o 'jsonpath={..
 
 
 # Configure Prometheus to monitor RHDG Client
-echo -e "\n[4/8]Configure Prometheus to monitor RHDG Client"
+echo -e "\n[4/5]Configure Prometheus to monitor RHDG Client"
 oc process -f openshift/02-rhdg-service-monitor.yaml \
     -p APP_NAME=$RHDG_APP_NAME \
     -p APP_NAMESPACE=$RHDG_NAMESPACE | oc apply -f -
 
 
-
-
 # Create a Grafana dashboard
-echo -e "\n[5/5]Creating the Grafana dashboard"
-if oc get cm $GRAFANA_DASHBOARD_NAME -n $GRAFANA_NAMESPACE &> /dev/null; then
-    echo -e "Check. There was a previous configuration. Deleting..."
-    oc delete configmap $GRAFANA_DASHBOARD_NAME -n $GRAFANA_NAMESPACE
-    oc process -f openshift/03-rhdg-grafana-dashboard.yaml | oc delete -f -
-fi
-oc create configmap $GRAFANA_DASHBOARD_NAME --from-file=dashboard.json=openshift/$GRAFANA_DASHBOARD_NAME.json -n $GRAFANA_NAMESPACE
-oc process -f openshift/03-rhdg-grafana-dashboard.yaml | oc apply -f -
+echo -e "\n[5/5]Create Grafana Dashboard"
+oc process -f https://raw.githubusercontent.com/alvarolop/rhdg8-server/main/grafana/grafana-04-dashboard.yaml \
+  -p DASHBOARD_GZIP="$(cat openshift/grafana-dashboard-rhdg8-client.json | gzip | base64 -w0)" \
+  -p DASHBOARD_NAME=${GRAFANA_DASHBOARD_NAME} | oc apply -f -
 
 
 APP_URL=$(oc get routes $RHDG_APP_NAME -n $RHDG_NAMESPACE --template="$HTTP_SCHEME://{{ .spec.host }}")
