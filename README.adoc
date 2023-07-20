@@ -169,7 +169,7 @@ Second, create a Grafana Dashboard:
 
 [source, bash]
 ----
-oc process -f https://raw.githubusercontent.com/alvarolop/rhdg8-server/main/grafana/grafana-04-dashboard.yaml \
+oc process -f https://raw.githubusercontent.com/alvarolop/quarkus-observability-app/main/openshift/grafana/40-dashboard.yaml \
     -p DASHBOARD_GZIP="$(cat openshift/grafana-dashboard-rhdg8-client.json | gzip | base64 -w0)" \
     -p DASHBOARD_NAME=grafana-dashboard-rhdg8-client | oc apply -f -
 ----

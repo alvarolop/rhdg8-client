@@ -91,7 +91,7 @@ oc process -f openshift/02-rhdg-service-monitor.yaml \
 
 # Create a Grafana dashboard
 echo -e "\n[5/5]Create Grafana Dashboard"
-oc process -f https://raw.githubusercontent.com/alvarolop/rhdg8-server/main/grafana/grafana-04-dashboard.yaml \
+oc process -f https://raw.githubusercontent.com/alvarolop/quarkus-observability-app/main/openshift/grafana/grafana-04-dashboard.yaml \
   -p DASHBOARD_GZIP="$(cat openshift/grafana-dashboard-rhdg8-client.json | gzip | base64 -w0)" \
   -p DASHBOARD_NAME=${GRAFANA_DASHBOARD_NAME} | oc apply -f -
 
