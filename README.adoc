@@ -147,9 +147,7 @@ This is the command to apply the template on your cluster:
 oc process -f openshift/rhdg-client-basic.yaml \
     -p APP_NAME=$APP_NAME \
     -p APP_NAMESPACE=$APP_NAMESPACE \
-    -p RHDG_CLUSTER=$RHDG_CLUSTER \
-    -p DATAGRID_AUTH_ENABLED=$RHDG_AUTH_ENABLED \
-    -p DATAGRID_SSL_ENABLED=$RHDG_SSL_ENABLED | oc apply -f -
+    -p RHDG_CLUSTER=$RHDG_CLUSTER | oc apply -f -
 ----
 
 
