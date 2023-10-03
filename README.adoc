@@ -69,10 +69,10 @@ There are several mechanisms, but probably the REST API is the easiest one:
 [source, bash]
 ----
 # Server deployed locally
-curl -X POST -k -v -u admin:password --digest localhost:11222/rest/v2/schemas/book.proto -d @protos/book.proto
+curl -X POST -k -v -u admin:password --digest localhost:11222/rest/v2/schemas/book.proto --data-binary @protos/book.proto
 
 # Server on OCP
-curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto -d @protos/book.proto
+curl -X POST -k -v $RHDG_SECURITY $RHDG_SERVER_ROUTE/rest/v2/schemas/book.proto --data-binary @protos/book.proto
 ----
 
 
