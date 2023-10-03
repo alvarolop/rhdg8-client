@@ -144,7 +144,7 @@ Second, use an Openshift template to create the resources. There are two templat
 This is the command to apply the template on your cluster:
 [source, bash]
 ----
-oc process -f openshift/rhdg-client-basic.yaml \
+oc process -f openshift/01-rhdg-client-basic.yaml \
     -p APP_NAME=$APP_NAME \
     -p APP_NAMESPACE=$APP_NAMESPACE \
     -p RHDG_CLUSTER=$RHDG_CLUSTER | oc apply -f -
