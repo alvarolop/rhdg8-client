@@ -24,5 +24,5 @@
 
     <!-- LOG "com.example*" at TRACE level -->
     <logger name="com.alopezme.hotrodtester" level="DEBUG"/>
-    
+
 </configuration>
