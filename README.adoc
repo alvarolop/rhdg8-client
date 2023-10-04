@@ -335,6 +335,10 @@ There are other mechanisms to add the credentials to the client application for 
 
 
 
+== Annex C: XML incorrect formatting
 
+If after creating a ConfigMap with an XML file, it is displayed showing `/n`, you might be facing this issue: https://github.com/kubernetes/kubernetes/issues/36222
+
+You can fix it by removing the trailing whitespace characters with the following tool: https://miniwebtool.com/remove-leading-trailing-spaces/
 
 
