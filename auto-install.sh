@@ -7,7 +7,7 @@ RHDG_NAMESPACE=rhdg8
 RHDG_CLUSTER=rhdg
 RHDG_APP_NAME=rhdg-client
 RHDG_AUTH_ENABLED=true
-RHDG_SSL_ENABLED=false
+RHDG_SSL_ENABLED=true
 GRAFANA_NAMESPACE=grafana
 GRAFANA_DASHBOARD_NAME="grafana-dashboard-rhdg8-client"
 
@@ -91,7 +91,7 @@ oc process -f openshift/02-rhdg-service-monitor.yaml \
 
 # Create a Grafana dashboard
 echo -e "\n[5/5]Create Grafana Dashboard"
-oc process -f https://raw.githubusercontent.com/alvarolop/quarkus-observability-app/main/openshift/grafana/grafana-04-dashboard.yaml \
+oc process -f https://raw.githubusercontent.com/alvarolop/quarkus-observability-app/main/openshift/grafana/40-dashboard.yaml \
   -p DASHBOARD_GZIP="$(cat openshift/grafana-dashboard-rhdg8-client.json | gzip | base64 -w0)" \
   -p DASHBOARD_NAME=${GRAFANA_DASHBOARD_NAME} | oc apply -f -
 
